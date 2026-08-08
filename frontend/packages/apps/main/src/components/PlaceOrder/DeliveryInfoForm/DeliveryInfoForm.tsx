@@ -64,43 +64,33 @@ const DeliveryInfoForm = () => {
         <span>INFORMATION</span>
       </h6>
       <div className={styles.delivery_info_form}>
-        <div className={styles.side_by_side_inputs}>
+        <div className={styles.delivery_info_form_input_group}>
           <Input
-            className={styles.delivery_form_input}
+            className={styles.delivery_info_form_input}
             placeholder="First name"
             {...form.register("firstName")}
           />
           <Input
-            className={styles.delivery_form_input}
+            className={styles.delivery_info_form_input}
             placeholder="Last name"
             {...form.register("lastName")}
           />
         </div>
         <Input
-          className={styles.delivery_form_input}
+          className={styles.delivery_info_form_input}
           placeholder="Email address"
           type="email"
           {...form.register("email")}
         />
         <Input
-          className={styles.delivery_form_input}
+          className={styles.delivery_info_form_input}
           placeholder="Street"
           {...form.register("street")}
         />
-        <div className={styles.side_by_side_inputs}>
-          <Select
-            placeholder="Select a city"
-            className={styles.form_select}
-            onChange={(e) => form.setValue("city", e?.value)}
-            value={cityValue}
-            options={cityOptions}
-            classNamePrefix="react-select"
-            isSearchable
-            isClearable
-          />
+        <div className={styles.delivery_info_form_input_group}>
           <Select
             placeholder="Select a country"
-            className={styles.form_select}
+            className={styles.delivery_info_form_select}
             onChange={(e) => {
               form.setValue("country", e?.value || "");
               form.setValue("city", "")
@@ -110,15 +100,26 @@ const DeliveryInfoForm = () => {
             isSearchable
             isClearable
           />
+          <Select
+            isDisabled={isEmptyString(form.watch("country"))}
+            placeholder="Select a city"
+            className={styles.delivery_info_form_select}
+            onChange={(e) => form.setValue("city", e?.value)}
+            value={cityValue}
+            options={cityOptions}
+            classNamePrefix="react-select"
+            isSearchable
+            isClearable
+          />
         </div>
-        <div className={styles.side_by_side_inputs}>
+        <div className={styles.delivery_info_form_input_group}>
           <Input
-            className={styles.delivery_form_input}
+            className={styles.delivery_info_form_input}
             placeholder="Zipcode"
             {...form.register("zipCode")}
           />
           <Input
-            className={styles.delivery_form_input}
+            className={styles.delivery_info_form_input}
             placeholder="State"
             {...form.register("state")}
           />
@@ -129,7 +130,7 @@ const DeliveryInfoForm = () => {
           render={({ field }) => (
             <Input
               mask="0 (000) 000 00 00"
-              className={styles.delivery_form_input}
+              className={styles.delivery_info_form_input}
               placeholder="Phone Number"
               {...field}
             />

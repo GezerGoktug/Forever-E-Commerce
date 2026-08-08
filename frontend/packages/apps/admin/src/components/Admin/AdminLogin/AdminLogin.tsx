@@ -61,7 +61,7 @@ const AdminLogin = () => {
                 >
                     <Input
                         size="lg"
-                        className={styles.admin_login_input}
+                        className={styles.admin_login_form_input}
                         placeholder="Email"
                         type="email"
                         {...form.register("email", { required: "Email is required" })}
@@ -70,12 +70,12 @@ const AdminLogin = () => {
                         errors={form.formState.errors}
                         name="email"
                         render={({ message }) => (
-                            <p className={styles.error_message}>{message}</p>
+                            <p className={styles.admin_login_form_error_message}>{message}</p>
                         )}
                     />
                     <Input
                         size="lg"
-                        className={styles.admin_login_input}
+                        className={styles.admin_login_form_input}
                         rightIcon={ShowPasswordIcon}
                         rightIconOnClick={() => setShowPassword(!showPassword)}
                         placeholder="Password"
@@ -86,10 +86,10 @@ const AdminLogin = () => {
                         errors={form.formState.errors}
                         name="password"
                         render={({ message }) => (
-                            <p className={styles.error_message}>{message}</p>
+                            <p className={styles.admin_login_form_error_message}>{message}</p>
                         )}
                     />
-                    <Button className={styles.admin_login_btn} type="submit" loading={isPending}>
+                    <Button className={styles.admin_login_form_btn} type="submit" loading={isPending}>
                         Sign In
                     </Button>
                 </form>

@@ -65,7 +65,7 @@ const ChangePassword = ({
       <form className={styles.change_password_form} onSubmit={form.handleSubmit(onSubmit)} >
         <Input
           size="lg"
-          className={styles.change_password_input}
+          className={styles.change_password_form_input}
           rightIcon={ShowPasswordIcon}
           rightIconOnClick={() => setShowPassword(!showPassword)}
           placeholder="New Password"
@@ -76,12 +76,12 @@ const ChangePassword = ({
           errors={form.formState.errors}
           name="newPassword"
           render={({ message }) => (
-            <p className={styles.error_message}>{message}</p>
+            <p className={styles.change_password_form_error_message}>{message}</p>
           )}
         />
         <Input
           size="lg"
-          className={styles.change_password_input}
+          className={styles.change_password_form_input}
           placeholder="New Password Confirm"
           type='password'
           {...form.register("newPasswordConfirm")}
@@ -90,7 +90,7 @@ const ChangePassword = ({
           errors={form.formState.errors}
           name="newPasswordConfirm"
           render={({ message }) => (
-            <p className={styles.error_message}>{message}</p>
+            <p className={styles.change_password_form_error_message}>{message}</p>
           )}
         />
         <Button

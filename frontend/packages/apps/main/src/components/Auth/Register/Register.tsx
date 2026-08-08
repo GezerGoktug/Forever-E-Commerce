@@ -90,7 +90,7 @@ const Register = ({ chanceForm }: RegisterProps) => {
       >
         <Input
           size="lg"
-          className={styles.register_input}
+          className={styles.register_form_input}
           placeholder="Name"
           type="text"
           {...form.register("name")}
@@ -99,12 +99,12 @@ const Register = ({ chanceForm }: RegisterProps) => {
           errors={form.formState.errors}
           name="name"
           render={({ message }) => (
-            <p className={styles.error_message}>{message}</p>
+            <p className={styles.register_form_error_message}>{message}</p>
           )}
         />
         <Input
           size="lg"
-          className={styles.register_input}
+          className={styles.register_form_input}
           placeholder="Email"
           type="email"
           {...form.register("email")}
@@ -113,12 +113,12 @@ const Register = ({ chanceForm }: RegisterProps) => {
           errors={form.formState.errors}
           name="email"
           render={({ message }) => (
-            <p className={styles.error_message}>{message}</p>
+            <p className={styles.register_form_error_message}>{message}</p>
           )}
         />
         <Input
           size="lg"
-          className={styles.register_input}
+          className={styles.register_form_input}
           rightIcon={ShowPasswordIcon}
           rightIconOnClick={() => setShowPassword(!showPassword)}
           placeholder="Password"
@@ -129,12 +129,12 @@ const Register = ({ chanceForm }: RegisterProps) => {
           errors={form.formState.errors}
           name="password"
           render={({ message }) => (
-            <p className={styles.error_message}>{message}</p>
+            <p className={styles.register_form_error_message}>{message}</p>
           )}
         />
         <Input
           size="lg"
-          className={styles.register_input}
+          className={styles.register_form_input}
           placeholder="Confirm password"
           type="password"
           {...form.register("confirmPassword")}
@@ -143,19 +143,19 @@ const Register = ({ chanceForm }: RegisterProps) => {
           errors={form.formState.errors}
           name="confirmPassword"
           render={({ message }) => (
-            <p className={styles.error_message}>{message}</p>
+            <p className={styles.register_form_error_message}>{message}</p>
           )}
         />
-        <div className={styles.register_interactions}>
+        <div className={styles.register_form_interactions}>
           <span onClick={() => setModal(true)}>Forgot your password?</span>
           <span onClick={() => chanceForm()}>Login here</span>
         </div>
-        <Button className={styles.register_btn} type="submit" loading={isPending} >
+        <Button className={styles.register_form_btn} type="submit" loading={isPending} >
           Sign Up
         </Button>
       </form>
       <div className={styles.login_with_app_provider_section}>
-        <div className={styles.or_section}>
+        <div className={styles.seperator}>
           <div />
           <span>OR</span>
           <div />

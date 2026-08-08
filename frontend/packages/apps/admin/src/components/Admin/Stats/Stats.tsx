@@ -121,9 +121,9 @@ const CustomTooltip = ({
   if (active && payload && payload.length) {
     const item = payload[0].payload;
     return (
-      <div className={styles.tooltipContainer}>
-        <img src={item.image} alt={item.name} className={styles.tooltipImage} />
-        <div className={styles.tooltipText}>
+      <div className={styles.admin_stats_tooltip_container}>
+        <img src={item.image} alt={item.name} className={styles.admin_stats_tooltip_image} />
+        <div className={styles.admin_stats_tooltip_text}>
           <h6>{item.name}</h6>
           <p>
             Total Income: <span>{item.totalIncome}₺</span>
@@ -186,7 +186,7 @@ const Stats = () => {
             className={styles.admin_stats_card}
           >
             <div className={styles.admin_stats_card_top}>
-              <div className={styles.admin_stat_header}>
+              <div className={styles.admin_stats_header}>
                 <motion.h6
                   initial={{ x: -20, opacity: 0.0, filter: "blur(8px)" }}
                   animate={{ x: 0, opacity: 1, filter: "blur(0px)" }}
@@ -212,25 +212,25 @@ const Stats = () => {
                 initial={{ y: 20, opacity: 0.0, filter: "blur(8px)" }}
                 animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
                 transition={{ duration: 0.3, delay: (i + 1) * 0.2 }}
-                className={styles.admin_stat_icon_container}
+                className={styles.admin_stats_icon_container}
               >
-                <Icon className={styles.admin_stat_icon} />
+                <Icon className={styles.admin_stats_icon} />
               </motion.div>
             </div>
             <motion.div
               initial={{ x: -20, opacity: 0.0, filter: "blur(8px)" }}
               animate={{ x: 0, opacity: 1, filter: "blur(0px)" }}
               transition={{ duration: 0.3, delay: (i + 1) * 0.2 }}
-              className={styles.admin_stat_card_bottom}
+              className={styles.admin_stats_card_bottom}
             >
               <span>&#9672;</span>
-              <div className={styles.admin_stat_desc}>{item.desc}</div>
+              <div className={styles.admin_stats_desc}>{item.desc}</div>
             </motion.div>
           </motion.div>
         ))}
       </div>
       <div className={styles.admin_stats_charts}>
-        <div className={styles.admin_stats_chart_flex}>
+        <div className={styles.admin_stats_chart_group}>
           <div className={styles.admin_stats_chart}>
             <h6 className={styles.admin_stats_chart_header}>
               Best selling products
@@ -301,13 +301,13 @@ const Stats = () => {
                     )
                   )}
                 </Pie>
-                <Tooltip wrapperClassName={styles.default_tooltip} />
+                <Tooltip wrapperClassName={styles.admin_stats_chart_default_tooltip} />
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
           </div>
         </div>
-        <div className={styles.admin_stats_chart_flex}>
+        <div className={styles.admin_stats_chart_group}>
           <div className={styles.admin_stats_chart}>
             <h6 className={styles.admin_stats_chart_header}>
               Sub Category Distribution
@@ -327,7 +327,7 @@ const Stats = () => {
                 />
                 <YAxis stroke="#1a8595" />
 
-                <Tooltip wrapperClassName={styles.default_tooltip} />
+                <Tooltip wrapperClassName={styles.admin_stats_chart_default_tooltip} />
                 <Bar
                   barSize={50}
                   dataKey="counts"
@@ -357,7 +357,7 @@ const Stats = () => {
                 />
                 <YAxis stroke="#681389" />
 
-                <Tooltip wrapperClassName={styles.default_tooltip} />
+                <Tooltip wrapperClassName={styles.admin_stats_chart_default_tooltip} />
                 <Bar
                   barSize={50}
                   dataKey="counts"
@@ -369,7 +369,7 @@ const Stats = () => {
             </ResponsiveContainer>
           </div>
         </div>
-        <div className={styles.admin_stats_chart_flex}>
+        <div className={styles.admin_stats_chart_group}>
           <div className={styles.admin_stats_chart}>
             <h6 className={styles.admin_stats_chart_header}>
               Yearly Sales Graphic
@@ -379,7 +379,7 @@ const Stats = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="_id" />
                 <YAxis />
-                <Tooltip wrapperClassName={styles.default_tooltip} />
+                <Tooltip wrapperClassName={styles.admin_stats_chart_default_tooltip} />
                 <Area
                   type="monotone"
                   dataKey="totalSales"
@@ -399,7 +399,7 @@ const Stats = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="_id" />
                 <YAxis />
-                <Tooltip wrapperClassName={styles.default_tooltip} />
+                <Tooltip wrapperClassName={styles.admin_stats_chart_default_tooltip} />
                 <Area
                   type="monotone"
                   dataKey="totalSales"
@@ -410,7 +410,7 @@ const Stats = () => {
             </ResponsiveContainer>
           </div>
         </div>
-        <div className={styles.admin_stats_chart_flex}>
+        <div className={styles.admin_stats_chart_group}>
           <div className={styles.admin_stats_chart}>
             <h6 className={styles.admin_stats_chart_header}>
               Daily Sales Graphic
@@ -425,7 +425,7 @@ const Stats = () => {
                   dataKey="_id"
                 />
                 <YAxis />
-                <Tooltip wrapperClassName={styles.default_tooltip} />
+                <Tooltip wrapperClassName={styles.admin_stats_chart_default_tooltip} />
                 <Area
                   type="monotone"
                   dataKey="totalSales"

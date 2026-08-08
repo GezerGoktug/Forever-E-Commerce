@@ -7,7 +7,7 @@
   .pagination {
     @include u.row-center;
     gap: 25px;
-    .pagination_title {
+    &_title {
       @include u.col-center;
       gap: 4px;
       flex-direction: column-reverse;
@@ -16,7 +16,7 @@
         font-weight: 600;
       }
     }
-    .pagination_arrow_icon_wrapper {
+    &_arrow_icon_wrapper {
       cursor: pointer;
       @include u.flex-center;
       width: 40px;

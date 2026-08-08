@@ -44,11 +44,11 @@ const Filter = () => {
     const [modal, setModal] = useState(false)
 
     return (
-        <div className={styles.filter_box}>
+        <div className={styles.filter}>
             <Modal wrapperClassName={styles.filter_modal_wrapper} className={styles.filter_modal} open={modal} closeModal={() => setModal(false)}>
                 <FilterModal closeModal={() => setModal(false)} />
             </Modal>
-            <div className={styles.filter_box_top}>
+            <div className={styles.filter_left}>
                 <Select
                     defaultValue={categories.map((dt) => ({ value: dt, label: dt }))}
                     placeholder='Category'
@@ -80,7 +80,7 @@ const Filter = () => {
                     className={styles.search_input}
                 />
             </div>
-            <div className={styles.filter_responsive_box}>
+            <div className={styles.filter_right}>
                 <select
                     onChange={(e) => setSorting(e.target.value as SortType)}
                     value={sorting}

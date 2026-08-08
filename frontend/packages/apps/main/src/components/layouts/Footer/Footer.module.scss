@@ -6,14 +6,14 @@
   @include u.col-start;
   gap: 20px;
   font-size: 14px;
-  .footer_top {
+  &_top {
     @include u.flex-between;
     align-items: flex-start;
     @include m.responsive(sm) {
       @include u.col-start;
       gap: 30px;
     }
-    .footer_top_left {
+    &_left {
       width: 60%;
       @include m.responsive(md) {
         width: 40%;
@@ -32,7 +32,7 @@
         }
       }
     }
-    .footer_top_center {
+    &_center {
       flex: 1;
       @include m.responsive(md) {
         flex: none;
@@ -48,7 +48,7 @@
         gap: 6px;
       }
     }
-    .footer_top_right {
+    &_right {
       flex: 1;
       @include m.responsive(md) {
         flex: none;
@@ -72,7 +72,7 @@
       }
     }
   }
-  .footer_bottom {
+  &_bottom {
     width: 100%;
     text-align: center;
     padding: 20px 0;

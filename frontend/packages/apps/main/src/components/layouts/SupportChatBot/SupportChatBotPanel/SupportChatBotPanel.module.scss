@@ -35,7 +35,7 @@
         border-radius: 0
     }
 
-    .support_chatbot_panel_content {
+    &_content {
         .support_chatbot_panel_top {
             @include u.flex-between;
             position: sticky;
@@ -56,7 +56,7 @@
                 border-radius: 0
             }
 
-            .support_chatbot_panel_top_left {
+            &_left {
                 @include u.row-center;
                 gap: 10px;
 
@@ -71,7 +71,7 @@
                     }
                 }
 
-                .support_chatbot_panel_top_left_avatar {
+                &_avatar {
                     position: relative;
 
                     .agent_icon {
@@ -97,7 +97,7 @@
 
             }
 
-            .support_chatbot_panel_top_right {
+            &_right {
                 .support_chatbot_panel_top_close_btn {
                     background-color: rgba(0, 0, 0, 0.08);
                     @include u.flex-center;
@@ -283,7 +283,7 @@
                 border-radius: 0
             }
 
-            .support_chatbot_panel_bottom_input {
+            &_input {
                 flex: 1;
                 background-color: rgba(0, 0, 0, 0.08);
                 border: 0;
@@ -293,7 +293,7 @@
                     background-color: rgba(233, 233, 233, 0.08);
                 }
 
-                .support_chatbot_panel_bottom_input_item {
+                &_item {
                     &::-webkit-scrollbar {
                         width: 0px;
                     }
@@ -303,7 +303,7 @@
                 }
             }
 
-            .support_chatbot_panel_bottom_action_btn {
+            &_action_btn {
                 background-color: v.$text-color;
                 width: 40px;
                 height: 40px;
@@ -336,7 +336,7 @@
 
     }
 
-    .support_chatbot_panel_arrow {
+    &_arrow {
         position: absolute;
         bottom: -27.5px;
         right: 30px;

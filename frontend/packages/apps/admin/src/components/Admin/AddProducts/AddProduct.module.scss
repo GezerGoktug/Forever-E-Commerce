@@ -23,14 +23,14 @@
   .add_product_form {
     @include u.col-start;
     gap: 10px;
-    .add_product_files_upload {
+    &_files_upload {
       display: flex;
       gap: 20px;
       margin-bottom: 20px;
       @include m.responsive(xls) {
         flex-direction: column;
       }
-      .add_product_main_image {
+      .add_product_form_main_image {
         position: relative;
         width: 100px;
         height: 100px;
@@ -44,7 +44,7 @@
         @include u.dark-mode {
           background-color: rgb(28, 28, 28);
         }
-        .add_product_file_input {
+        .add_product_form_file_input {
           opacity: 0;
           cursor: pointer;
           position: absolute;
@@ -62,12 +62,12 @@
           height: 100%;
         }
       }
-      .add_product_sub_images {
+      .add_product_form_sub_images {
         display: flex;
         gap: 10px;
         margin-top: auto;
         height: 85px;
-        .add_product_sub_image {
+        .add_product_form_sub_image {
           position: relative;
           width: 85px;
           background-color: rgb(209, 209, 209);
@@ -76,7 +76,7 @@
           @include u.dark-mode {
             background-color: rgb(28, 28, 28);
           }
-          .add_product_file_input {
+          .add_product_form_file_input {
             opacity: 0;
             cursor: pointer;
             position: absolute;
@@ -105,13 +105,13 @@
       border-radius: 6px;
       background-color: v.$primary-color;
     }
-    .add_product_input {
+    &_input {
       border-radius: 6px;
-      .add_product_input_spin{
+      &_spin {
         border-radius: 0 6px 6px 0px;
       }
     }
-    .add_product_selects {
+    &_group {
       display: flex;
       gap: 15px;
       width: 100%;
@@ -130,17 +130,17 @@
         width: 100%;
         background-color: v.$primary-color;
       }
-      .add_product_select_section {
+      &_section {
         flex: 1;
-        .add_product_input {
+        .add_product_form_input {
           width: 100%;
         }
       }
     }
-    .add_product_sizes {
+    &_sizes {
       display: flex;
       gap: 15px;
-      .add_product_size {
+      .add_product_form_size {
         background-color: rgb(237, 237, 237);
         border: 1px solid rgb(207, 206, 206);
         padding: 8px 15px;
@@ -152,11 +152,11 @@
         }
       }
     }
-    .add_product_errors {
+    &_errors {
       margin-top: 10px;
       @include u.col-start;
       gap: 10px;
-      .add_product_error {
+      .add_product_form_error {
         @include u.row-center;
         gap: 10px;
         span,

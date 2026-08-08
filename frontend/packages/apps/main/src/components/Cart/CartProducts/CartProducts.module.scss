@@ -52,7 +52,7 @@
           }
         }
       }
-      .cart_product_item_content {
+      &_content {
         @include u.col-start;
         flex: 2;
         margin-bottom: auto;
@@ -83,12 +83,12 @@
           }
         }
       }
-      .cart_product_item_quantity {
+      &_quantity {
         flex: 1;
         @include m.responsive(sm) {
           flex: none;
         }
-        .cart_product_item_quantity_input {
+        &_input {
           max-width: 80px;
           @include m.responsive(xls) {
             max-width: 50px;
@@ -99,7 +99,7 @@
           }
         }
       }
-      .cart_product_item_trash_icon {
+      &_trash_icon {
         flex: 0.5;
         cursor: pointer;
         @include m.responsive(sm) {

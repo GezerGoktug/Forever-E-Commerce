@@ -40,18 +40,18 @@
         .admin_login_form {
             width: 100%;
 
-            .admin_login_input {
+            &_input {
                 margin-bottom: 20px;
             }
 
-            .error_message {
+            &_error_message {
                 color: rgb(231, 11, 11);
                 font-size: 14px;
                 margin-bottom: 10px;
                 margin-top: -10px;
             }
 
-            .admin_login_btn {
+            &_btn {
                 margin: 0 auto;
                 font-size: 16px;
                 font-weight: 300;

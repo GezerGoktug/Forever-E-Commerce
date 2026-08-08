@@ -8,7 +8,7 @@ const OrdersDetail = () => {
   const form = useFormContext();
 
   return (
-    <div className={styles.order_detail_wrapper}>
+    <div className={styles.order_detail}>
       <Cash isCheckoutButton={false} />
       <div className={styles.payment_method}>
         <h6>

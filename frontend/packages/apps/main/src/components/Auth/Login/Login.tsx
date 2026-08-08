@@ -70,7 +70,7 @@ const Login = ({ chanceForm }: LoginProps) => {
       >
         <Input
           size="lg"
-          className={styles.login_input}
+          className={styles.login_form_input}
           placeholder="Email"
           type="email"
           {...form.register("email", { required: "Email is required" })}
@@ -79,12 +79,12 @@ const Login = ({ chanceForm }: LoginProps) => {
           errors={form.formState.errors}
           name="email"
           render={({ message }) => (
-            <p className={styles.error_message}>{message}</p>
+            <p className={styles.login_form_error_message}>{message}</p>
           )}
         />
         <Input
           size="lg"
-          className={styles.login_input}
+          className={styles.login_form_input}
           rightIcon={ShowPasswordIcon}
           rightIconOnClick={() => setShowPassword(!showPassword)}
           placeholder="Password"
@@ -95,19 +95,19 @@ const Login = ({ chanceForm }: LoginProps) => {
           errors={form.formState.errors}
           name="password"
           render={({ message }) => (
-            <p className={styles.error_message}>{message}</p>
+            <p className={styles.login_form_error_message}>{message}</p>
           )}
         />
-        <div className={styles.login_interactions}>
+        <div className={styles.login_form_interactions}>
           <span onClick={() => setModal(true)}>Forgot your password?</span>
           <span onClick={() => chanceForm()}>Create account</span>
         </div>
-        <Button className={styles.login_btn} type="submit" loading={isPending}>
+        <Button className={styles.login_form_btn} type="submit" loading={isPending}>
           Sign In
         </Button>
       </form>
       <div className={styles.login_with_app_provider_section}>
-        <div className={styles.or_section}>
+        <div className={styles.seperator}>
           <div />
           <span>OR</span>
           <div />

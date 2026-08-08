@@ -2,7 +2,7 @@
 @use "@forever/sass-utils/mixins" as m;
 @use "@forever/sass-utils/variables" as v;
 
-.order_detail_wrapper {
+.order_detail {
   width: 50%;
   @include m.responsive(sm) {
     width: 100%;

@@ -125,43 +125,43 @@ const AddProduct = () => {
         className={styles.add_product_form}
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className={styles.add_product_files_upload}>
-          <div className={styles.add_product_main_image}>
+        <div className={styles.add_product_form_files_upload}>
+          <div className={styles.add_product_form_main_image}>
             {images?.mainImage && <img src={images.mainImage} alt="" />}
             <input
               accept="image/*"
-              className={styles.add_product_file_input}
+              className={styles.add_product_form_file_input}
               onChange={(e) => onChangeImage(e, "mainImage")}
               type="file"
             />
             <IoCloudUploadOutline size={40} />
           </div>
-          <div className={styles.add_product_sub_images}>
-            <div className={styles.add_product_sub_image}>
+          <div className={styles.add_product_form_sub_images}>
+            <div className={styles.add_product_form_sub_image}>
               {images?.subImage1 && <img src={images.subImage1} alt="" />}
               <input
                 accept="image/*"
-                className={styles.add_product_file_input}
+                className={styles.add_product_form_file_input}
                 onChange={(e) => onChangeImage(e, "subImage1")}
                 type="file"
               />
               <IoCloudUploadOutline size={40} />
             </div>
-            <div className={styles.add_product_sub_image}>
+            <div className={styles.add_product_form_sub_image}>
               {images?.subImage2 && <img src={images.subImage2} alt="" />}
               <input
                 accept="image/*"
-                className={styles.add_product_file_input}
+                className={styles.add_product_form_file_input}
                 onChange={(e) => onChangeImage(e, "subImage2")}
                 type="file"
               />
               <IoCloudUploadOutline size={40} />
             </div>
-            <div className={styles.add_product_sub_image}>
+            <div className={styles.add_product_form_sub_image}>
               {images?.subImage3 && <img src={images.subImage3} alt="" />}
               <input
                 accept="image/*"
-                className={styles.add_product_file_input}
+                className={styles.add_product_form_file_input}
                 onChange={(e) => onChangeImage(e, "subImage3")}
                 type="file"
               />
@@ -171,7 +171,7 @@ const AddProduct = () => {
         </div>
         <label>Product Name:</label>
         <Input
-          className={styles.add_product_input}
+          className={styles.add_product_form_input}
           placeholder="Name"
           minLength={5}
           {...form.register("name")}
@@ -179,8 +179,8 @@ const AddProduct = () => {
         <label>Description:</label>
         <textarea placeholder="Description" minLength={10} {...form.register("description")} />
 
-        <div className={styles.add_product_selects}>
-          <div className={styles.add_product_select_section}>
+        <div className={styles.add_product_form_group}>
+          <div className={styles.add_product_form_group_section}>
             <label>Category:</label>
             <select {...form.register("category")}>
               <option value="Men">Men</option>
@@ -188,7 +188,7 @@ const AddProduct = () => {
               <option value="Kids">Kids</option>
             </select>
           </div>
-          <div className={styles.add_product_select_section}>
+          <div className={styles.add_product_form_group_section}>
             <label>Sub Category:</label>
             <select {...form.register("subCategory")}>
               <option value="Topwear">Topwear</option>
@@ -197,14 +197,14 @@ const AddProduct = () => {
             </select>
           </div>
 
-          <div className={styles.add_product_select_section}>
+          <div className={styles.add_product_form_group_section}>
             <label>Price:</label>
             <Input
-              className={styles.add_product_input}
+              className={styles.add_product_form_input}
               type="number"
               placeholder="Price"
               min="1"
-              spinButtonClassname={styles.add_product_input_spin}
+              spinButtonClassname={styles.add_product_form_input_spin}
               {...form.register("price", {
                 setValueAs: (value) => {
                   return Math.max(1, +value)
@@ -222,10 +222,10 @@ const AddProduct = () => {
           </div>
         </div>
         <label>Select sizes:</label>
-        <div className={styles.add_product_sizes}>
+        <div className={styles.add_product_form_sizes}>
           <div
             onClick={() => onChangeSizes("SMALL")}
-            className={clsx(styles.add_product_size, {
+            className={clsx(styles.add_product_form_size, {
               [styles.active]: form.watch("sizes").includes("SMALL"),
             })}
           >
@@ -233,7 +233,7 @@ const AddProduct = () => {
           </div>
           <div
             onClick={() => onChangeSizes("MEDIUM")}
-            className={clsx(styles.add_product_size, {
+            className={clsx(styles.add_product_form_size, {
               [styles.active]: form.watch("sizes").includes("MEDIUM"),
             })}
           >
@@ -241,7 +241,7 @@ const AddProduct = () => {
           </div>
           <div
             onClick={() => onChangeSizes("LARGE")}
-            className={clsx(styles.add_product_size, {
+            className={clsx(styles.add_product_form_size, {
               [styles.active]: form.watch("sizes").includes("LARGE"),
             })}
           >
@@ -249,7 +249,7 @@ const AddProduct = () => {
           </div>
           <div
             onClick={() => onChangeSizes("XLARGE")}
-            className={clsx(styles.add_product_size, {
+            className={clsx(styles.add_product_form_size, {
               [styles.active]: form.watch("sizes").includes("XLARGE"),
             })}
           >
@@ -257,16 +257,16 @@ const AddProduct = () => {
           </div>
           <div
             onClick={() => onChangeSizes("XXLARGE")}
-            className={clsx(styles.add_product_size, {
+            className={clsx(styles.add_product_form_size, {
               [styles.active]: form.watch("sizes").includes("XXLARGE"),
             })}
           >
             XXL
           </div>
         </div>
-        <div className={styles.add_product_errors}>
+        <div className={styles.add_product_form_errors}>
           {Object.values(form.formState.errors).map((val, i) => (
-            <div className={styles.add_product_error} key={"error_" + i}>
+            <div className={styles.add_product_form_error} key={"error_" + i}>
               <span>&#9679;</span>
               <div>{val.message as string}</div>
             </div>

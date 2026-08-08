@@ -73,13 +73,13 @@
       gap: 10px;
     }
 
-    .products_no_content {
+    &_no_content {
       grid-column: 1 / -1;
       @include u.col-center;
       padding: 50px 0;
       text-align: center;
 
-      .products_no_content_icon {
+      &_icon {
         width: 120px;
         height: 120px;
         background-color: v.$text-color;
@@ -95,7 +95,7 @@
 
       }
 
-      .products_no_content_text {
+      &_text {
         h6 {
           font-size: 40px;
           margin-top: 30px;
@@ -116,13 +116,13 @@
       }
     }
 
-    .products_error {
+    &_error {
       grid-column: 1 / -1;
       @include u.col-center;
       padding: 50px 0;
       text-align: center;
 
-      .products_error_icon {
+      &_icon {
         width: 120px;
         height: 120px;
         background-color: darkred;
@@ -138,7 +138,7 @@
 
       }
 
-      .products_error_text {
+      &_text {
         h6 {
           font-size: 40px;
           margin-top: 30px;

@@ -12,8 +12,8 @@
     padding-block: 20px;
 }
 
-.filter_box {
-    .filter_modal_icon {
+.filter {
+    &_modal_icon {
         background-color: v.$text-color;
         fill: v.$primary-color;
         width: 45px;
@@ -22,7 +22,7 @@
         margin-left: auto;
     }
 
-    .filter_box_top {
+    &_left {
         @include u.row-center;
         gap: 20px;
 
@@ -31,7 +31,7 @@
         }
     }
 
-    .filter_responsive_box {
+    &_right {
         display: none;
         @include m.responsive(md) {
             @include u.flex-between;
