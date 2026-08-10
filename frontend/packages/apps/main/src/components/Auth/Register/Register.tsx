@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import styles from "./Register.module.scss";
 import { ErrorMessage } from "@hookform/error-message";
@@ -9,12 +9,13 @@ import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { setUser } from "@/store/auth/actions";
-import ResetPasswordModal from "./ResetPasswordModal/ResetPasswordModal";
 import { useRegisterMutation } from "@/services/hooks/mutations/auth.mutations";
-import { Button, Input, Modal } from "@forever/ui-kit";
+import { Button, Input } from "@forever/ui-kit";
 import { setLocalStorage } from "@forever/storage-kit";
 import { GoogleOauthPopupActionButton, useGoogleOauth } from "@forever/google-oauth-kit";
 import clsx from "clsx";
+
+const ResetPasswordModal = lazy(() => import("./ResetPasswordModal/ResetPasswordModal"));
 
 type RegisterProps = {
   chanceForm: () => void;
@@ -80,9 +81,9 @@ const Register = ({ chanceForm }: RegisterProps) => {
 
   return (
     <div className={styles.register_wrapper}>
-      <Modal wrapperClassName={styles.reset_password_request_modal_wrapper} open={modal} closeModal={() => setModal(false)}>
-        <ResetPasswordModal closeModal={() => setModal(false)} />
-      </Modal>
+      <Suspense fallback={<div></div>}>
+        <ResetPasswordModal open={modal} closeModal={() => setModal(false)} />
+      </Suspense>
       <h5>Sign Up</h5>
       <form
         className={styles.register_form}

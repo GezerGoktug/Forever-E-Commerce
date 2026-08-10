@@ -2,11 +2,6 @@
 @use "@forever/sass-utils/mixins" as m;
 @use "@forever/sass-utils/variables" as v;
 
-.reset_password_request_modal_wrapper {
-  align-items: flex-start !important;
-  padding-block: 90px;
-}
-
 .login_wrapper {
   margin: 100px 0;
   @include u.col-center;

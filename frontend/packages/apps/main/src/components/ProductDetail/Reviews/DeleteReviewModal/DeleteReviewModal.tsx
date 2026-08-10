@@ -6,7 +6,7 @@ import { useDeleteCommentMutation } from "@/services/hooks/mutations/product.mut
 import { AlertModal } from "@forever/ui-kit";
 
 interface DeleteReviewModalProps {
-  data: DeleteReviewModalDTO;
+  data: DeleteReviewModalDTO | undefined;
   closeModal: () => void;
   open: boolean;
 }
@@ -26,7 +26,7 @@ const DeleteReviewModal = ({ data, closeModal, open }: DeleteReviewModalProps) =
   })
 
   const handleDeleteComment = () => {
-    if (params.id)
+    if (params.id && data)
       mutate({ productId: params.id, commentId: data._id });
   };
 

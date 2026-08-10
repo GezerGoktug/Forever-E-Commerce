@@ -40,7 +40,7 @@ const AlertModal: FC<AlertModalProps> = ({
   customActionContent,
 }) => {
   return (
-    <Modal open={open} closeModal={closeModal} className={styles.alert_modal}>
+    <Modal open={open} closeModal={closeModal}>
       <div className={styles.alert_modal_content}>
         <h6 className={titleClassName}>{title}</h6>
         {description &&

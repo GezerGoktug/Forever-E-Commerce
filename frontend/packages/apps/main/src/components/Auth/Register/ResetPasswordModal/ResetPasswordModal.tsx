@@ -4,8 +4,14 @@ import ResetPasswordRequest from "./Steps/ResetPasswordRequest";
 import VerifyResetPasswordCode from "./Steps/VerifyResetPasswordCode";
 import styles from './ResetPasswordModal.module.scss';
 import { useEffect, useRef, useState } from "react";
+import { Modal } from "@forever/ui-kit";
 
-const ResetPasswordModal = ({ closeModal }: { closeModal: () => void }) => {
+interface ResetPasswordModalProps {
+  open: boolean;
+  closeModal: () => void;
+}
+
+const ResetPasswordModal = ({ open, closeModal }: ResetPasswordModalProps) => {
 
   const [resetPasswordEmail, setResetPasswordEmail] = useState('');
   const [resetPasswordToken, setResetPasswordToken] = useState('');
@@ -35,7 +41,15 @@ const ResetPasswordModal = ({ closeModal }: { closeModal: () => void }) => {
     callbackRef.current = () => next();
   }, [next])
 
-  return <div className={styles.reset_password_request_modal_content}>{step}</div>;
+  return (
+    <Modal
+      wrapperClassName={styles.reset_password_request_modal_wrapper}
+      open={open}
+      closeModal={closeModal}
+    >
+      <div className={styles.reset_password_request_modal_content}>{step}</div>
+    </Modal>
+  );
 };
 
 export default ResetPasswordModal;

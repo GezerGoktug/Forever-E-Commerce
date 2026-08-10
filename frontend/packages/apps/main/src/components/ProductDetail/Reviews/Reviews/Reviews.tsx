@@ -11,7 +11,6 @@ import { lazy, Suspense, useState } from "react";
 import { useAccount } from "@/store/auth/hooks";
 import { Dropdown } from "@forever/ui-kit";
 
-const Modal = lazy(() => import('@forever/ui-kit').then(module => ({ default: module.Modal })));
 const EditReviewModal = lazy(() => import("@/components/ProductDetail/Reviews/EditReviewModal/EditReviewModal"));
 const DeleteReviewModal = lazy(() => import("@/components/ProductDetail/Reviews/DeleteReviewModal/DeleteReviewModal"));
 
@@ -36,21 +35,16 @@ const Reviews = ({ reviews }: { reviews: ReviewType[] }) => {
   return (
     <div className={styles.reviews_wrapper}>
       <Suspense fallback={<div></div>}>
-        <Modal
+        <EditReviewModal
           open={modal?.modal_type === "EDIT"}
           closeModal={() => setModal(null)}
-        >
-          <EditReviewModal
-            closeModal={() => setModal(null)}
-            data={modal?.data as EditReviewModalDTO}
-          />
-        </Modal>
+          data={modal?.data as EditReviewModalDTO | undefined}
+        />
         <DeleteReviewModal
           closeModal={() => setModal(null)}
           open={modal?.modal_type === "DELETE"}
-          data={modal?.data as DeleteReviewModalDTO}
+          data={modal?.data as DeleteReviewModalDTO | undefined}
         />
-
       </Suspense>
       <h5>{reviews.length} Reviews</h5>
       <div className={styles.reviews}>
