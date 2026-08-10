@@ -1,4 +1,4 @@
-import { type ReactNode, useRef, useState } from "react";
+import { type FC, type ReactNode, useRef, useState } from "react";
 import styles from "./Dropdown.module.scss";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
@@ -10,18 +10,20 @@ type ListItemType = {
   onClick?: () => void;
 };
 
-const Dropdown = ({
-  className,
-  children,
-  trigger,
-  listItems = [],
-  isClickClose = true,
-}: {
+interface DropdownProps {
   trigger?: ReactNode;
   listItems?: ListItemType[];
   isClickClose?: boolean;
   className?: string;
   children?: ReactNode;
+}
+
+const Dropdown: FC<DropdownProps> = ({
+  className,
+  children,
+  trigger,
+  listItems = [],
+  isClickClose = true,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const contentRef = useRef<HTMLDivElement | null>(null);

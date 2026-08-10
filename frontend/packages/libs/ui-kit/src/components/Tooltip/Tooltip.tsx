@@ -1,13 +1,15 @@
-import { type ReactNode } from "react";
+import { type FC, type ReactNode } from "react";
 import styles from "./Tooltip.module.scss";
 import { IoMdArrowDropup } from "react-icons/io";
 
-const Tooltip = ({
-  children,
-  message,
-}: {
+interface TooltipProps {
   children: ReactNode;
   message: string;
+}
+
+const Tooltip: FC<TooltipProps> = ({
+  children,
+  message,
 }) => {
   return (
     <div className={styles.tooltip_wrapper}>

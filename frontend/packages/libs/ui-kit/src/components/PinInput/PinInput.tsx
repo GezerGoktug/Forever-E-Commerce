@@ -1,7 +1,12 @@
-import { type ChangeEvent, type ClipboardEvent, type KeyboardEvent, useEffect, useRef, useState } from 'react'
+import { type ChangeEvent, type ClipboardEvent, type FC, type KeyboardEvent, useEffect, useRef, useState } from 'react'
 import styles from './PinInput.module.scss'
 
-const PinInput = ({ characterLength, onInputChange }: { characterLength: number, onInputChange?: (val: string) => void }) => {
+interface PinInputProps {
+    characterLength: number;
+    onInputChange?: (val: string) => void;
+}
+
+const PinInput: FC<PinInputProps> = ({ characterLength, onInputChange }) => {
 
     const [characters, setCharacters] = useState(Array.from({ length: characterLength }, () => ''));
 

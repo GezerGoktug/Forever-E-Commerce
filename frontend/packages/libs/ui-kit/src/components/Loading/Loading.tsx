@@ -1,10 +1,15 @@
-import { type ReactNode } from 'react'
+import { type FC, type ReactNode } from 'react'
 import Overlay from '../Overlay/Overlay'
 import styles from './Loading.module.scss'
 import { BiLoader } from 'react-icons/bi'
 import Backdrop from '../Backdrop/Backdrop'
 
-const Loading = ({ loadingContent, loadingText }: { loadingContent?: ReactNode, loadingText?: string | ReactNode }) => {
+interface LoadingProps {
+    loadingContent?: ReactNode;
+    loadingText?: string | ReactNode;
+}
+
+const Loading: FC<LoadingProps> = ({ loadingContent, loadingText }) => {
     return (
         <Overlay>
             <Backdrop>

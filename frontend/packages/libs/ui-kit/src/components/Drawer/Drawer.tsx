@@ -3,9 +3,20 @@ import Backdrop from "../Backdrop/Backdrop";
 import Overlay from "../Overlay/Overlay";
 import { AnimatePresence, motion, useDragControls } from "framer-motion";
 import { OutsideClickHandler } from "@forever/common-utils";
-import { type ReactNode, useRef, useState } from "react";
+import { FC, type ReactNode, useRef, useState } from "react";
 import clsx from "clsx";
 import { MdOutlineClose } from "react-icons/md";
+
+interface DrawerProps {
+    children: ReactNode;
+    open: boolean;
+    onClose: () => void;
+    isDisableCloseBtn?: boolean;
+    className?: string;
+    wrapperClassName?: string;
+    isDisableDrag?: boolean;
+    align?: AlignType;
+}
 
 type AlignType = "right" | "left" | "bottom" | "top";
 
@@ -43,7 +54,7 @@ const getDragConfig = (align: AlignType) => {
     }
 };
 
-const Drawer = ({
+const Drawer: FC<DrawerProps> = ({
     children,
     open,
     onClose,
@@ -52,15 +63,6 @@ const Drawer = ({
     isDisableCloseBtn = false,
     isDisableDrag = true,
     align = "bottom",
-}: {
-    children: ReactNode;
-    open: boolean;
-    onClose: () => void;
-    isDisableCloseBtn?: boolean;
-    className?: string;
-    wrapperClassName?: string;
-    isDisableDrag?: boolean;
-    align?: AlignType;
 }) => {
     const [canDrag, setCanDrag] = useState(false);
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);

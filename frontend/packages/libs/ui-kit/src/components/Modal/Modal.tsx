@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { FC, type ReactNode } from "react";
 import styles from "./Modal.module.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import Backdrop from "../Backdrop/Backdrop";
@@ -7,18 +7,20 @@ import { OutsideClickHandler } from "@forever/common-utils";
 import { MdOutlineClose } from "react-icons/md";
 import clsx from "clsx";
 
-const Modal = ({
-  children,
-  open,
-  closeModal,
-  className,
-  wrapperClassName
-}: {
+interface ModalProps {
   children: ReactNode;
   open: boolean;
   closeModal: () => void;
   className?: string,
   wrapperClassName?: string
+}
+
+const Modal: FC<ModalProps> = ({
+  children,
+  open,
+  closeModal,
+  className,
+  wrapperClassName
 }) => {
   return (
     <AnimatePresence>
