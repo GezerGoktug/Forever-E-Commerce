@@ -1,5 +1,7 @@
 import Button from "./components/Button/Button";
 import Badge from "./components/Badge/Badge";
+import Rating from "./components/Rating/Rating";
+import RatingStars from "./components/Rating/RatingStars";
 import AlertModal from "./components/AlertModal/AlertModal";
 import Backdrop from "./components/Backdrop/Backdrop";
 import PinInput from "./components/PinInput/PinInput";
@@ -17,6 +19,8 @@ import { getProductionImagePath } from "./components/Image/utils";
 export {
     Button,
     Badge,
+    Rating,
+    RatingStars,
     AlertModal,
     Backdrop,
     PinInput,

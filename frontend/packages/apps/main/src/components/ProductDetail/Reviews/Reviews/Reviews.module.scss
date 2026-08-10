@@ -53,18 +53,9 @@
         }
 
         .review_item_stars {
-          @include u.row-center;
-          gap: 3px;
           margin: 8px 0;
-          .review_item_star_icon {
-            fill: orangered;
-            opacity: 0.5;
-            cursor: pointer;
-            &.starred {
-              opacity: 1;
-            }
-          }
         }
+
         p {
           font-size: 15px;
           @include m.responsive(xs) {

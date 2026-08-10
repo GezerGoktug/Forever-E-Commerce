@@ -1,11 +1,10 @@
 import styles from "./CreateReview.module.scss";
-import Rating from "./Rating/Rating";
 import { useState } from "react";
 import { useAccount, useIsAccess } from "@/store/auth/hooks";
 import { Link, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useCreateCommentMutation } from "@/services/hooks/mutations/product.mutations";
-import { Button } from "@forever/ui-kit";
+import { Button, Rating } from "@forever/ui-kit";
 
 const CreateReview = () => {
   const currentUser = useAccount();

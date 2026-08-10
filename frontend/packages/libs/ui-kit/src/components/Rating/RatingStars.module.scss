@@ -1,0 +1,16 @@
+@use "@forever/sass-utils/utils-mixins" as u;
+
+.rating_stars {
+    @include u.row-center;
+    gap: 3px;
+
+    .rating_star_icon {
+        fill: orangered;
+        opacity: 0.5;
+        cursor: pointer;
+
+        &.starred {
+            opacity: 1;
+        }
+    }
+}

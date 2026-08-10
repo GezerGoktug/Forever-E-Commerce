@@ -1,14 +1,13 @@
-import { IoIosStar, IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import styles from "./DetailContent.module.scss";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import type { ProductDetailContentType, SizeType } from "@/types/product.type";
-import { createRatingArray } from "@/helper/createRatingArray";
 import { addProductOfCart } from "@/store/cart/actions";
 import toast from "react-hot-toast";
 import { useIsAccess } from "@/store/auth/hooks";
 import { useHandleFavouriteMutation } from "@/services/hooks/mutations/product.mutations";
-import { Button } from "@forever/ui-kit";
+import { Button, RatingStars } from "@forever/ui-kit";
 
 const getSize = (size: string) => {
   switch (size) {
@@ -80,19 +79,7 @@ const DetailContent = ({
     <div className={styles.product_detail}>
       <h4 className={styles.product_detail_title}>{productDetail.name}</h4>
       <div className={styles.product_detail_rating}>
-        <div className={styles.product_detail_stars}>
-          {createRatingArray(Math.floor(productDetail.totalRating)).map(
-            (rating, i) => (
-              <IoIosStar
-                key={"product_detail_rating" + i}
-                size={18}
-                className={clsx(styles.product_detail_star_icon, {
-                  [styles.starred]: rating,
-                })}
-              />
-            )
-          )}
-        </div>
+        <RatingStars rating={Math.floor(productDetail.totalRating)} />
         <span>({productDetail.reviewsCount})</span>
       </div>
       <div className={styles.product_detail_price}>${productDetail.price}</div>

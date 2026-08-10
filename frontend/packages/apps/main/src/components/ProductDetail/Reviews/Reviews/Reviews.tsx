@@ -1,15 +1,13 @@
-import { IoIosStar, IoMdTrash } from "react-icons/io";
+import { IoMdTrash } from "react-icons/io";
 import styles from "./Reviews.module.scss";
-import clsx from "clsx";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { createRatingArray } from "@/helper/createRatingArray";
 import type { ReviewType } from "@/types/product.type";
 import { HiDotsVertical } from "react-icons/hi";
 import { GoPencil } from "react-icons/go";
 import { lazy, Suspense, useState } from "react";
 import { useAccount } from "@/store/auth/hooks";
-import { Dropdown } from "@forever/ui-kit";
+import { Dropdown, RatingStars } from "@forever/ui-kit";
 
 const EditReviewModal = lazy(() => import("@/components/ProductDetail/Reviews/EditReviewModal/EditReviewModal"));
 const DeleteReviewModal = lazy(() => import("@/components/ProductDetail/Reviews/DeleteReviewModal/DeleteReviewModal"));
@@ -89,17 +87,10 @@ const Reviews = ({ reviews }: { reviews: ReviewType[] }) => {
                   />
                 )}
               </div>
-              <div className={styles.review_item_stars}>
-                {createRatingArray(item.rating).map((rating, i) => (
-                  <IoIosStar
-                    key={"review_" + i}
-                    size={18}
-                    className={clsx(styles.review_item_star_icon, {
-                      [styles.starred]: rating,
-                    })}
-                  />
-                ))}
-              </div>
+              <RatingStars
+                rating={item.rating}
+                className={styles.review_item_stars}
+              />
               <p className={styles.review_item_content}>{item.content}</p>
             </div>
           </div>
