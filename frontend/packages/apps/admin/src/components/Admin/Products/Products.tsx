@@ -45,15 +45,11 @@ const Products = () => {
 
   return (
     <div>
-      <Modal
+      <DeleteProductModal
         open={modal?.modal_type === "DELETE"}
+        data={modal?.data as DeleteProductDTO}
         closeModal={() => setModal(null)}
-      >
-        <DeleteProductModal
-          data={modal?.data as DeleteProductDTO}
-          closeModal={() => setModal(null)}
-        />
-      </Modal>
+      />
       <Modal
         open={modal?.modal_type === "EDIT"}
         closeModal={() => setModal(null)}

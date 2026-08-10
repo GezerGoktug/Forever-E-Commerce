@@ -1,18 +1,24 @@
 @use "@forever/sass-utils/utils-mixins" as u;
+@use "@forever/sass-utils/variables" as v;
 
-.delete_product_modal_wrapper {
+.alert_modal {
+    min-height: max-content !important;
+}
+
+.alert_modal_content {
   width: 100%;
   h6 {
     font-size: 27px;
     font-weight: 500;
   }
-  p {
-    margin: 10px 0;
+  .alert_modal_description {
+    margin: 10px 0 20px 0;
     font-size: 15px;
   }
-  .delete_product_modal_btn_group {
+  .alert_modal_btn_group {
     display: flex;
     justify-content: end;
     gap: 10px;
   }
 }
+

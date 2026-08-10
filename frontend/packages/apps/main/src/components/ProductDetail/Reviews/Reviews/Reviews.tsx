@@ -36,24 +36,20 @@ const Reviews = ({ reviews }: { reviews: ReviewType[] }) => {
   return (
     <div className={styles.reviews_wrapper}>
       <Suspense fallback={<div></div>}>
-      <Modal
-        open={modal?.modal_type === "EDIT"}
-        closeModal={() => setModal(null)}
-      >
-        <EditReviewModal
+        <Modal
+          open={modal?.modal_type === "EDIT"}
           closeModal={() => setModal(null)}
-          data={modal?.data as EditReviewModalDTO}
-        />
-      </Modal>
-      <Modal
-        open={modal?.modal_type === "DELETE"}
-        closeModal={() => setModal(null)}
-      >
+        >
+          <EditReviewModal
+            closeModal={() => setModal(null)}
+            data={modal?.data as EditReviewModalDTO}
+          />
+        </Modal>
         <DeleteReviewModal
-          closeModal={() =>setModal(null)}
+          closeModal={() => setModal(null)}
+          open={modal?.modal_type === "DELETE"}
           data={modal?.data as DeleteReviewModalDTO}
         />
-      </Modal>
 
       </Suspense>
       <h5>{reviews.length} Reviews</h5>

@@ -1,16 +1,16 @@
-import { IoMdTrash } from "react-icons/io";
-import { Button } from "@forever/ui-kit";
-import styles from "./DeleteProductModal.module.scss";
+import { AlertModal } from "@forever/ui-kit";
 import { type DeleteProductDTO } from "@/components/Admin/Products/Products";
 import toast from "react-hot-toast";
 import { useDeleteProductMutation } from "@/services/hooks/mutations/product.mutations";
+import { IoMdTrash } from "react-icons/io";
 
 interface DeleteProductModalProps {
   data: DeleteProductDTO;
   closeModal: () => void;
+  open: boolean;
 }
 
-const DeleteProductModal = ({ closeModal, data }: DeleteProductModalProps) => {
+const DeleteProductModal = ({ closeModal, data, open }: DeleteProductModalProps) => {
   const { mutate, isPending } = useDeleteProductMutation({
     onSuccess: (data) => {
       toast.success(data.data.message);
@@ -25,25 +25,17 @@ const DeleteProductModal = ({ closeModal, data }: DeleteProductModalProps) => {
   const handleDeleteProduct = () => mutate(data._id);
 
   return (
-    <div className={styles.delete_product_modal_wrapper}>
-      <h6>Are you sure?</h6>
-      <p>Are you sure you want to delete this product?</p>
-      <div className={styles.delete_product_modal_btn_group}>
-        <Button onClick={() => closeModal()} size="sm" variant="secondary">
-          CANCEL
-        </Button>
-        <Button
-          loading={isPending}
-          onClick={() => handleDeleteProduct()}
-          leftIcon={IoMdTrash}
-          size="sm"
-          leftIconSize={20}
-          variant="danger"
-        >
-          DELETE
-        </Button>
-      </div>
-    </div>
+    <AlertModal
+      open={open}
+      closeModal={closeModal}
+      title="Are you sure?"
+      description="Are you sure you want to delete this product?"
+      onCancel={closeModal}
+      onConfirm={handleDeleteProduct}
+      loading={isPending}
+      confirmText="DELETE"
+      confirmBtnProps={{ leftIcon: IoMdTrash, leftIconSize: 20 }}
+    />
   );
 };
 

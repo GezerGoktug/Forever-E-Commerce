@@ -1,17 +1,17 @@
 import { IoMdTrash } from "react-icons/io";
-import styles from "./DeleteReview.module.scss";
 import toast from "react-hot-toast";
 import type { DeleteReviewModalDTO } from "@/components/ProductDetail/Reviews/Reviews/Reviews";
 import { useParams } from "react-router-dom";
 import { useDeleteCommentMutation } from "@/services/hooks/mutations/product.mutations";
-import { Button } from "@forever/ui-kit";
+import { AlertModal } from "@forever/ui-kit";
 
 interface DeleteReviewModalProps {
   data: DeleteReviewModalDTO;
   closeModal: () => void;
+  open: boolean;
 }
 
-const DeleteReviewModal = ({ data, closeModal }: DeleteReviewModalProps) => {
+const DeleteReviewModal = ({ data, closeModal, open }: DeleteReviewModalProps) => {
   const params = useParams();
 
   const { mutate, isPending } = useDeleteCommentMutation({
@@ -31,28 +31,18 @@ const DeleteReviewModal = ({ data, closeModal }: DeleteReviewModalProps) => {
   };
 
   return (
-    <div className={styles.delete_review_modal_wrapper}>
-      <h6>Are you sure you want to delete your comment?</h6>
-      <p>
-        This comment will be permanently deleted. Are you sure you still want to
-        delete it?
-      </p>
-      <div className={styles.delete_review_modal_btn_group}>
-        <Button onClick={() => closeModal()} size="sm" variant="secondary">
-          CANCEL
-        </Button>
-        <Button
-          loading={isPending}
-          onClick={() => handleDeleteComment()}
-          leftIcon={IoMdTrash}
-          size="sm"
-          leftIconSize={20}
-          variant="danger"
-        >
-          DELETE
-        </Button>
-      </div>
-    </div>
+    <AlertModal
+      open={open}
+      closeModal={closeModal}
+      title="Are you sure you want to delete your comment?"
+      description="This comment will be permanently deleted. Are you sure you still want to delete it?"
+      confirmText="DELETE"
+      cancelText="CANCEL"
+      onCancel={closeModal}
+      onConfirm={handleDeleteComment}
+      loading={isPending}
+      confirmBtnProps={{ leftIcon: IoMdTrash, leftIconSize: 20 }}
+    />
   );
 };
 
