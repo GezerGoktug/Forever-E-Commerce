@@ -120,7 +120,7 @@ const Drawer = ({
                                             onClose();
                                         }
                                     }}
-                                    className={clsx(styles.drawer, styles[align], className)}
+                                    className={clsx(styles.drawer_content, styles[align], className)}
                                 >
                                     {!isDisableCloseBtn && (
                                         <MdOutlineClose

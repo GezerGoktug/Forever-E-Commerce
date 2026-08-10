@@ -1,4 +1,5 @@
 import Button from "./components/Button/Button";
+import Badge from "./components/Badge/Badge";
 import Backdrop from "./components/Backdrop/Backdrop";
 import PinInput from "./components/PinInput/PinInput";
 import Dropdown from "./components/Dropdown/Dropdown";
@@ -14,6 +15,7 @@ import { getProductionImagePath } from "./components/Image/utils";
 
 export {
     Button,
+    Badge,
     Backdrop,
     PinInput,
     Dropdown,

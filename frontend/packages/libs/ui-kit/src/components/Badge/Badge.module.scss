@@ -1,0 +1,100 @@
+@use "@forever/sass-utils/utils-mixins" as u;
+@use "@forever/sass-utils/variables" as v;
+
+.badge {
+    @include u.inline-flex-center;
+    gap: 5px;
+    border-radius: 100px;
+    transition: background-color 0.3s ease-in, color 0.3s ease-in, opacity 0.2s ease-in;
+
+    .loaderIcon {
+        animation: spin 1.2s linear infinite;
+    }
+}
+
+.loading {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.primary {
+    background-color: v.$text-color;
+    color: v.$primary-color;
+
+    .loaderIcon {
+        fill: v.$primary-color;
+    }
+}
+
+.secondary {
+    background-color: v.$primary-color;
+    color: v.$text-color;
+    border: 1px solid v.$text-color;
+
+    .loaderIcon {
+        fill: v.$text-color;
+    }
+}
+
+.danger {
+    background-color: rgb(165, 1, 1);
+    color: white;
+
+    .loaderIcon {
+        fill: white;
+    }
+}
+
+.xs {
+    padding: 3px 6px;
+    min-width: 19px;
+    height: 19px;
+    font-size: 10px;
+
+    .loaderIcon {
+        width: 7px;
+    }
+}
+
+.sm {
+    padding: 6px 10px;
+    min-width: 28px;
+    height: 28px;
+    font-size: 12px;
+
+    .loaderIcon {
+        width: 8px;
+    }
+}
+
+.md {
+    padding: 7px 14px;
+    min-width: 38px;
+    height: 38px;
+    font-size: 14px;
+
+    .loaderIcon {
+        width: 10px;
+    }
+}
+
+.lg {
+    padding: 8px 18px;
+    min-width: 47px;
+    height: 47px;
+    font-size: 16px;
+
+    .loaderIcon {
+        width: 11px;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

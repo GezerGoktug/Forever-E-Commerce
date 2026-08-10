@@ -12,23 +12,10 @@
   @include u.row-center;
   gap: 16px;
 
-  .header_right_badge {
+  .header_right_link_badge {
     position: absolute;
-    background-color: v.$text-color;
-    color: v.$primary-color;
-    bottom: 0;
-    right: -2px;
-    text-align: center;
-    font-size: 9px;
-    @include u.flex-center;
-    border-radius: 50%;
-    width: 15px;
-    height: 15px;
-
-    &.is_fav_badge {
-      background-color: darkred;
-      color: white;
-    }
+    bottom: -1px;
+    right: -6px;
   }
 
 

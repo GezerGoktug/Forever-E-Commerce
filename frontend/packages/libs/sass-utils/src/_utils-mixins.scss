@@ -28,6 +28,34 @@
   @include m.flex-control(normal, center, row);
 }
 
+@mixin inline-flex-center {
+  @include m.inline-flex-control(center, center);
+}
+@mixin inline-flex-start {
+  @include m.inline-flex-control(flex-start, center);
+}
+@mixin inline-flex-end {
+  @include m.inline-flex-control(flex-end, center);
+}
+@mixin inline-flex-between {
+  @include m.inline-flex-control(space-between, center);
+}
+@mixin inline-flex-around {
+  @include m.inline-flex-control(space-around, center);
+}
+@mixin inline-col-center {
+  @include m.inline-flex-control(normal, center, column);
+}
+@mixin inline-col-start {
+  @include m.inline-flex-control(flex-start, flex-start, column);
+}
+@mixin inline-col-end {
+  @include m.inline-flex-control(flex-end, flex-end, column);
+}
+@mixin inline-row-center {
+  @include m.inline-flex-control(normal, center, row);
+}
+
 @mixin skeleton_animate(
   $width: auto,
   $height: auto,

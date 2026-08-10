@@ -7,10 +7,9 @@ import { FaBars, FaMoon } from "react-icons/fa6";
 import { useState } from "react";
 import { useTotalCartQuantities } from "@/store/cart/hooks";
 import { useIsAccess } from "@/store/auth/hooks";
-import clsx from "clsx";
 import { useGetFavProductsCountQuery } from "@/services/hooks/queries/product.query";
 import { useThemeStore } from "@forever/theme-kit"
-import { Drawer, Tooltip } from "@forever/ui-kit";
+import { Badge, Drawer, Tooltip } from "@forever/ui-kit";
 import NavMenuDrawer from "../NavMenuDrawer/NavMenuDrawer";
 
 
@@ -19,7 +18,7 @@ const HeaderRight = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useThemeStore();
 
-  const { data } = useGetFavProductsCountQuery([useIsAccess() ? "favProductEnabled" : "favProductDisabled"], {
+  const { data, isLoading } = useGetFavProductsCountQuery([useIsAccess() ? "favProductEnabled" : "favProductDisabled"], {
     enabled: useIsAccess(),
   });
 
@@ -83,9 +82,14 @@ const HeaderRight = () => {
                     <Link to={{ pathname: href }}>
                       <Icon size={25} />
                       {is_count_badge && (
-                        <span className={clsx(styles.header_right_badge, { [styles.is_fav_badge]: is_fav_badge })}>
+                        <Badge
+                          className={styles.header_right_link_badge}
+                          size="xs"
+                          loading={is_fav_badge ? isLoading : false}
+                          variant={is_fav_badge ? "danger" : "primary"}
+                        >
                           {badge_data}
-                        </span>
+                        </Badge>
                       )}
                     </Link>
                   </Tooltip>
