@@ -1,4 +1,4 @@
-import { type HTMLAttributes, type FC, type ReactNode } from "react";
+import { type FC, type ReactNode } from "react";
 import styles from "./Badge.module.scss";
 import { clsx } from "clsx";
 import { BiLoaderCircle } from "react-icons/bi";

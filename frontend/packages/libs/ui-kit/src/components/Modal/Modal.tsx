@@ -1,4 +1,4 @@
-import { FC, type ReactNode } from "react";
+import { type FC, type ReactNode } from "react";
 import styles from "./Modal.module.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import Backdrop from "../Backdrop/Backdrop";

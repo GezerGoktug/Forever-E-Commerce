@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet";
 import AboutUs from "@/components/About/AboutUs/AboutUs";
 import WhyChooseUs from "@/components/About/WhyChooseUs/WhyChooseUs";
 import Subscribe from "@/components/Home/Subscribe/Subscribe";
-import { Badge } from "@forever/ui-kit";
 
 const About = () => {
   return (
