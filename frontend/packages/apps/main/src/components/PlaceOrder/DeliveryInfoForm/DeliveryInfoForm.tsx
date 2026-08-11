@@ -1,7 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import styles from "./DeliveryInfoForm.module.scss";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
-import { AnimatePresence } from "framer-motion";
 import Select from "react-select";
 import { Input } from "@forever/ui-kit";
 import { isEmptyString } from "@forever/common-utils";
@@ -15,12 +14,12 @@ type CountryDataType = {
 
 const DeliveryInfoForm = () => {
   const form = useFormContext();
-  const [modal, setModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [countryData, setCountryData] = useState<CountryDataType[]>([]);
 
   useEffect(() => {
     if (form.formState.isSubmitting && !form.formState.isValid) {
-      setModal(true);
+      setIsOpen(true);
     }
   }, [form.formState.isSubmitting, form.formState.isValid])
 
@@ -49,16 +48,13 @@ const DeliveryInfoForm = () => {
 
   return (
     <div className={styles.delivery_info_form_wrapper}>
-      <AnimatePresence>
-        {modal && (
-          <Suspense fallback={<></>}>
-            <ErrorModal
-              errors={form.formState.errors}
-              closeModal={() => setModal(false)}
-            />
-          </Suspense>
-        )}
-      </AnimatePresence>
+      <Suspense fallback={<></>}>
+        <ErrorModal
+          open={isOpen}
+          errors={form.formState.errors}
+          closeModal={() => setIsOpen(false)}
+        />
+      </Suspense>
       <h6>
         DELIVERY
         <span>INFORMATION</span>

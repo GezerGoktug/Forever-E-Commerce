@@ -12,7 +12,8 @@ interface ModalProps {
   open: boolean;
   closeModal: () => void;
   className?: string,
-  wrapperClassName?: string
+  wrapperClassName?: string;
+  closeBtnClassname?: string;
 }
 
 const Modal: FC<ModalProps> = ({
@@ -20,7 +21,8 @@ const Modal: FC<ModalProps> = ({
   open,
   closeModal,
   className,
-  wrapperClassName
+  wrapperClassName,
+  closeBtnClassname
 }) => {
   return (
     <AnimatePresence>
@@ -39,7 +41,7 @@ const Modal: FC<ModalProps> = ({
                   {children}
                   <MdOutlineClose
                     size={25}
-                    className={styles.modal_close_btn}
+                    className={clsx(styles.modal_close_btn, closeBtnClassname)}
                     onClick={() => closeModal()}
                   />
                 </motion.div>

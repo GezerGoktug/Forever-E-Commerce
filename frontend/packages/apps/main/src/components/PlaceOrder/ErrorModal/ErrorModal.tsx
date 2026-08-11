@@ -1,54 +1,52 @@
-import { OutsideClickHandler } from "@forever/common-utils";
 import styles from "./ErrorModal.module.scss";
 import { MdOutlineError } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
-import { motion } from "framer-motion";
 import { type FieldErrors } from "react-hook-form";
-import { Backdrop, Button, Overlay } from "@forever/ui-kit";
+import { Button, Modal } from "@forever/ui-kit";
 
 const ErrorModal = ({
+  open,
   closeModal,
   errors,
 }: {
+  open: boolean;
   closeModal: () => void;
   errors: FieldErrors;
 }) => {
   return (
-    <Overlay>
-      <Backdrop>
-        <OutsideClickHandler  onOutsideClick={() => closeModal()}>
-          <div className={styles.error_modal_wrapper}>
-            <motion.div
-              exit={{ scale: 0.5, opacity: 0.2 }}
-              transition={{ duration: 0.25 }}
-              initial={{ scale: 0.5, opacity: 0.2 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className={styles.error_modal_container}
-            >
-              <MdOutlineError className={styles.error_modal_icon} size={100} />
-              <h6>Error</h6>
-              <div className={styles.errors}>
-                {Object.values(errors).map((error, i) => (
-                  <span key={"error_" + i} className={styles.error_article}>
-                    <span className={styles.dot_icon}>&#9679;</span>{" "}
-                    {error?.message as string} <br />
-                  </span>
-                ))}
-              </div>
-              <Button
-                onClick={() => closeModal()}
-                rightIconSize={15}
-                rightIcon={FaXmark}
-                className={styles.error_modal_btn}
-                variant="danger"
-              >
-                CLOSE
-              </Button>
-            </motion.div>
-          </div>
-        </OutsideClickHandler>
-      </Backdrop>
-    </Overlay>
+    <Modal
+      open={open}
+      closeModal={closeModal}
+      className={styles.error_modal}
+      closeBtnClassname={styles.error_modal_close_btn}
+    >
+      <div className={styles.error_modal_content}>
+        <div className={styles.error_modal_header}>
+          <MdOutlineError className={styles.error_modal_icon} size={35} />
+          <h6>Error</h6>
+        </div>
+        <div className={styles.errors}>
+          {Object.values(errors).map((error, i) => (
+            <span key={"error_" + i} className={styles.error_item}>
+              <span className={styles.dot_icon}>&#9679;</span>{" "}
+              {error?.message as string} <br />
+            </span>
+          ))}
+        </div>
+        <div className={styles.error_modal_actions}>
+          <Button
+            onClick={() => closeModal()}
+            rightIconSize={15}
+            rightIcon={FaXmark}
+            className={styles.error_modal_btn}
+            variant="danger"
+          >
+            CLOSE
+          </Button>
+        </div>
+      </div>
+    </Modal>
+
   );
 };
 

@@ -15,7 +15,7 @@
   max-height: 90vh;
   overflow-y: auto;
   padding: 30px;
-  border-radius: 10px;
+  // border-radius: 10px;
   @include m.responsive(sm) {
     width: 90%;
   }
