@@ -36,12 +36,11 @@ const ErrorModal = ({
         <div className={styles.error_modal_actions}>
           <Button
             onClick={() => closeModal()}
-            rightIconSize={15}
-            rightIcon={FaXmark}
             className={styles.error_modal_btn}
             variant="danger"
           >
             CLOSE
+            <FaXmark size={15} />
           </Button>
         </div>
       </div>

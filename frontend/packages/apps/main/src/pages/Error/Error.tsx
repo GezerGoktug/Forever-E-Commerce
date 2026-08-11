@@ -14,10 +14,8 @@ const Error = ({ isAdmin = false }: { isAdmin?: boolean }) => {
       <h5>404</h5>
       <h6>Error</h6>
       <p>Page not founded</p>
-      <Button
-        onClick={() => navigate(isAdmin ? "/admin/stats" : "/")}
-        leftIcon={IoChevronBackCircle}
-      >
+      <Button onClick={() => navigate(isAdmin ? "/admin/stats" : "/")}>
+        <IoChevronBackCircle size={20} />
         {isAdmin ? "Return admin main page" : "Return home page"}
       </Button>
     </div>

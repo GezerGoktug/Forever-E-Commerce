@@ -75,14 +75,16 @@ const PaymentResult = () => {
       </p>
       {isSuccess ? (
         <Link to="/profile">
-          <Button size="md" rightIcon={FaCircleUser} rightIconSize={20}>
+          <Button size="md">
             PROFILE
+            <FaCircleUser size={20} />
           </Button>
         </Link>
       ) : (
         <Link to="/cart">
-          <Button size="md" rightIcon={IoCartOutline} rightIconSize={20}>
+          <Button size="md">
             CART
+            <IoCartOutline size={20} />
           </Button>
         </Link>
       )}

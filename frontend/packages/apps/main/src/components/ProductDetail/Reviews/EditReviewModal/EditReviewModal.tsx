@@ -72,12 +72,11 @@ const EditReviewModal = ({ data, closeModal, open }: EditReviewModalProps) => {
           </Button>
           <Button
             size="sm"
-            rightIcon={FaPencil}
-            rightIconSize={15}
             loading={isPending}
             onClick={() => updateComment()}
           >
             UPDATE
+            <FaPencil size={15} />
           </Button>
         </div>
       </div>

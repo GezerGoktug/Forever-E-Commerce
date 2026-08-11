@@ -16,8 +16,8 @@ interface AlertModalProps {
   loading?: boolean;
   onCancel: () => void;
   onConfirm: () => void;
-  confirmText?: string;
-  cancelText?: string;
+  confirmBtnContent?: ReactNode;
+  cancelBtnContent?: ReactNode;
   cancelBtnProps?: Omit<ButtonProps, "onClick">;
   confirmBtnProps?: Omit<ButtonProps, "onClick" | "loading" | "children">;
   customActionContent?: ReactNode;
@@ -33,8 +33,8 @@ const AlertModal: FC<AlertModalProps> = ({
   loading = false,
   onCancel,
   onConfirm,
-  confirmText = "CONFIRM",
-  cancelText = "CANCEL",
+  confirmBtnContent = "CONFIRM",
+  cancelBtnContent = "CANCEL",
   cancelBtnProps,
   confirmBtnProps,
   customActionContent,
@@ -57,7 +57,7 @@ const AlertModal: FC<AlertModalProps> = ({
               onClick={onCancel}
               {...cancelBtnProps}
             >
-              {cancelText}
+              {cancelBtnContent}
             </Button>
             <Button
               size="sm"
@@ -66,7 +66,7 @@ const AlertModal: FC<AlertModalProps> = ({
               onClick={onConfirm}
               {...confirmBtnProps}
             >
-              {confirmText}
+              {confirmBtnContent}
             </Button>
           </div>
         )}

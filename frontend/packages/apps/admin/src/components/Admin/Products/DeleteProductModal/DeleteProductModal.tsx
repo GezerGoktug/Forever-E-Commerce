@@ -33,8 +33,12 @@ const DeleteProductModal = ({ closeModal, data, open }: DeleteProductModalProps)
       onCancel={closeModal}
       onConfirm={handleDeleteProduct}
       loading={isPending}
-      confirmText="DELETE"
-      confirmBtnProps={{ leftIcon: IoMdTrash, leftIconSize: 20 }}
+      confirmBtnContent={
+        <>
+          DELETE
+          <IoMdTrash size={20} />
+        </>
+      }
     />
   );
 };

@@ -9,6 +9,7 @@
   overflow: visible;
   cursor: pointer;
   transition: background-color 0.3s ease-in, color 0.3s ease-in;
+
   .loaderIcon {
     animation: spin 1.2s linear infinite;
   }
@@ -18,66 +19,79 @@
   cursor: not-allowed;
   opacity: 0.8;
 }
+
 .primary {
   background-color: v.$text-color;
   color: v.$primary-color;
+
   .loaderIcon,
-  .iconLeft,
-  .iconRight {
+  svg {
     fill: v.$primary-color;
-    
+
   }
+
   .loaderText {
     color: v.$primary-color;
   }
 }
+
 .secondary {
   background-color: v.$primary-color;
   color: v.$text-color;
   border: 1px solid v.$text-color;
+
   .loaderIcon,
-  .iconLeft,
-  .iconRight {
+  svg {
     fill: v.$text-color;
   }
+
   &:hover {
     background-color: v.$text-color;
     color: v.$primary-color;
-    .iconLeft,
-    .iconRight {
+
+    svg {
       fill: v.$primary-color;
     }
   }
+
   &:disabled {
     background-color: v.$text-color;
     color: v.$primary-color;
+
     .loaderIcon {
       fill: v.$primary-color;
     }
+
     .loaderText {
       color: v.$primary-color;
     }
   }
 }
+
 .danger {
   background-color: rgb(165, 1, 1);
   color: white;
+
   .loaderIcon,
-  .iconLeft,
-  .iconRight {
+  svg {
     fill: white;
   }
+
   &:disabled {
     background-color: rgb(165, 1, 1);
+
     .loaderIcon {
       fill: v.$primary-color;
-      @include u.dark-mode{
+
+      @include u.dark-mode {
         fill: v.$text-color;
       }
     }
+
     .loaderText {
       color: v.$primary-color;
-      @include u.dark-mode{
+
+      @include u.dark-mode {
         color: v.$text-color;
       }
     }
@@ -88,10 +102,12 @@
   padding: 10px 30px;
   font-size: 11px;
 }
+
 .md {
   padding: 15px 40px;
   font-size: 13px;
 }
+
 .lg {
   padding: 18px 40px;
   font-size: 15px;
@@ -101,6 +117,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

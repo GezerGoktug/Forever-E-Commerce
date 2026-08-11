@@ -36,12 +36,15 @@ const DeleteReviewModal = ({ data, closeModal, open }: DeleteReviewModalProps) =
       closeModal={closeModal}
       title="Are you sure you want to delete your comment?"
       description="This comment will be permanently deleted. Are you sure you still want to delete it?"
-      confirmText="DELETE"
-      cancelText="CANCEL"
       onCancel={closeModal}
       onConfirm={handleDeleteComment}
       loading={isPending}
-      confirmBtnProps={{ leftIcon: IoMdTrash, leftIconSize: 20 }}
+      confirmBtnContent={
+        <>
+          DELETE
+          <IoMdTrash size={20} />
+        </>
+      }
     />
   );
 };

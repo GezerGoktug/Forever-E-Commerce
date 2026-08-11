@@ -14,10 +14,8 @@ const Error = () => {
       <h5>404</h5>
       <h6>Error</h6>
       <p>Page not founded</p>
-      <Button
-        onClick={() => navigate("/stats")}
-        leftIcon={IoChevronBackCircle}
-      >
+      <Button onClick={() => navigate("/stats")}>
+        <IoChevronBackCircle size={20} />
         Return admin main page
       </Button>
     </div>

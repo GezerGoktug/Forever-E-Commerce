@@ -50,11 +50,10 @@ const ProfileOverview = () => {
           className={styles.log_out_btn}
           size="sm"
           loading={isPending}
-          rightIcon={CiLogout}
-          rightIconSize={25}
           variant="danger"
         >
           Log out
+          <CiLogout size={25} />
         </Button>
       </div>
     </div>

@@ -89,11 +89,11 @@ const Products = () => {
                 </p>
                 <Button
                   className={styles.products_error_btn}
-                  rightIcon={GrPowerReset}
                   variant="secondary"
                   onClick={() => refetch()}
                 >
                   RETRY
+                  <GrPowerReset size={20} />
                 </Button>
               </div>
             </div>
@@ -115,11 +115,11 @@ const Products = () => {
                 </p>
                 <Button
                   className={styles.products_no_content_btn}
-                  rightIcon={GrPowerReset}
                   variant="secondary"
                   onClick={() => clearQuery()}
                 >
                   RESET FILTRE
+                  <GrPowerReset size={20} />
                 </Button>
               </div>
             </div>
