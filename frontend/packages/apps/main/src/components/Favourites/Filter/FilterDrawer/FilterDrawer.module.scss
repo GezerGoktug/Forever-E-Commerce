@@ -2,10 +2,14 @@
 @use "@forever/sass-utils/mixins" as m;
 @use "@forever/sass-utils/variables" as v;
 
+.filter_drawer {
+    padding: 30px 20px;
+}
 
+.filter_drawer_content {
+    @include u.col-start;
+    height: 100%;
 
-
-.filter_modal_content {
     h6 {
         font-size: 30px;
         font-weight: 600;
@@ -13,6 +17,7 @@
     }
 
     .form_select {
+        width: 100%;
         margin-bottom: 20px;
 
         :global {
@@ -88,7 +93,14 @@
         margin: 20px 0;
     }
 
-    .filter_modal_btn {
-        margin-left: auto;
+    .filter_drawer_btn_group {
+        margin-top: auto;
+        display: flex;
+        gap: 10px;
+        width: 100%;
+
+        button {
+            flex: 1;
+        }
     }
 }

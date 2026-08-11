@@ -2,16 +2,6 @@
 @use "@forever/sass-utils/mixins" as m;
 @use "@forever/sass-utils/variables" as v;
 
-
-.filter_modal {
-    margin-bottom: 200px;
-}
-
-.filter_modal_wrapper {
-    align-items: flex-start;
-    padding-block: 20px;
-}
-
 .filter {
     &_modal_icon {
         background-color: v.$text-color;

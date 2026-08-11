@@ -5,10 +5,10 @@ import { FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
 import { useQueryParams } from '@forever/query-kit';
 import type { CategoriesType, ProductSearchQueryType, SubCategoriesType } from '@/types/product.type';
 import { useDebounce } from '@forever/hook-kit';
-import FilterModal from './FilterModal/FilterModal';
 import { AiFillFilter } from 'react-icons/ai';
 import { type SortType } from '@/helper/generateSortingType';
-import { Input, Modal } from '@forever/ui-kit';
+import { Input } from '@forever/ui-kit';
+import FilterDrawer from './FilterDrawer/FilterDrawer';
 
 export type OptionsType<T> = { value: T, label: T }[]
 
@@ -25,6 +25,8 @@ const subCategoriesOptions: OptionsType<SubCategoriesType> = [
 ]
 
 const Filter = () => {
+    const [isOpen, setIsOpen] = useState(false)
+
     const { queryState, querySetters } = useQueryParams<Pick<ProductSearchQueryType, 'categories' | 'sorting' | 'searchQuery' | 'subCategories'>>({
         categories: [],
         subCategories: [],
@@ -41,13 +43,10 @@ const Filter = () => {
         setSearchQuery(debouncedVal)
     }, [debouncedVal])
 
-    const [modal, setModal] = useState(false)
 
     return (
         <div className={styles.filter}>
-            <Modal wrapperClassName={styles.filter_modal_wrapper} className={styles.filter_modal} open={modal} closeModal={() => setModal(false)}>
-                <FilterModal closeModal={() => setModal(false)} />
-            </Modal>
+            <FilterDrawer open={isOpen} onClose={() => setIsOpen(false)} />
             <div className={styles.filter_left}>
                 <Select
                     defaultValue={categories.map((dt) => ({ value: dt, label: dt }))}
@@ -91,7 +90,7 @@ const Filter = () => {
                     <option value="LOW_TO_HIGH">Sort by: Low to High</option>
                     <option value="HIGH_TO_LOW">Sort by: High to Low</option>
                 </select>
-                <AiFillFilter onClick={() => setModal(true)} size={25} className={styles.filter_modal_icon} />
+                <AiFillFilter onClick={() => setIsOpen(true)} size={25} className={styles.filter_modal_icon} />
 
             </div>
         </div>
