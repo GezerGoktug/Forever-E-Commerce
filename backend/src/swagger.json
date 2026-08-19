@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "E-Commerce API",
-        "version": "1.0.0",
+        "title": "Forever E-Commerce API",
+        "version": "1.1.0",
         "description": "API documentation for E-Commerce application"
     },
     "components": {
@@ -95,6 +95,44 @@
                 }
             }
         },
+        "/api/auth/google": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login or register user with Google OAuth",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "code": {
+                                        "type": "string"
+                                    },
+                                    "redirectUri": {
+                                        "type": "string"
+                                    },
+                                    "codeVerifier": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "code",
+                                    "redirectUri"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful with Google"
+                    }
+                }
+            }
+        },
         "/api/auth/logout": {
             "get": {
                 "tags": [
@@ -139,39 +177,17 @@
                 }
             }
         },
-        "/api/order/{id}": {
-            "put": {
+        "/api/user/reset-password-req": {
+            "get": {
                 "tags": [
-                    "Orders"
+                    "User"
                 ],
-                "summary": "Update an order",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "payment": {
-                                        "type": "boolean"
-                                    }
-                                },
-                                "required": [
-                                    "payment"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
+                "summary": "Send a reset password code to user's email",
                 "parameters": [
                     {
-                        "in": "path",
-                        "name": "id",
+                        "name": "resetPasswordEmail",
+                        "in": "query",
+                        "description": "Email address to send the reset code to",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -180,10 +196,89 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Order updated successfully"
+                        "description": "Reset code sent to email successfully"
+                    },
+                    "400": {
+                        "description": "Reset password email is empty string or invalid format"
+                    },
+                    "404": {
+                        "description": "Could not find account with this reset email"
                     }
                 }
-            },
+            }
+        },
+        "/api/user/eval-reset-password-code": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Evaluate reset password code sent to user's email",
+                "parameters": [
+                    {
+                        "name": "resetPasswordCode",
+                        "in": "query",
+                        "description": "Reset code sent to email",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "resetPasswordEmail",
+                        "in": "query",
+                        "description": "Email address associated with the reset code",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reset password code is correct"
+                    },
+                    "400": {
+                        "description": "Wrong reset password code"
+                    }
+                }
+            }
+        },
+        "/api/user/reset-password": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Reset user's password",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "newPassword": {
+                                        "type": "string"
+                                    },
+                                    "resetPasswordEmail": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "newPassword",
+                                    "resetPasswordEmail"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated your password"
+                    }
+                }
+            }
+        },
+        "/api/order/{id}": {
             "delete": {
                 "tags": [
                     "Orders"
@@ -207,6 +302,59 @@
                 "responses": {
                     "200": {
                         "description": "Order deleted successfully"
+                    }
+                }
+            }
+        },
+        "/api/order/confirm-order-payment/{id}": {
+            "put": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Confirm payment of an order",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "payment": {
+                                        "type": "boolean"
+                                    },
+                                    "sessionId": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "payment",
+                                    "sessionId"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order update success"
+                    },
+                    "400": {
+                        "description": "Session id not found, order already paid, or order not paid for"
                     }
                 }
             }
@@ -501,6 +649,44 @@
                 }
             }
         },
+        "/api/product/admin/list": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get products for admin panel (Admin only)",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Page size",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Products retrieved successfully"
+                    }
+                }
+            }
+        },
         "/api/product/{id}": {
             "get": {
                 "tags": [
@@ -757,15 +943,435 @@
                 }
             }
         },
+        "/api/product/favourites/list": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get current user's favourite products",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "categories",
+                        "in": "query",
+                        "description": "Product categories",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "subCategory",
+                        "in": "query",
+                        "description": "Product subcategory",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sorting",
+                        "in": "query",
+                        "description": "Sorting method",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "searchQuery",
+                        "in": "query",
+                        "description": "Search text",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Favourite products retrieved successfully"
+                    }
+                }
+            }
+        },
+        "/api/product/favourites/add": {
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Add a product to current user's favourites",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "productId": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "productId"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully product added to your favourite products"
+                    }
+                }
+            }
+        },
+        "/api/product/favourites/{productId}": {
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Remove a product from current user's favourites",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "productId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully product removed from your favourite products"
+                    },
+                    "400": {
+                        "description": "Could not find product you want to delete"
+                    }
+                }
+            }
+        },
+        "/api/product/favourites/isProductInFav": {
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Check whether given products are in current user's favourites",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "productIds": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "productIds"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Favourite status of given products retrieved successfully"
+                    }
+                }
+            }
+        },
+        "/api/product/favourites/count": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get current user's favourite products count",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Favourite products count retrieved successfully"
+                    }
+                }
+            }
+        },
+        "/api/product/favourites/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Check whether a single product is in current user's favourites",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Favourite status of product retrieved successfully"
+                    }
+                }
+            }
+        },
+        "/api/payment": {
+            "post": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Create a Stripe checkout session and order",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "delivery_info",
+                                    "products",
+                                    "cargoFee"
+                                ],
+                                "properties": {
+                                    "delivery_info": {
+                                        "type": "object",
+                                        "properties": {
+                                            "firstName": {
+                                                "type": "string"
+                                            },
+                                            "lastName": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "phoneNumber": {
+                                                "type": "string"
+                                            },
+                                            "city": {
+                                                "type": "string"
+                                            },
+                                            "country": {
+                                                "type": "string"
+                                            },
+                                            "state": {
+                                                "type": "string"
+                                            },
+                                            "street": {
+                                                "type": "string"
+                                            },
+                                            "zipCode": {
+                                                "type": "string"
+                                            },
+                                            "paymentMethod": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "products": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "number"
+                                                },
+                                                "quantity": {
+                                                    "type": "number"
+                                                },
+                                                "size": {
+                                                    "type": "string"
+                                                },
+                                                "image": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "cargoFee": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Stripe checkout session created successfully"
+                    },
+                    "400": {
+                        "description": "You must add a few product to your cart, before go to payment"
+                    }
+                }
+            }
+        },
         "/api/admin/stats": {
             "get": {
                 "tags": [
                     "Statistics"
                 ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "summary": "Get statistics card data",
                 "responses": {
                     "200": {
                         "description": "Statistics retrieved successfully"
+                    }
+                }
+            }
+        },
+        "/api/ai/chatbot/ask": {
+            "post": {
+                "tags": [
+                    "AI"
+                ],
+                "summary": "Ask a question to the AI chatbot",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "question": {
+                                        "type": "string"
+                                    },
+                                    "threadId": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "question"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "AI chatbot answer retrieved successfully"
+                    }
+                }
+            }
+        },
+        "/api/ai/chatbot/thread/{threadId}": {
+            "get": {
+                "tags": [
+                    "AI"
+                ],
+                "summary": "Get AI conversation thread message history",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "threadId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Thread message history retrieved successfully"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "AI"
+                ],
+                "summary": "Delete AI conversation thread",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "threadId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Thread successfully deleted"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "AI"
+                ],
+                "summary": "Delete AI conversation thread",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "threadId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Thread successfully deleted"
                     }
                 }
             }
