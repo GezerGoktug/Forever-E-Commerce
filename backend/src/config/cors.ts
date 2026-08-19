@@ -33,10 +33,11 @@ const isPatternCompatibility = (url: string = "") => {
 }
 
 const corsConfig: CorsOptions = {
-    origin: (origin, callback) => {
-        const isMainUrl = origin === process.env.CLIENT_URL
+    origin: (origin, callback) => {        
+        const isMainClientUrl = origin === process.env.CLIENT_URL
+        const isMainServerUrl = origin === process.env.SERVER_URL
 
-        if (!origin || isMainUrl || isPatternCompatibility(origin)) {
+        if (!origin || isMainClientUrl || isMainServerUrl || isPatternCompatibility(origin)) {
             callback(null, true);
         }
         else {
