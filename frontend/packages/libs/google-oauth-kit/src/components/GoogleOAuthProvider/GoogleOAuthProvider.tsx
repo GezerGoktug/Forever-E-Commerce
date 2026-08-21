@@ -46,12 +46,8 @@ export const GoogleOAuthPopupProvider = ({
     onError?: (error: string) => void,
     credentials?: GoogleOauthCredentials
 }) => {
-
-    const { loading, isPopupOpen, setPopupOpen, error, setError } =
-        useGoogleOauthPopupListener({
-            actionAfterGetCode: onSuccess,
-            disableListenerOfInsidePopup: true
-        });
+    const { loading, isPopupOpen, setPopupOpen, error, setError } = useGoogleOauthPopupListener(onSuccess);
+    
     useEffect(() => {
         if (onError && error && error.trim().length > 0)
             onError(error);

@@ -8,48 +8,12 @@ interface IGoogleOauthData {
     state?: string;
 }
 
-const listenGoogleOauthEventsInPopup = () => {
-    if (window.opener) {
-        const queryParams = new URLSearchParams(window.location.search);
-        const code = queryParams.get("code");
-        const err = queryParams.get("error");
-        const state = queryParams.get("state");
-
-        if (code) {
-            window.opener.postMessage(
-                { type: "GOOGLE_AUTH_CODE", code, state } as IGoogleOauthData,
-                window.location.origin
-            );
-        } else if (err) {
-            window.opener.postMessage(
-                { type: "GOOGLE_AUTH_ERROR", error: err } as IGoogleOauthData,
-                window.location.origin
-            );
-        }
-        window.close();
-        return;
-    }
-}
-
-const useGoogleOauthPopupListener = ({
-    actionAfterGetCode = async () => { },
-    disableListenerOfInsidePopup = false
-}: {
-    actionAfterGetCode: (code: string, codeVerifier: string) => Promise<void>,
-    disableListenerOfInsidePopup?: boolean
-}
-) => {
+const useGoogleOauthPopupListener = (actionAfterGetCode: (code: string, codeVerifier: string) => Promise<void> = async () => { }) => {
     const [loading, setLoading] = useState(false);
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // A. IF THIS COMPONENT IS RUNNING INSIDE THE POPUP WINDOW:
-        if (!disableListenerOfInsidePopup) {
-            listenGoogleOauthEventsInPopup();
-        }
-
-        // B. IF THIS COMPONENT IS RUNNING IN THE PARENT WINDOW:
         const handleMessage = async (event: MessageEvent<IGoogleOauthData>) => {
             if (event.origin !== window.location.origin) return;
 
@@ -88,7 +52,7 @@ const useGoogleOauthPopupListener = ({
 
         window.addEventListener("message", handleMessage);
         return () => window.removeEventListener("message", handleMessage);
-    }, [actionAfterGetCode, disableListenerOfInsidePopup]);
+    }, [actionAfterGetCode]);
 
     return { loading, isPopupOpen, setPopupOpen, error, setError };
 };
