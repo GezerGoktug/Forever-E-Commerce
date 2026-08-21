@@ -1,4 +1,4 @@
-# **MERN Stack E-Commerce**
+# **Forever E-Commerce Shop**
 
 This project is an e-commerce clothing platform developed using MERN Stack technologies. Users can browse products, apply filters, search,favourite, and view detailed product information. They can also add items to their cart, manage quantities, and complete purchases via Stripe or cash on delivery.The platform includes features like user authentication, order management, send email and an admin panel for managing products and viewing statistics. Also customers can ask to AI Chatbot what they wanna help about shop general info ,faqs or recommend product. This chatbot recommend products according user intent,preferences. Or it provide to help what shop general info,faqs,shop goals, cargo informations etc. according to shop info knowledge context.
 
