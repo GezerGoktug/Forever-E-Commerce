@@ -25,7 +25,7 @@ const DeliveryInfoForm = () => {
 
   useEffect(() => {
     const fetchCountriesData = async () => {
-      const res = await fetch("@forever-static/data/country.json");
+      const res = await fetch("/@forever-static/data/country.json");
       const dt = await res.json();
       setCountryData(dt);
     };

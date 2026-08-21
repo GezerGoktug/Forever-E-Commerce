@@ -1,0 +1,76 @@
+:root {
+    --primary-color: #ffffff;
+    --secondary-color: #6b7280;
+    --third-color: #374151;
+    --text-color: #000000;
+    --pink-color: #FCD6D6;
+    --font-family: "Outfit", sans-serif;
+}
+
+.dark {
+    --primary-color: #000000;
+    --secondary-color: #818999;
+    --third-color: #e5ecf9;
+    --text-color: #ffffff;
+    --pink-color: #FCD6D6;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+}
+
+.callback_wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    padding: 90px 0 0 45px;
+    gap: 80px;
+    background-color: var(--primary-color);
+    font-family: var(--font-family);
+}
+
+.callback_content {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+}
+
+
+.callback_spinner {
+    fill: var(--text-color);
+    color: var(--text-color);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.callback_title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.callback_subtitle {
+    margin: 0;
+    font-size: 22px;
+    color: var(--secondary-color);
+}

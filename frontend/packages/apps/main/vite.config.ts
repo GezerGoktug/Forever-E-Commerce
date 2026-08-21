@@ -11,21 +11,21 @@ export default defineConfig(({ mode, isPreview }) => {
   return {
     plugins: [
       react(),
-      staticFilesPlugin("/static", isDev, isPreview),
+      staticFilesPlugin("static", isDev, isPreview),
       injectToHtmlPlugin(injectDataToWindow({ APP_NAME: "main", ENV: isDev ? "development" : "production" })),
       injectToHtmlPlugin(injectFontsPreloaderToHtml(
         isDev
           ? [
-            "@forever-static/fonts/prata/prata-regular.woff2",
-            "@forever-static/fonts/outfit/outfit-thin.woff2",
-            "@forever-static/fonts/outfit/outfit-extralight.woff2",
-            "@forever-static/fonts/outfit/outfit-light.woff2",
-            "@forever-static/fonts/outfit/outfit-regular.woff2",
-            "@forever-static/fonts/outfit/outfit-medium.woff2",
-            "@forever-static/fonts/outfit/outfit-semibold.woff2",
-            "@forever-static/fonts/outfit/outfit-bold.woff2",
-            "@forever-static/fonts/outfit/outfit-extrabold.woff2",
-            "@forever-static/fonts/outfit/outfit-black.woff2"
+            "/@forever-static/fonts/prata/prata-regular.woff2",
+            "/@forever-static/fonts/outfit/outfit-thin.woff2",
+            "/@forever-static/fonts/outfit/outfit-extralight.woff2",
+            "/@forever-static/fonts/outfit/outfit-light.woff2",
+            "/@forever-static/fonts/outfit/outfit-regular.woff2",
+            "/@forever-static/fonts/outfit/outfit-medium.woff2",
+            "/@forever-static/fonts/outfit/outfit-semibold.woff2",
+            "/@forever-static/fonts/outfit/outfit-bold.woff2",
+            "/@forever-static/fonts/outfit/outfit-extrabold.woff2",
+            "/@forever-static/fonts/outfit/outfit-black.woff2"
           ]
           : [
             "/static/fonts/prata/prata-regular.woff2",

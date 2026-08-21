@@ -1,7 +1,6 @@
 import { buildQuery } from '@forever/query-kit';
 import { createContext, useContext, useEffect, type ReactNode } from 'react'
 import useGoogleOauthPopupListener from '../../hooks/use-google-oauth-popup-listener.hook';
-import GoogleOAuthCallback from '../GoogleOAuthCallback/GoogleOAuthCallback';
 import generateUUIDv4 from '../../utils/uuid';
 import { generatePkcePair } from "../../utils/pkce"
 import { setSessionStorage } from '@forever/storage-kit';
@@ -47,27 +46,19 @@ export const GoogleOAuthPopupProvider = ({
     onError?: (error: string) => void,
     credentials?: GoogleOauthCredentials
 }) => {
-
-    const { loading, isPopupOpen, setPopupOpen, error, setError } =
-        useGoogleOauthPopupListener({
-            actionAfterGetCode: onSuccess,
-            disableListenerOfInsidePopup: true
-        });
+    const { loading, isPopupOpen, setPopupOpen, error, setError } = useGoogleOauthPopupListener(onSuccess);
+    
     useEffect(() => {
         if (onError && error && error.trim().length > 0)
             onError(error);
     }, [error, onError]);
-
-    if (window.opener) {
-        return <GoogleOAuthCallback />;
-    }
 
     const loginWithGoogle = async (customCredentials?: GoogleOauthCredentials) => {
         if (isPopupOpen || loading) {
             return;
         }
         setError(null);
-        const redirectUri = `${window.location.origin}${window.location.pathname}`;
+        const redirectUri = `${window.location.origin}/@forever-static/templates/google-oauth-callback/index.html`;
 
         const googleOauthOrigin = "https://accounts.google.com/o/oauth2/v2/auth";
 
