@@ -293,7 +293,7 @@ const SupportChatBotPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boo
                                                 }
                                             </div>
                                         }
-                                        <AiAdviseProductsBlock msg={msg} />
+                                        {msg.products && msg.products.length > 0 && <AiAdviseProductsBlock msg={msg} />}
                                     </motion.div>
 
                                 ))

@@ -104,7 +104,7 @@ const useGetProductDetailQuery = (id: string, queryOptions?: Omit<UseQueryOption
 
 const useIsProductsInFavQuery = (productsIds: string[], extraKeys: string[] = [], queryOptions?: Omit<UseQueryOptions<IResponse<IIsProductInFavResponse[]>, IError>, "queryKey">) =>
     useQuery<IResponse<IIsProductInFavResponse[]>, IError>({
-        queryKey: ["is_fav_product_info", productsIds.toString(), ...extraKeys],
+        queryKey: ["is_fav_product_info", (productsIds || []).toString(), ...extraKeys],
         queryFn: () =>
             ProductService.isProductsInFav(productsIds),
         ...queryOptions

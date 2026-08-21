@@ -2,7 +2,7 @@ import styles from './SupportChatBot.module.scss';
 import { AnimatePresence, motion } from "framer-motion"
 import SupportChatBotPanel from './SupportChatBotPanel/SupportChatBotPanel';
 import { useEffect, useState } from 'react';
-import SupportChatBotNotContent from './SupportChatBotNotContent/SupportChatBotNotContent';
+import SupportChatBotSpeechBubble from './SupportChatBotSpeechBubble/SupportChatBotSpeechBubble';
 import { BaseImage } from '@forever/ui-kit';
 
 const SupportChatBot = () => {
@@ -31,7 +31,7 @@ const SupportChatBot = () => {
                     show ? (
                         <SupportChatBotPanel setShow={setShow} />
                     ) : isShowHelpText ? (
-                        <SupportChatBotNotContent setIsShowHelpText={setIsShowHelpText} />
+                        <SupportChatBotSpeechBubble setIsShowHelpText={setIsShowHelpText} />
                     ) : null
                 }
 

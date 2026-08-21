@@ -80,6 +80,8 @@ const AiAdviseProductsBlock = ({ msg }: { msg: MessageType & { isFirstMessage?: 
         enabled: useIsAccess() && msg.type === "ai" && !!msg.products?.length
     })
 
+    console.log(msg);
+    
     const isFavProduct = (id: string) => data?.data.find(dt => dt._id === id)?.isFav;
 
     return msg.type === "ai" && msg.products.map((product) => <AiAdviseProductItem product={{ ...product, isFav: isFavProduct(product._id) || false }} key={`ai-product-${product._id}`} />)

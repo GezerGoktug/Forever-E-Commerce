@@ -1,15 +1,15 @@
 import { tool } from "@langchain/core/tools";
 import { CompanyBriefVectorStore } from "../seed/seed-company-brief-vectorstore";
 
-interface ICompanyBriefLookupToolInput {
-    query: string,
-    n?: number,
+interface IKnowledgeLookupToolInput {
+  query: string,
+  n?: number,
 }
 
-export const companyBriefTool = tool(
+export const knowledgeLookupTool = tool(
   async (input) => {
-    const { query, n = 5 } = input as ICompanyBriefLookupToolInput;
-    
+    const { query, n = 5 } = input as IKnowledgeLookupToolInput;
+
     const vectorStore = await CompanyBriefVectorStore.getVectorStore();
 
     const results = await vectorStore.similaritySearchWithScore(query, 50);
@@ -32,8 +32,8 @@ export const companyBriefTool = tool(
     };
   },
   {
-    name: "company_brief_lookup",
-    description: "Search company PDF documents (policies, brief, processes) for relevant answers",
+    name: "knowledge_lookup",
+    description: "Search knowledge from sources(docs, pdf, etc.) for relevant answers",
     schema: {
       type: "object",
       properties: {

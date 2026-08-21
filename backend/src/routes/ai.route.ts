@@ -4,9 +4,9 @@ import { askQuestionToAiChatbotByThreadId, deleteAiConversationThreadByThreadId,
 
 const router = express.Router();
 
-router.post("/chatbot/ask", asyncHandler(askQuestionToAiChatbotByThreadId));
-router.delete("/chatbot/thread/:threadId", asyncHandler(deleteAiConversationThreadByThreadId));
-router.post("/chatbot/thread/:threadId", asyncHandler(deleteAiConversationThreadByThreadId));
-router.get("/chatbot/thread/:threadId", asyncHandler(getAiConversationThreadByThreadId));
+router.post("/support-agent/ask", asyncHandler(askQuestionToAiChatbotByThreadId));
+router.delete("/support-agent/thread/:threadId", asyncHandler(deleteAiConversationThreadByThreadId));
+router.post("/support-agent/thread/:threadId", asyncHandler(deleteAiConversationThreadByThreadId));
+router.get("/support-agent/thread/:threadId", asyncHandler(getAiConversationThreadByThreadId));
 
 export default router;

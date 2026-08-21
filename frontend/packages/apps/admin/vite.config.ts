@@ -48,7 +48,7 @@ export default defineConfig(({ mode, isPreview }) => {
       // }),
     ],
     server: {
-      port: 3001,
+      port: 3000,
     },
     preview: {
       port: 3001

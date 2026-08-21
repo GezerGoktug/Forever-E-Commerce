@@ -1,10 +1,10 @@
 import { FaXmark } from 'react-icons/fa6'
-import styles from './SupportChatBotNotContent.module.scss'
+import styles from './SupportChatBotSpeechBubble.module.scss'
 import { motion } from 'framer-motion'
 import { BiSolidDownArrow } from 'react-icons/bi'
 import type { Dispatch, SetStateAction } from 'react'
 
-const SupportChatBotNotContent = ({ setIsShowHelpText }: { setIsShowHelpText: Dispatch<SetStateAction<boolean>> }) => {
+const SupportChatBotSpeechBubble = ({ setIsShowHelpText }: { setIsShowHelpText: Dispatch<SetStateAction<boolean>> }) => {
     return (
         <motion.div
             initial={{ y: 50, opacity: 0 }}
@@ -24,4 +24,4 @@ const SupportChatBotNotContent = ({ setIsShowHelpText }: { setIsShowHelpText: Di
     )
 }
 
-export default SupportChatBotNotContent
+export default SupportChatBotSpeechBubble
