@@ -44,7 +44,7 @@ const GoogleOAuthPopupProvider = ({ children }: { children: ReactNode }) => {
     return (
         <GoogleOauthPopupListenerProvider
             onSuccess={async (code, codeVerifier) => {
-                const redirectUri = `${window.location.origin}${window.location.pathname}`;
+                const redirectUri = `${window.location.origin}/@forever-static/templates/google-oauth-callback/index.html`;
                 await mutation.mutateAsync({ code, redirectUri, codeVerifier }).catch(() => { })
             }}
             onError={(error) => {
