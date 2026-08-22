@@ -7,11 +7,11 @@ import { memo } from "react"
 import { CiClock1 } from "react-icons/ci"
 import { formatMessageCreatedDate } from "@/utils/date-utils"
 
-type MsgType = Omit<AgentMessageType, "products">
+type MessageFieldType = Omit<AgentMessageType, "products">
 
 interface IMessageBlockProps {
     isLoading?: boolean
-    message?: MsgType,
+    message?: MessageFieldType,
     loadingMsgType?: "ai" | "human"
 }
 

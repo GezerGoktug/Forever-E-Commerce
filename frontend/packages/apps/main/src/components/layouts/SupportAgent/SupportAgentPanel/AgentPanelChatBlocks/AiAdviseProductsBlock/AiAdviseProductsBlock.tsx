@@ -2,7 +2,6 @@
 import { IoIosStar, IoMdHeart, IoMdHeartEmpty } from 'react-icons/io'
 import { memo, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { type ExtendedProductType } from '@/types/product.type'
 import { Link } from 'react-router-dom'
 import { useIsProductsInFavQuery } from '@/services/hooks/queries/product.query'
 import { useIsAccess } from '@/store/auth/hooks'
@@ -10,7 +9,7 @@ import { useHandleFavouriteMutation } from '@/services/hooks/mutations/product.m
 import getSize from '@/helper/getSize'
 import { type AgentMessageType } from '@/types/ai.type'
 
-const AiAdviseProductItem = ({ product }: { product: ExtendedProductType & { averageRating: number, isFav: boolean } }) => {
+const AiAdviseProductItem = ({ product }: { product: NonNullable<(AgentMessageType["products"])>[number] & { isFav: boolean } }) => {
     const isAccess = useIsAccess();
     const [isFav, setIsFav] = useState(false);
 
