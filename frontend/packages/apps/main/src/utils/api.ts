@@ -3,7 +3,7 @@ import { API, normalizeResponseInterceptor, jwtRefreshTokenInterceptor, jwtToken
 
 const NOT_AGAIN_REQUEST_ENDPOINTS_PATH = ['/api/user/reset-password', '/api/auth/refresh'];
 
-const api = new API(import.meta.env.VITE_REACT_API_URL);
+const api = new API(import.meta.env.VITE_REACT_API_TEST_URL);
 
 api.initInterceptors({
   reqInterceptors: [jwtTokenRequestInterceptor()],
@@ -17,6 +17,6 @@ api.initInterceptors({
         window.location.href = "/auth"
       }
     })]
-})
+});
 
 export default api.instance;

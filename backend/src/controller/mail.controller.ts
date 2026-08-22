@@ -123,7 +123,7 @@ export const sendResetPasswordCodeEmail = async (
     });
 
     await transporter.sendMail({
-      from: `"Forever E-commerce" <${process.env.EMAIL}>`,
+      from: `"Forever E-commerce" <${process.env.EMAIL_USER}>`,
       to: toEmail,
       subject: "Reset Password",
       html,
@@ -141,6 +141,7 @@ export const sendResetPasswordCodeEmail = async (
       resetCode,
     });
   } catch (err) {
+    logger.error("Reset password email ", err)
     throw new ErrorHandler(500, 'Failed to send reset password email');
   }
 };
