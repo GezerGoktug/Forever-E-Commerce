@@ -1,0 +1,75 @@
+@use "@forever/sass-utils/utils-mixins" as u;
+@use "@forever/sass-utils/mixins" as m;
+@use "@forever/sass-utils/variables" as v;
+
+.agent_panel_header {
+    @include u.flex-between;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    padding: 12px;
+    z-index: 120;
+    background-color: rgba(0, 0, 0, 0.06);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    border-radius: 20px 20px 0 0;
+
+    @include u.dark-mode {
+        background-color: rgba(255, 255, 255, 0.06);
+        box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 5px 0px, rgba(255, 255, 255, 0.1) 0px 0px 1px 0px;
+    }
+
+    @include m.responsive(xs) {
+        border-radius: 0
+    }
+
+    &_left {
+        @include u.row-center;
+        gap: 10px;
+
+        .agent_panel_agent_infos {
+            h6 {
+                font-size: 14px;
+            }
+
+            span {
+                font-size: 13px;
+                text-wrap: nowrap;
+            }
+        }
+
+        &_avatar {
+            position: relative;
+
+            .agent_icon {
+                background: #db70ff;
+                background: linear-gradient(90deg, rgba(219, 112, 255, 1) 0%, rgba(199, 87, 186, 1) 50%);
+                padding: 3px;
+                border-radius: 6px;
+                fill: white;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+            }
+
+            img {
+                width: 40px;
+                height: 40px;
+                object-fit: cover;
+                object-position: top;
+                border-radius: 50%;
+                outline: 1px solid v.$third-color;
+            }
+        }
+    }
+
+    &_right {
+        .agent_panel_header_close_btn {
+            background-color: rgba(0, 0, 0, 0.08);
+            @include u.flex-center;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+    }
+}

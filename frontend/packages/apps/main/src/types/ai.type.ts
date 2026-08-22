@@ -1,30 +1,18 @@
-import type { ExtendedProductType } from "./product.type"
+﻿import type { ExtendedProductType } from "./product.type"
 
-export interface IAskQuestionToAiChatbotVariables {
+export interface IAskQuestionToAiAgentVariables {
     question: string,
     threadId?: string
 }
 
-export interface IAskQuestionToAiChatbotResponse {
+export interface IAskQuestionToAiAgentResponse extends AgentMessageType {
+    threadId: string
+}
+
+export type AgentMessageType = {
+    type: "ai" | "human" | "system"
     message: string,
-    products: (ExtendedProductType & { averageRating: number })[]
-    threadId: string,
-    messages: {
-        type: "human" | "ai",
-        content: string
-    }[]
+    isNewMessageAtRecent?: boolean
+    createdAt?: string,
+    products?: Array<ExtendedProductType & { averageRating: number }>
 }
-
-interface BaseMessage {
-    message: string;
-}
-
-export type MessageType =
-    | (BaseMessage & {
-        type: "ai";
-        products: Array<ExtendedProductType & { averageRating: number }>;
-    })
-    | (BaseMessage & {
-        type: "human";
-        products?: never;
-    });

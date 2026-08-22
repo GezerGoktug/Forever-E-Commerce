@@ -1,0 +1,61 @@
+﻿@use "@forever/sass-utils/utils-mixins" as u;
+@use "@forever/sass-utils/mixins" as m;
+@use "@forever/sass-utils/variables" as v;
+
+.agent_panel {
+    position: absolute;
+    bottom: calc(100% + 40px);
+    width: 400px;
+    right: 0;
+    background-color: v.$primary-color;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
+    @include u.dark-mode {
+        box-shadow: rgba(255, 255, 255, 0.02) 0px 1px 3px 0px, rgba(196, 226, 255, 0.15) 0px 0px 0px 1px;
+    }
+
+    @include m.responsive(xs) {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 130px;
+        width: 100vw;
+        z-index: 4000;
+        border-radius: 0
+    }
+
+    &_content {
+
+        .agent_panel_message_history {
+            overflow-y: auto;
+            margin-bottom: 85px;
+            padding: 12px;
+            @include u.col-start;
+
+            &::-webkit-scrollbar {
+                width: 0px;
+            }
+
+        }
+
+    }
+
+    &_arrow {
+        position: absolute;
+        bottom: -27.5px;
+        right: 30px;
+        fill: rgb(243, 243, 243);
+        filter: drop-shadow(0px 2px 0px rgba(27, 31, 35, 0.25));
+
+        @include u.dark-mode {
+            fill: rgb(25, 25, 25);
+            filter: drop-shadow(0px 2px 0px rgba(142, 161, 182, 0.25));
+        }
+
+        @include m.responsive(sm) {
+            right: 20px;
+        }
+    }
+
+}

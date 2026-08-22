@@ -1,12 +1,12 @@
 import clsx from "clsx";
 import styles from "./Input.module.scss";
-import { useRef, type InputHTMLAttributes, type ElementType, forwardRef, type ChangeEvent } from "react";
+import { useRef, type InputHTMLAttributes, type ElementType, forwardRef, type ChangeEvent, type TextareaHTMLAttributes } from "react";
 import { type IconType } from "react-icons";
 import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
 import { triggerInputChange } from "@forever/common-utils";
 import { IMaskInput } from "react-imask";
 
-interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+type CommonInputProps = {
   size?: "sm" | "md" | "lg";
   rightIcon?: IconType;
   rightIconSize?: number;
@@ -16,26 +16,33 @@ interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size">
   disableSpin?: boolean;
   stepIncrement?: number;
   mask?: string;
-  isAutoSize?: boolean;
-}
+};
+
+type InputPropsWithInputElementAttrs = CommonInputProps & Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & { isAutoSize?: false };
+type InputPropsWithTextareaElementAttrs = CommonInputProps & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "size"> & { isAutoSize: true };
+
+type InputProps = InputPropsWithInputElementAttrs | InputPropsWithTextareaElementAttrs;
+
+type DefaultInputProps = CommonInputProps & Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & { isAutoSize?: boolean };
 
 const checkClampLogic = (min: number | null, max: number | null, value: number) => {
   return !((min !== null && value < min) || (max !== null && value > max));
 }
 
-const Input = forwardRef(({
-  isAutoSize = false,
-  size = "md",
-  rightIcon: Icon,
-  rightIconOnClick,
-  rightIconSize = 20,
-  className,
-  inputClassName,
-  spinButtonClassname,
-  disableSpin = false,
-  stepIncrement = 1,
-  ...props
-}: InputProps,ref) => {
+const Input = forwardRef((inputProps: InputProps, ref) => {
+  const {
+    isAutoSize = false,
+    size = "md",
+    rightIcon: Icon,
+    rightIconOnClick,
+    rightIconSize = 20,
+    className,
+    inputClassName,
+    spinButtonClassname,
+    disableSpin = false,
+    stepIncrement = 1,
+    ...props
+  } = inputProps as DefaultInputProps;
   const Component: ElementType = props.mask ? IMaskInput : (isAutoSize ? "textarea" : "input");
   const inputWrapperRef = useRef<HTMLDivElement | null>(null);
 

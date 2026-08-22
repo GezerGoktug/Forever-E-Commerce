@@ -1,13 +1,13 @@
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+﻿import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import type { IError, IResponse } from "@forever/api";
 import AiService from "@/services/actions/ai.service";
-import type { MessageType } from "@/types/ai.type";
+import type { AgentMessageType } from "@/types/ai.type";
 
-const useGetAiConversationThreadByThreadIdQuery = (threadId: string, queryOptions?: Omit<UseQueryOptions<IResponse<MessageType[]>, IError>, "queryKey">) =>
-    useQuery<IResponse<MessageType[]>, IError>({
-        queryKey: ["thread_ai_chatbot", threadId],
-        queryFn: () => AiService.getAiConversationThreadByThreadId(threadId),
+const useGetAiConversationByThreadIdQuery = (threadId: string, queryOptions?: Omit<UseQueryOptions<IResponse<AgentMessageType[]>, IError>, "queryKey">) =>
+    useQuery<IResponse<AgentMessageType[]>, IError>({
+        queryKey: ["thread_ai_agent", threadId],
+        queryFn: () => AiService.getAiConversationByThreadId(threadId),
         ...queryOptions
     });
 
-export { useGetAiConversationThreadByThreadIdQuery }    
+export { useGetAiConversationByThreadIdQuery }    

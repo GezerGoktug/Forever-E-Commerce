@@ -1,0 +1,103 @@
+﻿@use "@forever/sass-utils/utils-mixins" as u;
+@use "@forever/sass-utils/mixins" as m;
+
+.agent_panel_chat_block_product_wrapper {
+    @include u.col-start;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 10px;
+    z-index: 10;
+
+    .agent_panel_chat_block_product {
+        display: flex;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.08);
+        border-radius: 10px;
+        padding: 5px 8px;
+
+        @include u.dark-mode {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        img {
+            height: 50px;
+            border-radius: 10px;
+
+            @include m.responsive(xs) {
+                height: 45px;
+            }
+        }
+
+        .agent_panel_chat_block_product_info {
+            flex: 1;
+            margin-left: 10px;
+            margin-right: 5px;
+
+            h6 {
+                font-size: 14px;
+
+                @include m.responsive(xs) {
+                    font-size: 13px;
+                }
+            }
+
+            .agent_panel_chat_block_product_price_and_rating {
+                @include u.row-center;
+                margin: 4px 0;
+                gap: 10px;
+
+                span {
+                    font-weight: 500
+                }
+
+                @include m.responsive(xs) {
+                    font-size: 13px;
+                }
+
+
+                .agent_panel_chat_block_product_avg_rating {
+                    @include u.row-center;
+                    gap: 5px;
+
+                    svg {
+                        fill: orangered;
+                    }
+
+                }
+            }
+
+            .agent_panel_chat_block_product_sizes {
+                display: flex;
+                gap: 3px;
+                font-size: 12px;
+
+                @include m.responsive(xs) {
+                    font-size: 11px;
+                }
+
+                div {
+                    border: 1px solid rgb(207, 206, 206);
+                    padding: 4px 8px;
+
+                }
+            }
+        }
+
+        .agent_panel_chat_block_product_actions {
+            div {
+                z-index: 50;
+                @include u.flex-center;
+                width: 35px;
+                height: 35px;
+                background-color: rgb(237, 237, 237);
+                border: 1px solid rgb(207, 206, 206);
+                border-radius: 10px;
+                cursor: pointer;
+
+                @include u.dark-mode {
+                    background-color: rgb(0, 0, 0);
+                }
+            }
+        }
+    }
+}

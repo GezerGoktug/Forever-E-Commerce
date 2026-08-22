@@ -1,0 +1,81 @@
+@use "@forever/sass-utils/utils-mixins" as u;
+@use "@forever/sass-utils/mixins" as m;
+@use "@forever/sass-utils/variables" as v;
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.agent_panel_chat_input {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    height: max-content;
+    gap: 10px;
+    padding: 12px;
+    background-color: rgb(243, 243, 243);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    border-radius: 0 0 20px 20px;
+
+    @include u.dark-mode {
+        background-color: rgb(27, 27, 27);
+    }
+
+    @include m.responsive(xs) {
+        border-radius: 0
+    }
+
+    &_field {
+        flex: 1;
+        background-color: rgba(0, 0, 0, 0.08);
+        border: 0;
+        border-radius: 15px;
+
+        @include u.dark-mode {
+            background-color: rgba(233, 233, 233, 0.08);
+        }
+
+        &_item {
+            &::-webkit-scrollbar {
+                width: 0px;
+            }
+
+            max-height: 100px;
+        }
+    }
+
+    &_voice_btn,
+    &_action_btn {
+        background-color: v.$text-color;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        @include u.flex-center;
+
+        &:has(svg.loading_icon) {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        &.is_listening {
+            background-color: darkblue;
+        }
+
+        svg {
+            fill: v.$primary-color;
+
+            &.loading_icon {
+                animation: spin 0.4s linear infinite;
+            }
+        }
+    }
+}

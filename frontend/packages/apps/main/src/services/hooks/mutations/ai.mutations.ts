@@ -1,22 +1,21 @@
-import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
+﻿import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import type { IError, IResponse } from "@forever/api";
-import type { IAskQuestionToAiChatbotResponse, IAskQuestionToAiChatbotVariables } from "@/types/ai.type";
+import type { IAskQuestionToAiAgentResponse, IAskQuestionToAiAgentVariables } from "@/types/ai.type";
 import AiService from "@/services/actions/ai.service";
 
-
-const useAskQuestionToAiChatbotMutation = (mutationDetails?: UseMutationOptions<IResponse<IAskQuestionToAiChatbotResponse>, IError, IAskQuestionToAiChatbotVariables>) =>
-    useMutation<IResponse<IAskQuestionToAiChatbotResponse>, IError, IAskQuestionToAiChatbotVariables>({
-        mutationKey: ["ask_question_ai_chatbot"],
-        mutationFn: (body) => AiService.askQuestionToAiChatbot(body),
+const useAskQuestionToAiAgentMutation = (mutationDetails?: UseMutationOptions<IResponse<IAskQuestionToAiAgentResponse>, IError, IAskQuestionToAiAgentVariables>) =>
+    useMutation<IResponse<IAskQuestionToAiAgentResponse>, IError, IAskQuestionToAiAgentVariables>({
+        mutationKey: ["ask_question_ai_agent"],
+        mutationFn: (body) => AiService.askQuestionToAiAgent(body),
         ...mutationDetails,
     })
 
 
-const useDeleteAiConversationThreadByThreadIdMutation = (mutationDetails?: UseMutationOptions<IResponse<{ message: string }>, IError, string>) =>
+const useDeleteAiConversationByThreadIdMutation = (mutationDetails?: UseMutationOptions<IResponse<{ message: string }>, IError, string>) =>
     useMutation<IResponse<{ message: string }>, IError, string>({
-        mutationKey: ["delete_thread_ai_chatbot"],
-        mutationFn: (threadId) => AiService.deleteAiConversationThreadByThreadId(threadId),
+        mutationKey: ["delete_thread_ai_agent"],
+        mutationFn: (threadId) => AiService.deleteAiConversationByThreadId(threadId),
         ...mutationDetails,
     })
 
-export { useAskQuestionToAiChatbotMutation, useDeleteAiConversationThreadByThreadIdMutation }
+export { useAskQuestionToAiAgentMutation, useDeleteAiConversationByThreadIdMutation }

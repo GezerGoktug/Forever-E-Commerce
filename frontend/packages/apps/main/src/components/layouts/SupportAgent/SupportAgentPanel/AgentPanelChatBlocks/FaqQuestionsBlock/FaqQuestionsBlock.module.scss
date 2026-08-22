@@ -1,0 +1,36 @@
+﻿@use "@forever/sass-utils/utils-mixins" as u;
+@use "@forever/sass-utils/mixins" as m;
+
+.agent_panel_chat_block_faq_questions {
+    @include u.col-start;
+    gap: 10px;
+    margin-top: 20px;
+    width: 90%;
+    margin-bottom: 20px;
+
+    @include m.responsive(xs) {
+        width: 100%;
+    }
+
+
+    .agent_panel_chat_block_faq_question {
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.08);
+        @include u.flex-between;
+        gap: 10px;
+        font-size: 14px;
+        padding: 4px 6px;
+        border-radius: 4px;
+        cursor: pointer;
+
+        span {
+            flex: 1;
+        }
+
+
+        @include u.dark-mode {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+    }
+}
