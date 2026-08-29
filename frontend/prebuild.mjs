@@ -3,7 +3,7 @@ import fs from "fs/promises";
 const initStaticFolder = async () => {
     let isExistStaticFolder = false;
     try {
-        await fs.access("./packages/static")
+        await fs.access("./static")
         isExistStaticFolder = true;
     } catch {
         isExistStaticFolder = false;
@@ -20,7 +20,7 @@ const initStaticFolder = async () => {
             await fs.mkdir("./dist");
             await fs.mkdir("./dist/static");
         }
-        await fs.cp("./packages/static", "./dist/static", { recursive: true });
+        await fs.cp("./static", "./dist/static", { recursive: true });
     }
     else {
         console.warn("Not accessed static folder")
