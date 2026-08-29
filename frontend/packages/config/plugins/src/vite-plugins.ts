@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const staticFilesPlugin = (staticFilesPath: string, isDev: boolean, isPreview: boolean | undefined): Plugin => {
   const STATIC_KEY = '@forever-static';
-  const STATIC_PACKAGE = path.resolve(__dirname, '../../../static');
+  const STATIC_PACKAGE = path.resolve(__dirname, '../../../../static');
 
   const MIME_TYPES: Record<string, string> = {
     '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',

@@ -2,17 +2,17 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { staticFilesPlugin, injectToHtmlPlugin } from "@forever/plugins"
 import { injectDataToWindow, injectFontsPreloaderToHtml } from "@forever/plugins/utils"
-// import { visualizer } from "rollup-plugin-visualizer"
 import path from 'path'
+// import { visualizer } from 'rollup-plugin-visualizer';
 
+// https://vite.dev/config/
 export default defineConfig(({ mode, isPreview }) => {
   const isDev = mode === "development";
-
   return {
     plugins: [
       react(),
-      staticFilesPlugin("/static", isDev, isPreview),
-      injectToHtmlPlugin(injectDataToWindow({ APP_NAME: "admin", ENV: isDev ? "development" : "production" })),
+      staticFilesPlugin("static", isDev, isPreview),
+      injectToHtmlPlugin(injectDataToWindow({ APP_NAME: "main", ENV: isDev ? "development" : "production" })),
       injectToHtmlPlugin(injectFontsPreloaderToHtml(
         isDev
           ? [
@@ -42,20 +42,20 @@ export default defineConfig(({ mode, isPreview }) => {
       ))
       // visualizer({
       //   open: true,
-      //   filename: 'admin-bundle-report.html',
+      //   filename: 'main-bundle-report.html',
       //   gzipSize: true,
       //   template: "sunburst"
-      // }),
+      // }) 
     ],
     server: {
-      port: 3000,
+      port: 3000
     },
     preview: {
-      port: 3001
+      port: 3000
     },
     build: {
-      assetsDir: "admin-assets",
-      outDir: '../../../dist/admin',
+      assetsDir: "main-assets",
+      outDir: '../../dist/main',
       emptyOutDir: true,
       rollupOptions: {
         input: 'index.html',
@@ -64,12 +64,12 @@ export default defineConfig(({ mode, isPreview }) => {
             'vendor-core': ['react', 'react-dom', 'react-router-dom'],
             'vendor-form': ['react-hook-form', '@hookform/resolvers', 'zod'],
             'vendor-data': ['@tanstack/react-query'],
-            'vendor-charts': ['recharts'],
-            'vendor-ui': ['framer-motion', 'react-select', 'react-icons']
+            'vendor-ui': ['framer-motion', 'react-select', 'react-icons'],
+            'vendor-stripe': ['@stripe/stripe-js']
           },
-          chunkFileNames: 'admin-assets/js/[name]-[hash].js',
-          entryFileNames: 'admin-assets/js/[name]-[hash].js',
-          assetFileNames: 'admin-assets/[ext]/[name]-[hash].[ext]',
+          chunkFileNames: 'main-assets/js/[name]-[hash].js',
+          entryFileNames: 'main-assets/js/[name]-[hash].js',
+          assetFileNames: 'main-assets/[ext]/[name]-[hash].[ext]',
         },
 
       }
