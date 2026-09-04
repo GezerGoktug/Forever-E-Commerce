@@ -1,5 +1,4 @@
 import { AIMessage, BaseMessage, HumanMessage, ToolMessage } from "@langchain/core/messages";
-import logger from "../config/logger";
 
 export const getShortestHumanMessage = (messages: BaseMessage[]) => {
     return [...messages].reverse().find(msg => msg instanceof HumanMessage);
@@ -233,32 +232,64 @@ function flattenToolMessages(messages: BaseMessage[]): BaseMessage[] {
         });
 }
 
-export async function retryInvoke<T>(
-    app: {
-        invoke: (input: any, config?: Record<string, any>) => Promise<T>;
-    },
-    input: any,
-    config: Record<string, any> = {},
-    maxRetries: number = 3
-): Promise<T> {
-    let attempt = 0;
-    while (attempt < maxRetries) {
-        try {
-            logger.info(`AI Chatbot Attempt ${attempt + 1}/${maxRetries}`);
-            const result = await app.invoke(input, config);
-            return result;
-        } catch (err: any) {
-            if (err?.status === 503) {
-                logger.warn(
-                    `⚠️ Gemini overloaded (503). Retrying ${attempt + 1}/${maxRetries}...`
-                );
-                await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)));
-                attempt++;
-            } else {
-                logger.error("❌ [safeInvoke] Non-503 error:", err);
-                throw err;
-            }
-        }
+export function findIncompleteEscapeTailLength(s: string): number {
+    const uEscapeMatch = s.match(/\\u[0-9a-fA-F]{0,3}$/i);
+    if (uEscapeMatch) {
+        return uEscapeMatch[0].length;
     }
-    throw new Error("Gemini API failed after maximum retries");
+
+    const trailingBackslashes = s.match(/\\+$/)?.[0]?.length ?? 0;
+    if (trailingBackslashes % 2 === 1) {
+        return 1;
+    }
+
+    if (s.endsWith("'")) {
+        return 1;
+    }
+
+    const trailingBackticks = s.match(/`+$/);
+    if (trailingBackticks) {
+        return trailingBackticks[0].length;
+    }
+
+    return 0;
 }
+
+export function makeSafeForJsonRepair(raw: string): string {
+    if (!raw) return raw;
+
+    let safeStr = raw;
+
+    safeStr = safeStr.replace(/^```[a-zA-Z]*\s*/i, '');
+    
+    safeStr = safeStr.replace(/\s*```$/, '');
+
+    let cutLength = findIncompleteEscapeTailLength(safeStr);
+    while (cutLength > 0 && safeStr.length > 0) {
+        safeStr = safeStr.slice(0, safeStr.length - cutLength);
+        cutLength = findIncompleteEscapeTailLength(safeStr);
+    }
+
+    return safeStr;
+}
+
+export function isJsonStream(raw: string): boolean {
+    if (!raw) return false;
+    
+    const cleanStart = raw.trimStart().replace(/^```[a-zA-Z]*\s*/i, '');
+    
+    return cleanStart.startsWith('{');
+}
+
+export function normalizeChunkContent(content: unknown): string {
+    if (typeof content === "string") return content;
+
+    if (Array.isArray(content)) {
+        return content
+            .filter((part: any) => part?.type === "text")
+            .map((part: any) => part?.text ?? "")
+            .join("");
+    }
+
+    return "";
+};

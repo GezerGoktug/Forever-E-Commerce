@@ -1,5 +1,6 @@
 import callGoogleGenAIModel from "../../models/llms";
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts"
+import { RunnableConfig } from "@langchain/core/runnables";
 import { AGENT_PROMPTS } from "../../prompts";
 import { filterMessagesForLLM, makeContentString } from "../../../../util/ai-utils";
 import { knowledgeLookupTool } from "../../tools/knowledgeLookupTool";
@@ -8,7 +9,7 @@ import { GraphStateType } from "../workflow";
 class KnowledgeLookupAgent {
     private static model = callGoogleGenAIModel;
 
-    public static async callNode(state: GraphStateType) {
+    public static async callNode(state: GraphStateType, config: RunnableConfig) {
         const prompt = ChatPromptTemplate.fromMessages([
             [
                 "system",
@@ -21,7 +22,7 @@ class KnowledgeLookupAgent {
 
         const modelWithTools = KnowledgeLookupAgent.model.bindTools([knowledgeLookupTool]);
 
-        const result = await modelWithTools.invoke(formattedPrompt);
+        const result = await modelWithTools.invoke(formattedPrompt, config);
 
         const editedAiMessage = makeContentString(result);
 

@@ -1,6 +1,6 @@
 ﻿import styles from './AiAdviseProductsBlock.module.scss'
 import { IoIosStar, IoMdHeart, IoMdHeartEmpty } from 'react-icons/io'
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useId, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 import { useIsProductsInFavQuery } from '@/services/hooks/queries/product.query'
@@ -8,6 +8,7 @@ import { useIsAccess } from '@/store/auth/hooks'
 import { useHandleFavouriteMutation } from '@/services/hooks/mutations/product.mutations'
 import getSize from '@/helper/getSize'
 import { type AgentMessageType } from '@/types/ai.type'
+import TshirtIcon from '@/icons/TshirtIcon'
 
 const AiAdviseProductItem = ({ product }: { product: NonNullable<(AgentMessageType["products"])>[number] & { isFav: boolean } }) => {
     const isAccess = useIsAccess();
@@ -73,13 +74,49 @@ const AiAdviseProductItem = ({ product }: { product: NonNullable<(AgentMessageTy
         </Link>
     )
 }
-const AiAdviseProductsBlock = memo(({ products }: { products: AgentMessageType["products"] }) => {
+
+const AiAdviseProductSkeletonItem = () => (
+    <div className={styles.agent_panel_chat_block_product_skeleton_wrapper}>
+        <div className={styles.agent_panel_chat_block_product_skeleton}>
+            <div className={styles.agent_panel_chat_block_product_skeleton_image}>
+                <TshirtIcon />
+            </div>
+            <div className={styles.agent_panel_chat_block_product_skeleton_info}>
+                <div className={styles.agent_panel_chat_block_product_skeleton_title} />
+                <div className={styles.agent_panel_chat_block_product_skeleton_price_and_rating}>
+                    <div className={styles.agent_panel_chat_block_product_skeleton_price} />
+                    <div className={styles.agent_panel_chat_block_product_skeleton_avg_rating}>
+                        <IoIosStar />
+                        <div />
+                    </div>
+                </div>
+                <div className={styles.agent_panel_chat_block_product_skeleton_sizes}>
+                    <div />
+                    <div />
+                    <div />
+                </div>
+            </div>
+            <div className={styles.agent_panel_chat_block_product_skeleton_actions}>
+                <div>
+                    <IoMdHeartEmpty size={20} />
+                </div>
+            </div>
+        </div>
+    </div>
+)
+
+const AiAdviseProductsBlock = memo(({ products, isLoading = false }: { products: AgentMessageType["products"], isLoading?: boolean }) => {
 
     const { data } = useIsProductsInFavQuery(products ? products?.map(p => p._id) : [], ["ai-agent-fav-product"], {
         enabled: useIsAccess() && !!products?.length
     })
 
     const isFavProduct = (id: string) => data?.data.find(dt => dt._id === id)?.isFav;
+    const id = useId();
+
+    if (isLoading) {
+        return [0, 1, 2, 3, 4].map(dt => <AiAdviseProductSkeletonItem key={`ai-product-skeleton-${id}-${dt}`} />)
+    }
 
     return products && products.map((product) => <AiAdviseProductItem product={{ ...product, isFav: isFavProduct(product._id) || false }} key={`ai-product-${product._id}`} />)
 

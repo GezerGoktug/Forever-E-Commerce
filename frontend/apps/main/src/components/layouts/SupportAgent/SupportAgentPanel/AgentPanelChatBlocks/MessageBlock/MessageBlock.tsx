@@ -6,8 +6,9 @@ import type { AgentMessageType } from "@/types/ai.type"
 import { memo } from "react"
 import { CiClock1 } from "react-icons/ci"
 import { formatMessageCreatedDate } from "@/utils/date-utils"
+import { MarkdownProviderWithGenerateEffect } from "./MarkdownProviderWithGenerateEffect"
 
-type MessageFieldType = Omit<AgentMessageType, "products">
+type MessageFieldType = Omit<AgentMessageType, "products"> & { isNewMessageAtRecent: boolean };
 
 interface IMessageBlockProps {
     isLoading?: boolean
@@ -50,7 +51,10 @@ const MessageBlock = memo(({ message, isLoading = false, loadingMsgType = "ai" }
             <div className={clsx(styles.agent_panel_chat_block_message, { [styles.is_human_message]: message.type === "human" })}>
                 {message.type !== "human" && <BaseImage src="/agent.avif" alt="" />}
                 <div className={clsx(styles.agent_panel_chat_block_message_content, { [styles.is_human_message]: message.type === "human" })}>
-                    <p>{message.message}</p>
+                    <MarkdownProviderWithGenerateEffect
+                        animateText={message.type !== "human" && message.isNewMessageAtRecent}
+                        content={message.message}
+                    />
                     {message?.createdAt && <div className={clsx(styles.agent_panel_chat_block_message_date, { [styles.is_human_message]: message.type === "human" })}>
                         <CiClock1 size={10} />
                         <span>
