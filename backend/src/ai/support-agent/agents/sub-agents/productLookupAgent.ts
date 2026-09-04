@@ -1,5 +1,6 @@
 import callGoogleGenAIModel from "../../models/llms";
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts"
+import { RunnableConfig } from "@langchain/core/runnables";
 import { AGENT_PROMPTS } from "../../prompts";
 import { filterMessagesForLLM, makeContentString, parseAgentJSONContent } from "../../../../util/ai-utils";
 import { productLookupTool } from "../../tools/productLookupTool";
@@ -8,7 +9,7 @@ import { GraphStateType } from "../workflow";
 class ProductLookupAgent {
     private static model = callGoogleGenAIModel;
 
-    public static async callNode(state: GraphStateType) {
+    public static async callNode(state: GraphStateType, config: RunnableConfig) {
         const prompt = ChatPromptTemplate.fromMessages([
             [
                 "system",
@@ -21,7 +22,7 @@ class ProductLookupAgent {
 
         const modelWithTools = ProductLookupAgent.model.bindTools([productLookupTool]);
 
-        const result = await modelWithTools.invoke(formattedPrompt);
+        const result = await modelWithTools.invoke(formattedPrompt, config);
 
         const editedAiMessage = makeContentString(result);
 

@@ -1,5 +1,6 @@
 import callGoogleGenAIModel from "../../models/llms";
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts"
+import { RunnableConfig } from "@langchain/core/runnables";
 import { AGENT_PROMPTS } from "../../prompts";
 import { filterMessagesForLLM, makeContentString, parseAgentJSONContent } from "../../../../util/ai-utils";
 import { GraphStateType } from "../workflow";
@@ -7,7 +8,7 @@ import { GraphStateType } from "../workflow";
 class ClassifierAgent {
     private static model = callGoogleGenAIModel;
 
-    public static async callNode(state: GraphStateType) {
+    public static async callNode(state: GraphStateType, config: RunnableConfig) {
         const prompt = ChatPromptTemplate.fromMessages([
             [
                 "system",
@@ -18,7 +19,7 @@ class ClassifierAgent {
 
         const formattedPrompt = await prompt.formatMessages({ messages: filterMessagesForLLM(state.messages, { flatten: true }) })
 
-        const result = await ClassifierAgent.model.invoke(formattedPrompt);
+        const result = await ClassifierAgent.model.invoke(formattedPrompt, config);
 
         const parsedData = parseAgentJSONContent(result);
         const editedAiMessage = makeContentString(result);

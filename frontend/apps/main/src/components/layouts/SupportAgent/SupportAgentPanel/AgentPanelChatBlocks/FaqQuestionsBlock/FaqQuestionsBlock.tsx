@@ -73,6 +73,7 @@ const FaqQuestionsBlock = memo(({ onSelectQuestion }: { onSelectQuestion: (quest
             {
                 FAQ_QUESTIONS[ramdomNumber].map((question, i) => (
                     <motion.div
+                        key={`faq_question_` + i}
                         initial={{ x: -10, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ duration: 0.4, delay: 1 + ((i + 1) * 0.2) }}
