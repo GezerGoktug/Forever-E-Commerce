@@ -5,10 +5,11 @@ import { useMediaQuery } from '@forever/hook-kit'
 import { OutsideClickHandler } from '@forever/common-utils'
 import { Fragment, useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import toast from 'react-hot-toast'
-import { useAskQuestionToAiAgentMutation } from '@/services/hooks/mutations/ai.mutations'
+import { useAskQuestionToAiAgentStreamMutation } from '@/services/hooks/mutations/ai.mutations'
 import { AxiosError } from 'axios'
-import { type AgentMessageType } from '@/types/ai.type'
+import { type AgentMessageType, type IAgentMessage } from '@/types/ai.type'
 import { useGetAiConversationByThreadIdQuery } from '@/services/hooks/queries/ai.query'
+import { getDataWithStreamReader } from '@/utils/stream-utils'
 import AiAdviseProductsBlock from '../AgentPanelChatBlocks/AiAdviseProductsBlock/AiAdviseProductsBlock'
 import FaqQuestionsBlock from '../AgentPanelChatBlocks/FaqQuestionsBlock/FaqQuestionsBlock'
 import MessageBlock from '../AgentPanelChatBlocks/MessageBlock/MessageBlock'
@@ -33,6 +34,8 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
 
 
     const [text, setText] = useState("");
+    const [isStreaming, setIsStreaming] = useState(false);
+    const [activeStream, setActiveStream] = useState<string | null>(null);
     const [messages, setMessages] = useState<AgentMessageType[]>([{
         type: "system",
         message: "Hello 👋, I'm Sora, your e-commerce store assistant 😊. How can I help you? Here are some sample questions you can ask me:",
@@ -49,20 +52,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
     const isSmallDevices = useMediaQuery({ maxWidth: 550, minWidth: 400 });
     const isXSmallDevices = useMediaQuery({ maxWidth: 400 });
 
-    const { mutateAsync, isPending } = useAskQuestionToAiAgentMutation({
-        onSuccess(data) {
-            setMessages(prv => [...prv, { type: "ai", message: data.data.message, createdAt: data.data.createdAt, products: data.data.products }])
-            if (!threadId) {
-                sessionStorage.setItem("aiSupportAgentThreadId", data.data.threadId)
-                setThreadId(data.data.threadId)
-            }
-            setText("");
-            setTimeout(() => {
-
-                focusAgentChatInput();
-            }, 300);
-            triggerAutoSizeTextArea();
-        },
+    const { mutateAsync, isPending } = useAskQuestionToAiAgentStreamMutation({
         onError(error) {
             const apiError = error?.response?.data?.error.errorMessage;
             if (typeof apiError === "string") toast.error(apiError);
@@ -88,6 +78,10 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
     }
 
     const askQuestionToAgent = async (question?: string) => {
+        if (!question && text.trim().length < 2) {
+            toast.error("Text field must be least 2 character length.")
+            return;
+        }
 
         const notUpdatedMessages = [...messages];
 
@@ -99,11 +93,54 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                 message: question || text
             }])
             setTimeout(() => {
-                scrollToEndOfChatHistory()
-            }, 10);
-            await mutateAsync({ question: question || text, ...(threadId && { threadId }) })
+                scrollToEndOfChatHistory();
+            }, 400);
+
+            const stream = await mutateAsync({ question: question || text, ...(threadId && { threadId }) })
+
+            await getDataWithStreamReader<IAgentMessage>({
+                stream,
+                onStreamStart() {
+                    setIsStreaming(true);
+                    setText("");
+                    triggerAutoSizeTextArea();
+                },
+                onChunkToParsedData(parsedData) {
+
+                    if (!threadId) {
+                        sessionStorage.setItem("aiSupportAgentThreadId", parsedData.threadId)
+                        setThreadId(parsedData.threadId)
+                    }
+
+                    if (parsedData.stream_id !== activeStream) {
+                        setActiveStream(parsedData.stream_id);
+                    }
+
+                    setMessages((prev) => {
+                        const newMessages = [...prev];
+                        const lastMessageIndex = newMessages.length - 1;
+                        const currentLastMessage = newMessages[lastMessageIndex];
+
+                        if (currentLastMessage?.stream_id === parsedData.stream_id && currentLastMessage.type === "ai") {
+                            newMessages[lastMessageIndex] = parsedData;
+                        }
+                        else if (!currentLastMessage?.stream_id) {
+                            newMessages.push(parsedData);
+                        }
+
+                        return newMessages;
+                    });
+                },
+                onFinishedStream() {
+                    setIsStreaming(false);
+                    setTimeout(() => {
+                        focusAgentChatInput();
+                    }, 300);
+                },
+            });
         } catch (error) {
             setMessages(notUpdatedMessages)
+            setIsStreaming(false);
             if (error instanceof AxiosError) {
                 const apiError = error?.response?.data?.error.errorMessage;
                 if (typeof apiError === "string") toast.error(apiError);
@@ -154,18 +191,28 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                         >
                             {
                                 !isLoading && messages.map((msg, i) => (
-                                    <Fragment key={`agent-message-` + msg.products + "-" + i} >
+                                    <Fragment key={`agent-message-` + msg.stream_id + "-" + i} >
                                         <MessageBlock message={{
                                             message: msg.message,
                                             type: msg.type,
                                             createdAt: msg.createdAt,
-                                            isNewMessageAtRecent: msg.isNewMessageAtRecent
+                                            isNewMessageAtRecent: activeStream === msg.stream_id
                                         }}
                                         />
                                         {
-                                            msg.type === "system" && <FaqQuestionsBlock onSelectQuestion={(question) => handleClickRandomQuestionBtn(question)} />
+                                            msg.type === "system" &&
+                                            <FaqQuestionsBlock
+                                                onSelectQuestion={(question) => handleClickRandomQuestionBtn(question)}
+                                            />
                                         }
-                                        {msg.type === "ai" && msg.products && msg.products.length > 0 && <AiAdviseProductsBlock products={msg.products} />}
+                                        {
+                                            msg.type === "ai" &&
+                                            (msg.products && msg.products.length > 0) &&
+                                            <AiAdviseProductsBlock
+                                                products={msg.products}
+                                                isLoading={isStreaming && activeStream === msg.stream_id}
+                                            />
+                                        }
                                     </Fragment>
                                 ))
                             }
@@ -183,7 +230,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                     <ChatInput
                         text={text}
                         setText={setText}
-                        isPending={isPending}
+                        isPending={isPending || isStreaming}
                         askQuestionToAgent={askQuestionToAgent}
                     />
                 </div>

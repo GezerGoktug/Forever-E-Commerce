@@ -1,12 +1,12 @@
 ﻿import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import type { IError, IResponse } from "@forever/api";
-import type { IAskQuestionToAiAgentResponse, IAskQuestionToAiAgentVariables } from "@/types/ai.type";
+import type { IAskQuestionToAiAgentVariables } from "@/types/ai.type";
 import AiService from "@/services/actions/ai.service";
 
-const useAskQuestionToAiAgentMutation = (mutationDetails?: UseMutationOptions<IResponse<IAskQuestionToAiAgentResponse>, IError, IAskQuestionToAiAgentVariables>) =>
-    useMutation<IResponse<IAskQuestionToAiAgentResponse>, IError, IAskQuestionToAiAgentVariables>({
-        mutationKey: ["ask_question_ai_agent"],
-        mutationFn: (body) => AiService.askQuestionToAiAgent(body),
+const useAskQuestionToAiAgentStreamMutation = (mutationDetails?: UseMutationOptions<ReadableStream, IError, IAskQuestionToAiAgentVariables>) =>
+    useMutation<ReadableStream, IError, IAskQuestionToAiAgentVariables>({
+        mutationKey: ["ask_question_ai_agent_stream"],
+        mutationFn: (body) => AiService.askQuestionToAiAgentStream(body),
         ...mutationDetails,
     })
 
@@ -18,4 +18,4 @@ const useDeleteAiConversationByThreadIdMutation = (mutationDetails?: UseMutation
         ...mutationDetails,
     })
 
-export { useAskQuestionToAiAgentMutation, useDeleteAiConversationByThreadIdMutation }
+export { useAskQuestionToAiAgentStreamMutation, useDeleteAiConversationByThreadIdMutation }

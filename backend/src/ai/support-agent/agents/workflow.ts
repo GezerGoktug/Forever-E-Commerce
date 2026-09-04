@@ -6,6 +6,7 @@ import ClassifierAgent from "./sub-agents/classifierAgent";
 import ProductLookupAgent from "./sub-agents/productLookupAgent";
 import KnowledgeLookupAgent from "./sub-agents/knowledgeLookupAgent";
 import { knowledgeLookupTool } from "../tools/knowledgeLookupTool";
+import { AGENT_NODES, TOOL_NODES } from "../constants";
 
 type UserIntentType = "GENERAL_INFO" | "PRODUCT_LOOKUP";
 
@@ -55,21 +56,21 @@ class Workflow {
 
     private knowledgeLookupToolshouldContinue(state: GraphStateType) {
         const lastMessage = state.messages[state.messages.length - 1] as AIMessage;
-        const decision = lastMessage?.tool_calls?.length ? "knowledgeLookupTools" : END;
+        const decision = lastMessage?.tool_calls?.length ? TOOL_NODES.KNOWLEDGE_LOOKUP_TOOLS : END;
         return decision;
     }
 
     private productLookupToolShouldContinue(state: GraphStateType) {
         const lastMessage = state.messages[state.messages.length - 1] as AIMessage;
-        const decision = lastMessage?.tool_calls?.length ? "productLookupTools" : END;
+        const decision = lastMessage?.tool_calls?.length ? TOOL_NODES.PRODUCT_LOOKUP_TOOLS : END;
         return decision;
     }
     private agentRouter(state: GraphStateType) {
         if (state.userIntent) {
             if (state.userIntent === "GENERAL_INFO")
-                return "knowledgeLookupAgent";
+                return AGENT_NODES.KNOWLEDGE_LOOKUP_AGENT;
             else if (state.userIntent === "PRODUCT_LOOKUP")
-                return "productLookupAgent";
+                return AGENT_NODES.PRODUCT_LOOKUP_AGENT;
             else
                 return END;
         }
@@ -82,19 +83,19 @@ class Workflow {
 
         const graphBuilder = new StateGraph(this.GraphState)
         this.workflow = graphBuilder
-            .addNode("classifierAgent", ClassifierAgent.callNode)
-            .addNode("knowledgeLookupAgent", KnowledgeLookupAgent.callNode)
-            .addNode("productLookupAgent", ProductLookupAgent.callNode)
-            .addNode("knowledgeLookupTools", knowledgeLookupToolsNode)
-            .addNode("productLookupTools", productLookupToolsNode)
-            .addEdge(START, "classifierAgent")
-            .addEdge("productLookupTools", "productLookupAgent")
-            .addEdge("knowledgeLookupTools", "knowledgeLookupAgent")
-            .addEdge("knowledgeLookupAgent", END)
-            .addEdge("productLookupAgent", END)
-            .addConditionalEdges("classifierAgent", this.agentRouter.bind(this))
-            .addConditionalEdges("knowledgeLookupAgent", this.knowledgeLookupToolshouldContinue.bind(this))
-            .addConditionalEdges("productLookupAgent", this.productLookupToolShouldContinue.bind(this))
+            .addNode(AGENT_NODES.CLASSIFIER_AGENT, ClassifierAgent.callNode)
+            .addNode(AGENT_NODES.KNOWLEDGE_LOOKUP_AGENT, KnowledgeLookupAgent.callNode)
+            .addNode(AGENT_NODES.PRODUCT_LOOKUP_AGENT, ProductLookupAgent.callNode)
+            .addNode(TOOL_NODES.KNOWLEDGE_LOOKUP_TOOLS, knowledgeLookupToolsNode)
+            .addNode(TOOL_NODES.PRODUCT_LOOKUP_TOOLS, productLookupToolsNode)
+            .addEdge(START, AGENT_NODES.CLASSIFIER_AGENT)
+            .addEdge(TOOL_NODES.PRODUCT_LOOKUP_TOOLS, AGENT_NODES.PRODUCT_LOOKUP_AGENT)
+            .addEdge(TOOL_NODES.KNOWLEDGE_LOOKUP_TOOLS, AGENT_NODES.KNOWLEDGE_LOOKUP_AGENT)
+            .addEdge(AGENT_NODES.KNOWLEDGE_LOOKUP_AGENT, END)
+            .addEdge(AGENT_NODES.PRODUCT_LOOKUP_AGENT, END)
+            .addConditionalEdges(AGENT_NODES.CLASSIFIER_AGENT, this.agentRouter.bind(this))
+            .addConditionalEdges(AGENT_NODES.KNOWLEDGE_LOOKUP_AGENT, this.knowledgeLookupToolshouldContinue.bind(this))
+            .addConditionalEdges(AGENT_NODES.PRODUCT_LOOKUP_AGENT, this.productLookupToolShouldContinue.bind(this))
     }
 
     public getWorkflow() {
