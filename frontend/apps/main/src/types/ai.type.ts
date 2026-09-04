@@ -12,7 +12,12 @@ export interface IAskQuestionToAiAgentResponse extends AgentMessageType {
 export type AgentMessageType = {
     type: "ai" | "human" | "system"
     message: string,
-    isNewMessageAtRecent?: boolean
     createdAt?: string,
     products?: Array<ExtendedProductType & { averageRating: number }>
+    stream_id?: string
+}
+
+export type IAgentMessage = AgentMessageType & {
+    stream_id: string
+    threadId: string
 }
