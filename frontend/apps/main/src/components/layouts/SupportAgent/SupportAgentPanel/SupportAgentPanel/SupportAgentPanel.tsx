@@ -191,7 +191,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                         >
                             {
                                 !isLoading && messages.map((msg, i) => (
-                                    <Fragment key={`agent-message-` + msg.stream_id + "-" + i} >
+                                    <Fragment key={`agent-message-`+ msg.type + "-" + (msg.stream_id || "") + "-" + i} >
                                         <MessageBlock message={{
                                             message: msg.message,
                                             type: msg.type,
