@@ -17,6 +17,9 @@
       "@forever/common-utils": ["packages/libs/common-utils/src/index.ts"],
       "@forever/common-utils/*": ["packages/libs/common-utils/src/*"],
 
+      "@forever/date-utils": ["packages/libs/date-utils/src/index.ts"],
+      "@forever/date-utils/*": ["packages/libs/date-utils/src/*"],
+
       "@forever/google-oauth-kit": ["packages/libs/google-oauth-kit/src/index.ts"],
       "@forever/google-oauth-kit/*": ["packages/libs/google-oauth-kit/src/*"],
 
@@ -34,6 +37,9 @@
 
       "@forever/storage-kit": ["packages/libs/storage-kit/src/index.ts"],
       "@forever/storage-kit/*": ["packages/libs/storage-kit/src/*"],
+
+      "@forever/stream-utils": ["packages/libs/stream-utils/src/index.ts"],
+      "@forever/stream-utils/*": ["packages/libs/stream-utils/src/*"],
 
       "@forever/theme-kit": ["packages/libs/theme-kit/src/index.ts"],
       "@forever/theme-kit/*": ["packages/libs/theme-kit/src/*"],

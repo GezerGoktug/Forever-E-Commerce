@@ -1,7 +1,8 @@
-import { scrollToEndOfChatHistory } from "../../SupportAgentPanel/SupportAgentPanel";
+import { scrollToEndOfChatHistory } from "../../../SupportAgentPanel/SupportAgentPanel";
 import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown, { type Components } from 'react-markdown';
 import rehypeSanitize from 'rehype-sanitize';
+import styles from "./MarkdownProviderWithGenerateEffect.module.scss";
 
 const rehypePlugins = [rehypeSanitize];
 
@@ -119,7 +120,7 @@ const animateTextNodes = (children: React.ReactNode, animateText: boolean): Reac
                 if (word.match(/^\s+$/)) return word;
 
                 return (
-                    <span key={index} className="word-reveal">
+                    <span key={index} className={styles.word_reveal}>
                         {word}
                     </span>
                 );

@@ -1,13 +1,13 @@
-export const getDataWithStreamReader = async <T>({
+export const initStreamReader = async <T>({
     stream,
     onStreamStart,
-    onChunkToParsedData,
-    onFinishedStream,
+    onChunkParseToData,
+    onStreamFinish,
 }: {
     stream: ReadableStream;
     onStreamStart: () => void;
-    onChunkToParsedData: (parsedData: T) => void;
-    onFinishedStream: () => void;
+    onChunkParseToData: (parsedData: T) => void;
+    onStreamFinish: () => void;
 }): Promise<Partial<{ isFinishedRead: boolean; error: string }> | null | undefined> => {
     const reader = stream?.getReader();
     const decoder = new TextDecoder("utf-8");
@@ -22,7 +22,7 @@ export const getDataWithStreamReader = async <T>({
         const { done, value } = await reader.read();
 
         if (done) {
-            onFinishedStream();
+            onStreamFinish();
             break;
         }
 
@@ -37,7 +37,7 @@ export const getDataWithStreamReader = async <T>({
             if (dataStr === '[DONE]') break;
 
             try {
-                onChunkToParsedData(JSON.parse(dataStr) as T);
+                onChunkParseToData(JSON.parse(dataStr) as T);
             } catch (e) {
                 console.error("JSON parse error while reading agent stream:", e);
             }

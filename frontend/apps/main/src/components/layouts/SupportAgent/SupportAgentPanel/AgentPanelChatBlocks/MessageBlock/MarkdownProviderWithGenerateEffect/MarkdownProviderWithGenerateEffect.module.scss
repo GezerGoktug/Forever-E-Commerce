@@ -1,0 +1,17 @@
+@keyframes wordReveal {
+    from {
+        opacity: 0;
+        filter: blur(4px);
+    }
+
+    to {
+        opacity: 1;
+        filter: blur(0px);
+    }
+}
+
+.word_reveal {
+    display: inline-block;
+    opacity: 0;
+    animation: wordReveal 0.3s ease-out forwards;
+}

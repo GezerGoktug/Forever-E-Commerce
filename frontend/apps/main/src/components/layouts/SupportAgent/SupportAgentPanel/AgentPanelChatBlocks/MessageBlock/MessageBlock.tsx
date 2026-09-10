@@ -5,8 +5,8 @@ import { motion } from "framer-motion"
 import type { AgentMessageType } from "@/types/ai.type"
 import { memo } from "react"
 import { CiClock1 } from "react-icons/ci"
-import { formatMessageCreatedDate } from "@/utils/date-utils"
-import { MarkdownProviderWithGenerateEffect } from "./MarkdownProviderWithGenerateEffect"
+import { formatMessageCreatedDate } from "@forever/date-utils"
+import { MarkdownProviderWithGenerateEffect } from "./MarkdownProviderWithGenerateEffect/MarkdownProviderWithGenerateEffect"
 
 type MessageFieldType = Omit<AgentMessageType, "products"> & { isNewMessageAtRecent: boolean };
 

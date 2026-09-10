@@ -1,0 +1,16 @@
+{
+    "name": "@forever/date-utils",
+    "version": "1.0.0",
+    "main": "./index.ts",
+    "module": "index.ts",
+    "types": "index.ts",
+    "exports": {
+        ".": {
+            "import": "./index.ts",
+            "types": "./index.ts"
+        }
+    },
+    "dependencies": {
+        "dayjs": "1.11.13"
+    }
+}

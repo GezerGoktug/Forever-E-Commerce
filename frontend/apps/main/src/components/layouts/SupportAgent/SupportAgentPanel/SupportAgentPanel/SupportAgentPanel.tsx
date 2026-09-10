@@ -9,7 +9,7 @@ import { useAskQuestionToAiAgentStreamMutation } from '@/services/hooks/mutation
 import { AxiosError } from 'axios'
 import { type AgentMessageType, type IAgentMessage } from '@/types/ai.type'
 import { useGetAiConversationByThreadIdQuery } from '@/services/hooks/queries/ai.query'
-import { getDataWithStreamReader } from '@/utils/stream-utils'
+import { initStreamReader } from '@forever/stream-utils'
 import AiAdviseProductsBlock from '../AgentPanelChatBlocks/AiAdviseProductsBlock/AiAdviseProductsBlock'
 import FaqQuestionsBlock from '../AgentPanelChatBlocks/FaqQuestionsBlock/FaqQuestionsBlock'
 import MessageBlock from '../AgentPanelChatBlocks/MessageBlock/MessageBlock'
@@ -98,14 +98,14 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
 
             const stream = await mutateAsync({ question: question || text, ...(threadId && { threadId }) })
 
-            await getDataWithStreamReader<IAgentMessage>({
+            await initStreamReader<IAgentMessage>({
                 stream,
                 onStreamStart() {
                     setIsStreaming(true);
                     setText("");
                     triggerAutoSizeTextArea();
                 },
-                onChunkToParsedData(parsedData) {
+                onChunkParseToData(parsedData) {
 
                     if (!threadId) {
                         sessionStorage.setItem("aiSupportAgentThreadId", parsedData.threadId)
@@ -131,7 +131,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                         return newMessages;
                     });
                 },
-                onFinishedStream() {
+                onStreamFinish() {
                     setIsStreaming(false);
                     setTimeout(() => {
                         focusAgentChatInput();
