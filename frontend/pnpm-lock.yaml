@@ -201,9 +201,9 @@ importers:
       '@forever/storage-kit':
         specifier: workspace:*
         version: link:../../packages/libs/storage-kit
-      '@forever/stream-utils':
+      '@forever/stream-reader':
         specifier: workspace:*
-        version: link:../../packages/libs/stream-utils
+        version: link:../../packages/libs/stream-reader
       '@forever/theme-kit':
         specifier: workspace:*
         version: link:../../packages/libs/theme-kit
@@ -452,7 +452,7 @@ importers:
 
   packages/libs/storage-kit: {}
 
-  packages/libs/stream-utils: {}
+  packages/libs/stream-reader: {}
 
   packages/libs/theme-kit:
     dependencies:

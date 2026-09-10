@@ -9,7 +9,7 @@ import { useAskQuestionToAiAgentStreamMutation } from '@/services/hooks/mutation
 import { AxiosError } from 'axios'
 import { type AgentMessageType, type IAgentMessage } from '@/types/ai.type'
 import { useGetAiConversationByThreadIdQuery } from '@/services/hooks/queries/ai.query'
-import { initStreamReader } from '@forever/stream-utils'
+import { initStreamReader } from '@forever/stream-reader'
 import AiAdviseProductsBlock from '../AgentPanelChatBlocks/AiAdviseProductsBlock/AiAdviseProductsBlock'
 import FaqQuestionsBlock from '../AgentPanelChatBlocks/FaqQuestionsBlock/FaqQuestionsBlock'
 import MessageBlock from '../AgentPanelChatBlocks/MessageBlock/MessageBlock'

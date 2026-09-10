@@ -38,8 +38,8 @@
       "@forever/storage-kit": ["packages/libs/storage-kit/src/index.ts"],
       "@forever/storage-kit/*": ["packages/libs/storage-kit/src/*"],
 
-      "@forever/stream-utils": ["packages/libs/stream-utils/src/index.ts"],
-      "@forever/stream-utils/*": ["packages/libs/stream-utils/src/*"],
+      "@forever/stream-reader": ["packages/libs/stream-reader/src/index.ts"],
+      "@forever/stream-reader/*": ["packages/libs/stream-reader/src/*"],
 
       "@forever/theme-kit": ["packages/libs/theme-kit/src/index.ts"],
       "@forever/theme-kit/*": ["packages/libs/theme-kit/src/*"],
