@@ -19,27 +19,45 @@ import AgentPanelHeader from '../AgentPanelHeader/AgentPanelHeader'
 export const scrollToEndOfChatHistory = () => document.getElementById("agentChatMessageHistoryEnd")?.scrollIntoView({ behavior: "smooth" });
 
 const panelAnimationVariant: Variants = {
-    initial: (isSmallDevices) => ({
+    initial: (isSmallWidthDevices) => ({
         width: 0,
         opacity: 0,
-        ...(isSmallDevices && { top: "60vh" })
+        ...(isSmallWidthDevices && { top: "60vh" })
     }),
-    animate: (isSmallDevices) => ({
-        width: isSmallDevices ? "100vw" : "400px",
+    animate: (isSmallWidthDevices) => ({
+        width: isSmallWidthDevices ? "100vw" : "400px",
         opacity: 1,
-        ...(isSmallDevices && { top: 0 })
+        ...(isSmallWidthDevices && { top: 0 })
     }),
-    exit: (isSmallDevices) => ({
+    exit: (isSmallWidthDevices) => ({
         width: 0,
         opacity: 0,
-        ...(isSmallDevices && { top: "60vh" }),
+        ...(isSmallWidthDevices && { top: "60vh" }),
         transition: {
             width: { delay: 0.4 },
             opacity: { delay: 0.3 },
-            ...(isSmallDevices && { top: { delay: 0 } })
+            ...(isSmallWidthDevices && { top: { delay: 0 } })
         }
     })
 };
+
+const getHistoryHeightSize = ({
+    isSmallWidthDevices,
+    isSmallHeightDevices
+}: {
+    isSmallWidthDevices: boolean,
+    isSmallHeightDevices: boolean
+}) => {
+    if (isSmallHeightDevices && !isSmallWidthDevices) {
+        return "55vh";
+    }
+    else if (!isSmallHeightDevices && isSmallWidthDevices) {
+        return "60vh";
+    }
+    else {
+        return "48vh";
+    }
+}
 
 const messageHistoryVariant: Variants = {
     initial: () => ({
@@ -47,14 +65,14 @@ const messageHistoryVariant: Variants = {
         minHeight: "2vh",
         marginBottom: "45px"
     }),
-    animate: (isSmallDevices) => ({
-        maxHeight: isSmallDevices ? "60vh" : "48vh",
-        minHeight: isSmallDevices ? "60vh" : "48vh",
+    animate: ({ isSmallWidthDevices, isSmallHeightDevices }) => ({
+        maxHeight: getHistoryHeightSize({ isSmallWidthDevices, isSmallHeightDevices }),
+        minHeight: getHistoryHeightSize({ isSmallWidthDevices, isSmallHeightDevices }),
         marginBottom: "65px"
     }),
-    exit: (isSmallDevices) => ({
-        maxHeight: isSmallDevices ? 0 : "2vh",
-        minHeight: isSmallDevices ? 0 : "2vh",
+    exit: ({ isSmallWidthDevices }) => ({
+        maxHeight: isSmallWidthDevices ? 0 : "2vh",
+        minHeight: isSmallWidthDevices ? 0 : "2vh",
         marginBottom: "45px",
         transition: { delay: 0 }
     })
@@ -70,7 +88,8 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
         message: "Hello 👋, I'm Sora, your e-commerce store assistant 😊. How can I help you? Here are some sample questions you can ask me:",
         products: []
     }]);
-    const isSmallDevices = useMediaQuery({ maxWidth: 640 });
+    const isSmallWidthDevices = useMediaQuery({ maxWidth: 640 });
+    const isSmallHeightDevices = useMediaQuery({ maxHeight: 550 });
     const { data, isLoading } = useGetAiConversationByThreadIdQuery(threadId as string, {
         enabled: !!threadId,
         refetchOnWindowFocus: false,
@@ -194,17 +213,17 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
     }
 
     return (
-        <OutsideClickHandler disable={isSmallDevices} onOutsideClick={() => setShow(false)}>
+        <OutsideClickHandler disable={isSmallWidthDevices} onOutsideClick={() => setShow(false)}>
             <motion.div
                 variants={panelAnimationVariant}
-                custom={isSmallDevices}
+                custom={isSmallWidthDevices}
                 initial="initial"
                 animate="animate"
                 exit="exit"
                 transition={{
                     width: { duration: 0.4 },
                     opacity: { duration: 0.5 },
-                    ...(isSmallDevices && { top: { duration: 0.4, delay: 0.5 } })
+                    ...(isSmallWidthDevices && { top: { duration: 0.4, delay: 0.5 } })
                 }}
                 className={styles.agent_panel}
             >
@@ -213,7 +232,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                     <AgentPanelHeader setShow={setShow} />
                     <motion.div
                         variants={messageHistoryVariant}
-                        custom={isSmallDevices}
+                        custom={{ isSmallWidthDevices, isSmallHeightDevices }}
                         initial="initial"
                         animate="animate"
                         exit="exit"

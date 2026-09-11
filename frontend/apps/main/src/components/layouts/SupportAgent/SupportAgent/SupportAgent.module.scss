@@ -32,6 +32,24 @@
     }
 }
 
+@include m.responsive(620px, ("is-height-media-query": true)) {
+    @include m.responsive(sm, ("is-min-width":true)) {
+        @keyframes glare_effect {
+            0% {
+                opacity: 0.7;
+                width: 80px;
+                height: 80px;
+            }
+
+            100% {
+                opacity: 0.1;
+                width: 90px;
+                height: 90px;
+            }
+        }
+    }
+}
+
 .support_agent_wrapper {
     position: fixed;
     bottom: 30px;
@@ -41,6 +59,13 @@
     @include m.responsive(sm) {
         bottom: 10px;
         right: 10px;
+    }
+
+    @include m.responsive(620px, ("is-height-media-query": true)) {
+        @include m.responsive(sm, ("is-min-width":true)) {
+            bottom: 10px;
+            right: 10px;
+        }
     }
 
     .support_agent_btn {
@@ -54,6 +79,13 @@
         @include m.responsive(sm) {
             width: 75px;
             height: 75px;
+        }
+
+        @include m.responsive(620px, ("is-height-media-query": true)) {
+            @include m.responsive(sm, ("is-min-width":true)) {
+                width: 75px;
+                height: 75px;
+            }
         }
 
         .glare_effect {

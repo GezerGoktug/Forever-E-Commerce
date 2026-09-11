@@ -13,9 +13,16 @@
   @include u.flex-center;
   z-index: 30;
 
-  @include m.responsive(xls) {
-    right: 140px;
-    bottom: 40px;
+  @include m.responsive(sm) {
+    right: 110px;
+    bottom: 20px;
+  }
+
+  @include m.responsive(620px, ("is-height-media-query": true)) {
+    @include m.responsive(sm, ("is-min-width":true)) {
+      right: 110px;
+      bottom: 20px;
+    }
   }
 
   svg {
