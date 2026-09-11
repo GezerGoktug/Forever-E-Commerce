@@ -15,23 +15,28 @@
         box-shadow: rgba(255, 255, 255, 0.02) 0px 1px 3px 0px, rgba(196, 226, 255, 0.15) 0px 0px 0px 1px;
     }
 
-    @include m.responsive(xs) {
+    @include m.responsive(sm) {
         position: fixed;
-        top: 0;
         right: 0;
-        bottom: 130px;
+        bottom: 20vh;
         width: 100vw;
         z-index: 4000;
-        border-radius: 0
+        border-radius: 0;
     }
 
     &_content {
-
         .agent_panel_message_history {
             overflow-y: auto;
-            margin-bottom: 85px;
+            margin-bottom: 65px;
+            max-height: 48vh;
+            min-height: 48vh;
             padding: 12px;
             @include u.col-start;
+
+            @include m.responsive(sm) {
+                max-height: 60vh;
+                min-height: 60vh;
+            }
 
             &::-webkit-scrollbar {
                 width: 0px;
@@ -54,7 +59,7 @@
         }
 
         @include m.responsive(sm) {
-            right: 20px;
+            right: 27px;
         }
     }
 

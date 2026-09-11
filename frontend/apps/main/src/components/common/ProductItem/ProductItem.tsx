@@ -11,14 +11,14 @@ import { cloudinaryImageOptimizer } from "@forever/common-utils";
 import { Image } from "@forever/ui-kit";
 import TshirtIcon from "@/icons/TshirtIcon";
 
-const variant = {
-  open: { y: 0, opacity: 1 },
-  close: { y: 120, opacity: 0 },
+const animationVariants: Variants = {
+  initial: { y: 0, opacity: 1 },
+  animate: { y: 120, opacity: 0 },
 };
 
 const ProductCard = ({
   product,
-  animationVariant = variant,
+  animationVariant = animationVariants,
   customIndex = 0,
   useWhileInView = false,
 }: {
@@ -59,8 +59,8 @@ const ProductCard = ({
     <Link to={`/product/${product._id}`}>
       <motion.div
         variants={animationVariant}
-        initial="close"
-        {...(useWhileInView ? { whileInView: "open" } : { animate: "open" })}
+        initial="animate"
+        {...(useWhileInView ? { whileInView: "initial" } : { animate: "initial" })}
         transition={{ duration: 0.5, delay: 0.1 * customIndex }}
         viewport={{ once: true }}
         className={styles.product_card}

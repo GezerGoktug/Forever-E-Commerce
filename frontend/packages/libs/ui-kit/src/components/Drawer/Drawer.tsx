@@ -1,7 +1,7 @@
 import styles from "./Drawer.module.scss";
 import Backdrop from "../Backdrop/Backdrop";
 import Overlay from "../Overlay/Overlay";
-import { AnimatePresence, motion, useDragControls } from "framer-motion";
+import { AnimatePresence, motion, useDragControls, type Variants } from "framer-motion";
 import { OutsideClickHandler } from "@forever/common-utils";
 import { type FC, type ReactNode, useRef, useState } from "react";
 import clsx from "clsx";
@@ -33,7 +33,7 @@ const getAnimationProperties = (align: AlignType) => {
     }
 };
 
-const animationVariants = {
+const animationVariants: Variants = {
     animate: (align: AlignType) => {
         return align === "right" || align === "left" ? { x: 0 } : { y: 0 };
     },

@@ -2,7 +2,7 @@
 import type { IResponse } from "@forever/api";
 import api from "@/utils/api";
 
-const askQuestionToAiAgentStream = (body: IAskQuestionToAiAgentVariables): Promise<ReadableStream> => api.post("/ai/support-agent/ask", body, {
+const askQuestionToAiAgentWithStream = (body: IAskQuestionToAiAgentVariables): Promise<ReadableStream> => api.post("/ai/support-agent/ask", body, {
     responseType: "stream",
     adapter: "fetch"
 });
@@ -12,7 +12,7 @@ const deleteAiConversationByThreadId = (threadId: string): Promise<IResponse<{ m
 const getAiConversationByThreadId = (threadId: string): Promise<IResponse<AgentMessageType[]>> => api.get("/ai/support-agent/thread/" + threadId);
 
 const AiService = {
-    askQuestionToAiAgentStream,
+    askQuestionToAiAgentWithStream,
     deleteAiConversationByThreadId,
     getAiConversationByThreadId
 }

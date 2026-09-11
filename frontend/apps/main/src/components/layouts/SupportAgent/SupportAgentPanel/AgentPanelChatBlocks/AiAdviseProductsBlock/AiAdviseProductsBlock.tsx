@@ -38,36 +38,34 @@ const AiAdviseProductItem = ({ product }: { product: NonNullable<(AgentMessageTy
 
     const toggleFavourite = () => isAccess ? mutate({ isFav, productId: product._id }) : toast.error('Please you login for add product to your favourites');
     return (
-        <Link to={`/product/${product._id}`}>
-            <div className={styles.agent_panel_chat_block_product_wrapper}>
-                <div className={styles.agent_panel_chat_block_product}>
-                    <img src={product.image} alt={product.name} />
-                    <div className={styles.agent_panel_chat_block_product_info}>
-                        <h6>{product.name}</h6>
-                        <div className={styles.agent_panel_chat_block_product_price_and_rating}>
-                            <span>${product.price}</span>
-                            <div className={styles.agent_panel_chat_block_product_avg_rating}>
-                                <IoIosStar />
-                                {product.averageRating}
-                            </div>
+        <Link className={styles.agent_panel_chat_block_product_wrapper} to={`/product/${product._id}`}>
+            <div className={styles.agent_panel_chat_block_product}>
+                <img src={product.image} alt={product.name} />
+                <div className={styles.agent_panel_chat_block_product_info}>
+                    <h6>{product.name}</h6>
+                    <div className={styles.agent_panel_chat_block_product_price_and_rating}>
+                        <span>${product.price}</span>
+                        <div className={styles.agent_panel_chat_block_product_avg_rating}>
+                            <IoIosStar />
+                            {product.averageRating}
+                        </div>
 
-                        </div>
-                        <div className={styles.agent_panel_chat_block_product_sizes}>
-                            {
-                                product.sizes.map((size) => (
-                                    <div>{getSize(size)}</div>
-                                ))
-                            }
-                        </div>
                     </div>
-                    <div className={styles.agent_panel_chat_block_product_actions}>
-                        <div onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            toggleFavourite()
-                        }}>
-                            {isFav ? <IoMdHeart fill="red" size={20} /> : <IoMdHeartEmpty size={20} />}
-                        </div>
+                    <div className={styles.agent_panel_chat_block_product_sizes}>
+                        {
+                            product.sizes.map((size) => (
+                                <div>{getSize(size)}</div>
+                            ))
+                        }
+                    </div>
+                </div>
+                <div className={styles.agent_panel_chat_block_product_actions}>
+                    <div onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleFavourite()
+                    }}>
+                        {isFav ? <IoMdHeart fill="red" size={20} /> : <IoMdHeartEmpty size={20} />}
                     </div>
                 </div>
             </div>

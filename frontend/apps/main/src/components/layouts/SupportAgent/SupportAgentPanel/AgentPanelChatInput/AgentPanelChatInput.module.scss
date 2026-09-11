@@ -29,7 +29,7 @@
         background-color: rgb(27, 27, 27);
     }
 
-    @include m.responsive(xs) {
+    @include m.responsive(sm) {
         border-radius: 0
     }
 

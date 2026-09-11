@@ -10,7 +10,7 @@
         margin-left: auto;
     }
 
-    @include m.responsive(xs) {
+    @include m.responsive(sm) {
         width: 100%;
     }
 
@@ -18,7 +18,7 @@
         display: flex;
         gap: 12px;
 
-        @include m.responsive(xs) {
+        @include m.responsive(sm) {
             gap: 6px;
 
         }
@@ -31,7 +31,7 @@
             object-position: top;
             margin-top: auto;
 
-            @include m.responsive(xs) {
+            @include m.responsive(sm) {
                 width: 25px;
                 height: 25px;
             }
@@ -52,9 +52,10 @@
                 background-color: v.$third-color;
 
                 div {
-                    @include u.skeleton_animate(100%, 8px, rgba(111, 130, 162, 0.608)); 
+                    @include u.skeleton_animate(100%, 8px, rgba(111, 130, 162, 0.608));
+
                     @include u.dark-mode {
-                        @include u.skeleton_animate(100%, 8px, rgb(181, 181, 181)); 
+                        @include u.skeleton_animate(100%, 8px, rgb(181, 181, 181));
                     }
                 }
             }
@@ -78,8 +79,8 @@
     width: max-content;
     margin-bottom: 20px;
 
-    @include m.responsive(xs) {
-        width: 100%;
+    @include m.responsive(sm) {
+        max-width: 100%;
     }
 
     &.is_human_message {
@@ -90,7 +91,7 @@
         display: flex;
         gap: 12px;
 
-        @include m.responsive(xs) {
+        @include m.responsive(sm) {
             gap: 6px;
         }
 
@@ -143,7 +144,7 @@
             margin-top: auto;
             margin-bottom: 19px;
 
-            @include m.responsive(xs) {
+            @include m.responsive(sm) {
                 width: 25px;
                 height: 25px;
             }

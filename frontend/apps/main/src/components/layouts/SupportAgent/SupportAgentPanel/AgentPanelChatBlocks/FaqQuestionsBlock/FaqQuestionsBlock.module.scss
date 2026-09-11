@@ -4,11 +4,10 @@
 .agent_panel_chat_block_faq_questions {
     @include u.col-start;
     gap: 10px;
-    margin-top: 20px;
     width: 90%;
     margin-bottom: 20px;
 
-    @include m.responsive(xs) {
+    @include m.responsive(sm) {
         width: 100%;
     }
 

@@ -85,8 +85,8 @@ const useMediaQuery = ({
 
     useEffect(() => {
         const handleResizeScreen = () => {
-            const width = window.screen.width;
-            const height = window.screen.height;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
             if (
                 ((maxWidth === null || width < maxWidth) && width > minWidth) &&
                 ((maxHeight === null || height < maxHeight) && height > minHeight)
