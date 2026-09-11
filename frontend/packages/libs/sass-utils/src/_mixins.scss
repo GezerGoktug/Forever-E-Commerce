@@ -1,6 +1,5 @@
 @use "variables" as v;
-
-
+@use "sass:map";
 
 @mixin flex-control($x: flex-start, $y: normal, $direction: row) {
   display: flex;
@@ -24,36 +23,48 @@
   left: $left;
 }
 
+@mixin responsive($breakpoint, $configs: ()) {
+  $default-configs: (
+    "is-height-media-query": false,
+    "is-min-width": false,
+    "is-min-height": false,
+  );
 
+$config: map.merge($default-configs, $configs);
 
-@mixin responsive($breakpoint) {
-  @if $breakpoint == xs {
-    @media (max-width: v.$breakpoint-xs) {
-      @content;
-    }
-  } @else if $breakpoint == xls {
-    @media (max-width: v.$breakpoint-xls) {
-      @content;
-    }
-  } @else if $breakpoint == sm {
-    @media (max-width: v.$breakpoint-sm) {
-      @content;
-    }
-  } @else if $breakpoint == md {
-    @media (max-width: v.$breakpoint-md) {
-      @content;
-    }
-  } @else if $breakpoint == lg {
-    @media (max-width: v.$breakpoint-lg) {
-      @content;
-    }
-  } @else if $breakpoint == xl {
-    @media (max-width: v.$breakpoint-xl) {
-      @content;
-    }
-  } @else if $breakpoint == 2xl {
-    @media (max-width: v.$breakpoint-2xl) {
-      @content;
-    }
+$prop: "max-width";
+
+@if map.get($config, "is-height-media-query") {
+  @if map.get($config, "is-min-height") {
+    $prop: "min-height";
   }
+
+  @else {
+    $prop: "max-height";
+  }
+}
+
+@else {
+  @if map.get($config, "is-min-width") {
+    $prop: "min-width";
+  }
+
+  @else {
+    $prop: "max-width";
+  }
+}
+
+$val: 0px;
+
+@if map.has-key(v.$breakpoints, "#{$breakpoint}") {
+  $val: map.get(v.$breakpoints, "#{$breakpoint}");
+}
+
+@else {
+  $val: $breakpoint;
+}
+
+@media (#{$prop}: #{$val}) {
+  @content;
+}
 }
