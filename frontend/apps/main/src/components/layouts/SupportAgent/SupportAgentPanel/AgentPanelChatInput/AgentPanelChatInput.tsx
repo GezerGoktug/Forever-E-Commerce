@@ -8,19 +8,7 @@ import { memo, useEffect, type Dispatch, type KeyboardEvent, type SetStateAction
 import { useSpeechRecognition } from '@forever/speech'
 import toast from 'react-hot-toast'
 import { Input } from '@forever/ui-kit'
-
-export const triggerAutoSizeTextArea = () => {
-    const el = document.querySelector<HTMLInputElement | HTMLTextAreaElement>("#agentChatInput");
-
-    if (el) {
-        setTimeout(() => {
-            const event = new Event("input", { bubbles: true });
-            el.dispatchEvent(event);
-        }, 10)
-    }
-}
-
-export const focusAgentChatInput = () => document.getElementById("agentChatInput")?.focus();
+import { triggerAutoSizeAgentChatInput } from '../utils'
 
 type AgentPanelChatInputProps = {
     text: string;
@@ -46,7 +34,7 @@ const AgentPanelChatInput = memo(({ text, setText, isPending, askQuestionToAgent
 
     useEffect(() => {
         if (speechData !== undefined && isListening) {
-            triggerAutoSizeTextArea()
+            triggerAutoSizeAgentChatInput()
         }
     }, [speechData, isListening]);
 
@@ -67,7 +55,7 @@ const AgentPanelChatInput = memo(({ text, setText, isPending, askQuestionToAgent
             e.currentTarget.selectionStart = e.currentTarget.selectionEnd = start + 1;
 
             setTimeout(() => {
-                triggerAutoSizeTextArea();
+                triggerAutoSizeAgentChatInput();
 
             }, 30);
         }
@@ -87,7 +75,7 @@ const AgentPanelChatInput = memo(({ text, setText, isPending, askQuestionToAgent
                 {...(((text.trim().length > 1) && !isPending) && { rightIcon: FaXmark })}
                 rightIconOnClick={() => {
                     setText("")
-                    triggerAutoSizeTextArea()
+                    triggerAutoSizeAgentChatInput()
                 }}
                 id='agentChatInput'
             />

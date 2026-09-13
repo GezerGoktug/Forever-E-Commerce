@@ -13,10 +13,9 @@ import { initStreamReader } from '@forever/stream-reader'
 import AiAdviseProductsBlock from '../AgentPanelChatBlocks/AiAdviseProductsBlock/AiAdviseProductsBlock'
 import FaqQuestionsBlock from '../AgentPanelChatBlocks/FaqQuestionsBlock/FaqQuestionsBlock'
 import MessageBlock from '../AgentPanelChatBlocks/MessageBlock/MessageBlock'
-import ChatInput, { focusAgentChatInput, triggerAutoSizeTextArea } from '../AgentPanelChatInput/AgentPanelChatInput'
+import ChatInput from '../AgentPanelChatInput/AgentPanelChatInput'
 import AgentPanelHeader from '../AgentPanelHeader/AgentPanelHeader'
-
-export const scrollToEndOfChatHistory = () => document.getElementById("agentChatMessageHistoryEnd")?.scrollIntoView({ behavior: "smooth" });
+import { focusAgentChatInput, scrollToEndOfChatHistory, triggerAutoSizeAgentChatInput } from '../utils'
 
 const panelAnimationVariant: Variants = {
     initial: (isSmallWidthDevices) => ({
@@ -152,7 +151,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                 onStreamStart() {
                     setIsStreaming(true);
                     setText("");
-                    triggerAutoSizeTextArea();
+                    triggerAutoSizeAgentChatInput();
                 },
                 onChunkParseToData(parsedData) {
 
@@ -206,7 +205,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
 
     const handleClickRandomQuestionBtn = (question: string) => {
         setText(question);
-        triggerAutoSizeTextArea();
+        triggerAutoSizeAgentChatInput();
         setTimeout(async () => {
             await askQuestionToAgent(question);
         }, 500);

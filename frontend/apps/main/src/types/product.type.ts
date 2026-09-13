@@ -1,9 +1,9 @@
-import { type SortType } from "@/helper/generateSortingType";
 import type { BasicUserType } from "./user.type";
 
 export type CategoriesType = "Kids" | "Men" | "Women";
 export type SubCategoriesType = "Topwear" | "Bottomwear" | "Winterwear";
 export type SizeType = "SMALL" | "MEDIUM" | "LARGE" | "XLARGE" | "XXLARGE";
+export type SortType = "DEFAULT" | "LOW_TO_HIGH" | "HIGH_TO_LOW";
 
 export type ProductType = {
   _id: string;
@@ -35,14 +35,12 @@ export type ExtendedProductType = ProductType & {
   comments: Omit<ReviewType, "user">[];
 }
 
-
-
 export type ProductDetailContentType = {
   _id: string;
   name: string;
   price: number;
   image: string;
-  sizes: string[];
+  sizes: SizeType[];
   description: string;
   reviewsCount: number;
   category: CategoriesType;

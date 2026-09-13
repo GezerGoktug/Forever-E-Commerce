@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom'
 import { useIsProductsInFavQuery } from '@/services/hooks/queries/product.query'
 import { useIsAccess } from '@/store/auth/hooks'
 import { useHandleFavouriteMutation } from '@/services/hooks/mutations/product.mutations'
-import getSize from '@/helper/getSize'
 import { type AgentMessageType } from '@/types/ai.type'
 import TshirtIcon from '@/icons/TshirtIcon'
+import { getSize } from '@/utils/product.utils'
 
 const AiAdviseProductItem = ({ product }: { product: NonNullable<(AgentMessageType["products"])>[number] & { isFav: boolean } }) => {
     const isAccess = useIsAccess();

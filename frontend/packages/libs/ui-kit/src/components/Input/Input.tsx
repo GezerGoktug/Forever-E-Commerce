@@ -3,7 +3,7 @@ import styles from "./Input.module.scss";
 import { useRef, type InputHTMLAttributes, type ElementType, forwardRef, type ChangeEvent, type TextareaHTMLAttributes } from "react";
 import { type IconType } from "react-icons";
 import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
-import { triggerInputChange } from "@forever/common-utils";
+import { triggerNativeInputChange } from "@forever/common-utils";
 import { IMaskInput } from "react-imask";
 
 type CommonInputProps = {
@@ -72,7 +72,7 @@ const Input = forwardRef((inputProps: InputProps, ref) => {
           props.max ? +props?.max : null,
           newValue
         )) {
-        triggerInputChange(input, newValue.toString());
+        triggerNativeInputChange(input, newValue.toString());
       }
     }
   }

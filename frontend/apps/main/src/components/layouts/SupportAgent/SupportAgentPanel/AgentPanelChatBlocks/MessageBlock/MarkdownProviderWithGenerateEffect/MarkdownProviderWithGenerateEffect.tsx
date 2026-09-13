@@ -1,4 +1,4 @@
-import { scrollToEndOfChatHistory } from "../../../SupportAgentPanel/SupportAgentPanel";
+import { scrollToEndOfChatHistory } from "../../../utils";
 import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown, { type Components } from 'react-markdown';
 import rehypeSanitize from 'rehype-sanitize';
