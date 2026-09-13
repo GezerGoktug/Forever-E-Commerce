@@ -1,6 +1,6 @@
-import { type SizeType } from "@/types/product.type";
+import type { SizeType } from "@/types/product.type";
 
-const getSize = (size: SizeType) => {
+export const getSize = (size: SizeType) => {
   switch (size) {
     case "SMALL":
       return "S";
@@ -14,5 +14,3 @@ const getSize = (size: SizeType) => {
       return "XXL";
   }
 };
-
-export default getSize;

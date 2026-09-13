@@ -1,6 +1,5 @@
-import { type SortType } from '@/helper/generateSortingType';
 import { useQueryParams } from '@forever/query-kit';
-import type { ProductSearchQueryType } from '@/types/product.type';
+import type { ProductSearchQueryType, SortType } from '@/types/product.type';
 import styles from './TopSection.module.scss';
 import { motion } from 'framer-motion'
 

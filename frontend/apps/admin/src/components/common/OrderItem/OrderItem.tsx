@@ -7,9 +7,9 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import type { IOrder } from "@/types/order.type";
-import getSize from "@/helper/getSize";
 import { BaseImage, Button } from "@forever/ui-kit";
 import { Link } from "react-router-dom";
+import { getSize } from "@/utils/product.utils";
 
 const OrderItem = ({
   order,

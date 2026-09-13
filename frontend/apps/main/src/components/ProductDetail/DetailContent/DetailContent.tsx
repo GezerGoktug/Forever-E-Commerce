@@ -8,23 +8,7 @@ import toast from "react-hot-toast";
 import { useIsAccess } from "@/store/auth/hooks";
 import { useHandleFavouriteMutation } from "@/services/hooks/mutations/product.mutations";
 import { Button, RatingStars } from "@forever/ui-kit";
-
-const getSize = (size: string) => {
-  switch (size) {
-    case "SMALL":
-      return "S";
-    case "MEDIUM":
-      return "M";
-    case "LARGE":
-      return "L";
-    case "XLARGE":
-      return "XL";
-    case "XXLARGE":
-      return "XXL";
-    default:
-      return "S";
-  }
-};
+import { getSize } from "@/utils/product.utils";
 
 const DetailContent = ({
   productDetail,

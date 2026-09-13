@@ -1,9 +1,21 @@
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import ProductService from "@/services/actions/product.service";
-import { generateSortingType } from "@/helper/generateSortingType";
 import { buildQuery } from "@forever/query-kit";
-import type { IFavProductCountResponse, IIsProductInFavResponse, ProductDetailType, ProductSearchQueryType, ProductType } from "@/types/product.type";
+import type { IFavProductCountResponse, IIsProductInFavResponse, ProductDetailType, ProductSearchQueryType, ProductType, SortType } from "@/types/product.type";
 import type { IResponse, IError, IPaginationResult } from "@forever/api"
+
+const generateSortingType = (sort: SortType) => {
+  switch (sort) {
+    case "DEFAULT":
+      return { type: "default", field: null };
+    case "HIGH_TO_LOW":
+      return { type: "desc", field: "price" };
+    case "LOW_TO_HIGH":
+      return { type: "asc", field: "price" };
+    default:
+      return { type: "default", field: null };
+  }
+};
 
 const useGetProductsQuery = (
     searchQueries: ProductSearchQueryType,

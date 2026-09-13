@@ -1,4 +1,4 @@
-import type { ProductSearchQueryType } from "@/types/product.type";
+import type { ProductSearchQueryType, SortType } from "@/types/product.type";
 import styles from "./Products.module.scss";
 import { useEffect } from "react";
 import { setMaxPrice, setPagination } from "@/store/product/actions";
@@ -8,7 +8,6 @@ import { useQueryParams } from "@forever/query-kit";
 import { RiMenuSearchLine } from "react-icons/ri";
 import { GrPowerReset } from "react-icons/gr";
 import { useIsAccess } from "@/store/auth/hooks";
-import type { SortType } from "@/helper/generateSortingType";
 import { DataStateHandler } from "@forever/common-utils";
 import { FaCircleXmark } from "react-icons/fa6";
 import { useGetProductsQuery, useIsProductsInFavQuery } from "@/services/hooks/queries/product.query";

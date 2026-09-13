@@ -5,10 +5,10 @@ import {
   applyQuantityToProduct,
   removeProductOfCart,
 } from "@/store/cart/actions";
-import getSize from "@/helper/getSize";
 import { Image, Input } from "@forever/ui-kit";
 import TshirtIcon from "@/icons/TshirtIcon";
 import { cloudinaryImageOptimizer } from "@forever/common-utils";
+import { getSize } from "@/utils/product.utils";
 
 const CartProducts = () => {
   const cart = useCart();
