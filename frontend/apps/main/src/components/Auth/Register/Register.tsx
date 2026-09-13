@@ -14,6 +14,7 @@ import { Button, Input } from "@forever/ui-kit";
 import { setLocalStorage } from "@forever/storage-kit";
 import { GoogleOauthPopupActionButton, useGoogleOauth } from "@forever/google-oauth-kit";
 import clsx from "clsx";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 const ResetPasswordModal = lazy(() => import("./ResetPasswordModal/ResetPasswordModal"));
 
@@ -59,17 +60,7 @@ const Register = ({ chanceForm }: RegisterProps) => {
       toast.success(data.data.message);
       navigate("/profile");
     },
-    onError(error) {
-      const apiError = error?.response?.data?.error.errorMessage;
-      if (typeof apiError === "string") toast.error(apiError);
-      if (apiError && typeof apiError === "object") {
-        Object.entries(apiError).forEach(([key, value]) => {
-          value.forEach((val) => {
-            toast.error(`${key} : ${val}`);
-          });
-        });
-      }
-    },
+    onError: (error) => handleShowApiErrorWithToastMessages(error),
   });
 
   const onSubmit = (data: z.infer<typeof schema>) => mutate(data);

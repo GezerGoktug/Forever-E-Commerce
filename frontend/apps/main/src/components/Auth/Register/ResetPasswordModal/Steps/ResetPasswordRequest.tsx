@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 import { useResetPasswordRequestMutation } from "@/services/hooks/mutations/user.mutations";
 import { Button, Input } from "@forever/ui-kit";
 import type { Dispatch, SetStateAction } from "react";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 const ResetPasswordRequest = ({
   next,
@@ -18,10 +19,7 @@ const ResetPasswordRequest = ({
       toast.success(data.data.message);
       next()
     },
-    onError: (error) => {
-      const apiError = error?.response?.data?.error.errorMessage;
-      if (typeof apiError === "string") toast.error(apiError);
-    }
+    onError: (error) => handleShowApiErrorWithToastMessages(error)
   });
 
   const handleResetPasswordRequest = () => mutate(resetPasswordEmail)

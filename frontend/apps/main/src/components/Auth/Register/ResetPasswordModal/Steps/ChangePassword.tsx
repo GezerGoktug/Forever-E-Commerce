@@ -8,6 +8,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useResetPasswordMutation } from "@/services/hooks/mutations/user.mutations";
 import { Button, Input } from "@forever/ui-kit";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 const schema = z
   .object({
@@ -48,10 +49,7 @@ const ChangePassword = ({
       toast.success(data.data.message);
       closeModal();
     },
-    onError: (error) => {
-      const apiError = error?.response?.data?.error.errorMessage;
-      if (typeof apiError === "string") toast.error(apiError);
-    }
+    onError: (error) => handleShowApiErrorWithToastMessages(error)
   });
 
   const onSubmit = (data: z.infer<typeof schema>) => mutate({ newPassword: data.newPassword, resetPasswordEmail, resetPasswordToken })

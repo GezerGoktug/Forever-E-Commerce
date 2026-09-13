@@ -3,6 +3,7 @@ import { type DeleteProductDTO } from "@/components/Admin/Products/Products";
 import toast from "react-hot-toast";
 import { useDeleteProductMutation } from "@/services/hooks/mutations/product.mutations";
 import { IoMdTrash } from "react-icons/io";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 interface DeleteProductModalProps {
   data: DeleteProductDTO;
@@ -16,10 +17,7 @@ const DeleteProductModal = ({ closeModal, data, open }: DeleteProductModalProps)
       toast.success(data.data.message);
       closeModal();
     },
-    onError: (err) => {
-      const errorMessage = err.response?.data.error.errorMessage;
-      if (typeof errorMessage === "string") toast.error(errorMessage);
-    },
+    onError: (err) => handleShowApiErrorWithToastMessages(err),
   });
 
   const handleDeleteProduct = () => mutate(data._id);

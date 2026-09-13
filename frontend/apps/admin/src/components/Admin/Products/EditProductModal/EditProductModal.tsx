@@ -11,6 +11,7 @@ import type { SizeType } from "@/types/product.type";
 import { type EditProductDTO } from "@/components/Admin/Products/Products";
 import { productSchema } from "@/schemas/schema";
 import { useUpdateProductMutation } from "@/services/hooks/mutations/product.mutations";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 interface EditProductModalProps {
   data: EditProductDTO;
@@ -81,19 +82,7 @@ const EditProductModal = ({ data, closeModal }: EditProductModalProps) => {
       form.reset();
       closeModal();
     },
-    onError: (err) => {
-      const apiError = err.response?.data.error.errorMessage;
-      if (typeof apiError === "string") {
-        toast.error(apiError);
-      }
-      if (typeof apiError === "object") {
-        Object.entries(apiError).forEach(([key, value]) => {
-          value.forEach((val) => {
-            toast.error(`${key} : ${val}`);
-          });
-        });
-      }
-    },
+    onError: (err) => handleShowApiErrorWithToastMessages(err),
   });
 
   const onSubmit = (dt: z.infer<typeof productSchema>) => {

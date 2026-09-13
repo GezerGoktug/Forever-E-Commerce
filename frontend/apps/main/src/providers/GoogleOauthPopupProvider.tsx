@@ -6,6 +6,7 @@ import { Loading } from '@forever/ui-kit';
 import { type ReactNode } from 'react'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { handleShowApiErrorWithToastMessages } from '@/utils/common.utils';
 
 const LoginGoogleOauthLoading = () => {
     const { loading } = useGoogleOauth();
@@ -35,10 +36,7 @@ const GoogleOAuthPopupProvider = ({ children }: { children: ReactNode }) => {
                 toast.success("Login with Google succesfully");
             }, 1000);
         },
-        onError(error) {
-            const apiError = error?.response?.data?.error.errorMessage;
-            if (typeof apiError === "string") toast.error(apiError);
-        },
+        onError: (error) => handleShowApiErrorWithToastMessages(error),
     });
 
     return (

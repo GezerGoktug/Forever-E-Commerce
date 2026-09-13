@@ -10,6 +10,7 @@ import { Button, Input } from '@forever/ui-kit';
 import { ErrorMessage } from '@hookform/error-message';
 import Logo from '@/components/common/Logo/Logo';
 import { setLocalStorage } from '@forever/storage-kit';
+import { handleShowApiErrorWithToastMessages } from '@/utils/common.utils';
 
 interface Login_Form_Types {
     email: string;
@@ -37,11 +38,7 @@ const AdminLogin = () => {
             }
             navigate("/profile");
         },
-        onError: (error) => {
-            const apiError = error?.response?.data?.error.errorMessage;
-
-            if (typeof apiError === "string") toast.error(apiError);
-        },
+        onError: (error) => handleShowApiErrorWithToastMessages(error),
     })
 
     const onSubmit: SubmitHandler<Login_Form_Types> = (data) => mutate(data);

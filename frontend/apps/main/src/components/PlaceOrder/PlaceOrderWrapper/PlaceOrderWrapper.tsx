@@ -11,6 +11,7 @@ import { clearCart } from "@/store/cart/actions";
 import { useIsAccess } from "@/store/auth/hooks";
 import DeliveryInfoForm from "@/components/PlaceOrder/DeliveryInfoForm/DeliveryInfoForm";
 import OrdersDetail from "@/components/PlaceOrder/OrdersDetail/OrdersDetail";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 const schema = z.object({
   firstName: z.string().min(3, "First name must be at least 3 characters long"),
@@ -93,16 +94,7 @@ const PlaceOrderWrapper = () => {
       }
     } catch (error) {
       if (error instanceof AxiosError) {
-        const apiError = error?.response?.data?.error.errorMessage;
-        if (typeof apiError === "string") toast.error(apiError);
-        if (apiError && typeof apiError === "object") {
-          Object.entries(apiError).forEach(([key, value]) => {
-            (value as string[]).forEach((val) => {
-              toast.error(`${key} : ${val}`);
-            });
-          });
-        }
-
+        handleShowApiErrorWithToastMessages(error)
       }
       else if (error instanceof Error) {
         toast.error(error.message);

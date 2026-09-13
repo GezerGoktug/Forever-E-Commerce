@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { useVerifyResetPasswordCodeMutation } from "@/services/hooks/mutations/user.mutations";
 import { Button, PinInput } from "@forever/ui-kit";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 const VerifyResetPasswordCode = ({
   next,
@@ -20,10 +21,7 @@ const VerifyResetPasswordCode = ({
       toast.success(data.data.message);
       next();
     },
-    onError: (error) => {
-      const apiError = error?.response?.data?.error.errorMessage;
-      if (typeof apiError === "string") toast.error(apiError);
-    }
+    onError: (error) => handleShowApiErrorWithToastMessages(error)
   });
 
   const handleVerifyResetPasswordCode = () => mutate({ resetPasswordCode, resetPasswordEmail })

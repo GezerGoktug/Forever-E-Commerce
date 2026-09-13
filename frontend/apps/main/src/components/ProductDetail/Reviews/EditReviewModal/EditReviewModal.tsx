@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useUpdateCommentMutation } from "@/services/hooks/mutations/product.mutations";
 import { Button, Modal, Rating } from "@forever/ui-kit";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 interface EditReviewModalProps {
   data: EditReviewModalDTO | undefined;
@@ -32,10 +33,7 @@ const EditReviewModal = ({ data, closeModal, open }: EditReviewModalProps) => {
       toast.success(data.data?.message);
       closeModal();
     },
-    onError: (error) => {
-      const apiError = error?.response?.data?.error.errorMessage;
-      if (typeof apiError === "string") toast.error(apiError);
-    }
+    onError: (error) => handleShowApiErrorWithToastMessages(error)
   })
 
   const updateComment = () => {

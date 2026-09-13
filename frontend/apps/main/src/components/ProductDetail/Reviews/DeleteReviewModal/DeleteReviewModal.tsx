@@ -4,6 +4,7 @@ import type { DeleteReviewModalDTO } from "@/components/ProductDetail/Reviews/Re
 import { useParams } from "react-router-dom";
 import { useDeleteCommentMutation } from "@/services/hooks/mutations/product.mutations";
 import { AlertModal } from "@forever/ui-kit";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 interface DeleteReviewModalProps {
   data: DeleteReviewModalDTO | undefined;
@@ -19,10 +20,7 @@ const DeleteReviewModal = ({ data, closeModal, open }: DeleteReviewModalProps) =
       toast.success(data.data.message);
       closeModal();
     },
-    onError(error) {
-      const apiError = error?.response?.data?.error.errorMessage;
-      if (typeof apiError === "string") toast.error(apiError);
-    },
+    onError: (error) => handleShowApiErrorWithToastMessages(error),
   })
 
   const handleDeleteComment = () => {

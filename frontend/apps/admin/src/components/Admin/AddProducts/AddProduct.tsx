@@ -10,6 +10,7 @@ import clsx from "clsx";
 import toast from "react-hot-toast";
 import { productSchema } from "@/schemas/schema";
 import { useAddProductMutation } from "@/services/hooks/mutations/product.mutations";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 type ImagesType = {
   mainImage: string | null;
@@ -79,19 +80,7 @@ const AddProduct = () => {
         subImage3: null,
       });
     },
-    onError: (err) => {
-      const apiError = err.response?.data.error.errorMessage;
-      if (typeof apiError === "string") {
-        toast.error(apiError);
-      }
-      if (typeof apiError === "object") {
-        Object.entries(apiError).forEach(([key, value]) => {
-          value.forEach((val) => {
-            toast.error(`${key} : ${val}`);
-          });
-        });
-      }
-    },
+    onError: (err) => handleShowApiErrorWithToastMessages(err),
   });
 
   const onSubmit = (data: z.infer<typeof productSchema>) => {

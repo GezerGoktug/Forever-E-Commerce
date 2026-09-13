@@ -12,6 +12,7 @@ import { setLocalStorage } from "@forever/storage-kit";
 import { FcGoogle } from "react-icons/fc";
 import { GoogleOauthPopupActionButton, useGoogleOauth } from "@forever/google-oauth-kit";
 import clsx from "clsx";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 const ResetPasswordModal = lazy(() => import("@/components/Auth/Register/ResetPasswordModal/ResetPasswordModal"));
 
@@ -46,10 +47,7 @@ const Login = ({ chanceForm }: LoginProps) => {
       }
       navigate("/profile");
     },
-    onError: (error) => {
-      const apiError = error?.response?.data?.error.errorMessage;
-      if (typeof apiError === "string") toast.error(apiError);
-    },
+    onError: (error) => handleShowApiErrorWithToastMessages(error)
   })
 
   const onSubmit: SubmitHandler<Login_Form_Types> = (data) => mutate(data);

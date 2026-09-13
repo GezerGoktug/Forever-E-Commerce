@@ -9,6 +9,7 @@ import { useHandleFavouriteMutation } from '@/services/hooks/mutations/product.m
 import { type AgentMessageType } from '@/types/ai.type'
 import TshirtIcon from '@/icons/TshirtIcon'
 import { getSize } from '@/utils/product.utils'
+import { handleShowApiErrorWithToastMessages } from '@/utils/common.utils'
 
 const AiAdviseProductItem = ({ product }: { product: NonNullable<(AgentMessageType["products"])>[number] & { isFav: boolean } }) => {
     const isAccess = useIsAccess();
@@ -31,8 +32,7 @@ const AiAdviseProductItem = ({ product }: { product: NonNullable<(AgentMessageTy
         },
         onError: (error) => {
             setIsFav(!isFav);
-            const apiError = error?.response?.data?.error.errorMessage;
-            if (typeof apiError === "string") toast.error(apiError);
+            handleShowApiErrorWithToastMessages(error)
         }
     });
 

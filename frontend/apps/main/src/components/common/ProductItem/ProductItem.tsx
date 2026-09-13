@@ -10,6 +10,7 @@ import { useHandleFavouriteMutation } from "@/services/hooks/mutations/product.m
 import { cloudinaryImageOptimizer } from "@forever/common-utils";
 import { Image } from "@forever/ui-kit";
 import TshirtIcon from "@/icons/TshirtIcon";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 const animationVariants: Variants = {
   initial: { y: 0, opacity: 1 },
@@ -47,8 +48,7 @@ const ProductCard = ({
     },
     onError: (error) => {
       setIsFav(!isFav);
-      const apiError = error?.response?.data?.error.errorMessage;
-      if (typeof apiError === "string") toast.error(apiError);
+      handleShowApiErrorWithToastMessages(error)
     }
   });
 

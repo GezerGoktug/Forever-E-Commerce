@@ -16,6 +16,7 @@ import MessageBlock from '../AgentPanelChatBlocks/MessageBlock/MessageBlock'
 import ChatInput from '../AgentPanelChatInput/AgentPanelChatInput'
 import AgentPanelHeader from '../AgentPanelHeader/AgentPanelHeader'
 import { focusAgentChatInput, scrollToEndOfChatHistory, triggerAutoSizeAgentChatInput } from '../utils'
+import { handleShowApiErrorWithToastMessages } from '@/utils/common.utils'
 
 const panelAnimationVariant: Variants = {
     initial: (isSmallWidthDevices) => ({
@@ -94,19 +95,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
         refetchOnWindowFocus: false,
     });
 
-    const { mutateAsync, isPending } = useAskQuestionToAiAgentWithStreamMutation({
-        onError(error) {
-            const apiError = error?.response?.data?.error.errorMessage;
-            if (typeof apiError === "string") toast.error(apiError);
-            if (apiError && typeof apiError === "object") {
-                Object.entries(apiError).forEach(([key, value]) => {
-                    value.forEach((val) => {
-                        toast.error(`${key} : ${val}`);
-                    });
-                });
-            }
-        }
-    })
+    const { mutateAsync, isPending } = useAskQuestionToAiAgentWithStreamMutation()
 
     useEffect(() => {
         if (sessionStorage.getItem("aiSupportAgentThreadId")) {
@@ -190,15 +179,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
             setMessages(notUpdatedMessages);
             setIsStreaming(false);
             if (error instanceof AxiosError) {
-                const apiError = error?.response?.data?.error.errorMessage;
-                if (typeof apiError === "string") toast.error(apiError);
-                if (apiError && typeof apiError === "object") {
-                    Object.entries(apiError).forEach(([key, value]) => {
-                        (value as string[]).forEach((val) => {
-                            toast.error(`${key} : ${val}`);
-                        });
-                    });
-                }
+                handleShowApiErrorWithToastMessages(error)
             }
         }
     }

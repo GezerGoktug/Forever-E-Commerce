@@ -9,6 +9,7 @@ import { useIsAccess } from "@/store/auth/hooks";
 import { useHandleFavouriteMutation } from "@/services/hooks/mutations/product.mutations";
 import { Button, RatingStars } from "@forever/ui-kit";
 import { getSize } from "@/utils/product.utils";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 const DetailContent = ({
   productDetail,
@@ -37,8 +38,7 @@ const DetailContent = ({
     },
     onError: (error) => {
       setIsFav(!isFav)
-      const apiError = error?.response?.data?.error.errorMessage;
-      if (typeof apiError === "string") toast.error(apiError);
+      handleShowApiErrorWithToastMessages(error)
     }
   })
 

@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useCreateCommentMutation } from "@/services/hooks/mutations/product.mutations";
 import { Button, Rating } from "@forever/ui-kit";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 const CreateReview = () => {
   const currentUser = useAccount();
@@ -19,8 +20,7 @@ const CreateReview = () => {
       setClearRating(false);
     },
     onError(error) {
-      const apiError = error?.response?.data?.error.errorMessage;
-      if (typeof apiError === "string") toast.error(apiError);
+      handleShowApiErrorWithToastMessages(error)
       setClearRating(false);
     },
   })

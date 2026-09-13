@@ -9,6 +9,7 @@ import { clearCart } from "@/store/cart/actions";
 import { Helmet } from "react-helmet";
 import { useConfirmOrderPaymentMutation, useDeleteOrderMutation } from "@/services/hooks/mutations/order.mutations";
 import { Button } from "@forever/ui-kit";
+import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 const PaymentResult = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,12 +24,7 @@ const PaymentResult = () => {
       params.delete("sessionId");
       setSearchParams(params);
     },
-    onError(error) {
-      const apiError = error.response?.data.error.errorMessage;
-      if (typeof apiError === "string") {
-        toast.error(apiError);
-      }
-    },
+    onError: (error) => handleShowApiErrorWithToastMessages(error),
   });
   const { mutate: deleteOrderMutation } = useDeleteOrderMutation();
 
