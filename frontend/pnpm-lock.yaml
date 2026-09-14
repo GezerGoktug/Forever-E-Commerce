@@ -180,9 +180,6 @@ importers:
       '@forever/common-utils':
         specifier: workspace:*
         version: link:../../packages/libs/common-utils
-      '@forever/date-utils':
-        specifier: workspace:*
-        version: link:../../packages/libs/date-utils
       '@forever/google-oauth-kit':
         specifier: workspace:*
         version: link:../../packages/libs/google-oauth-kit
@@ -359,12 +356,6 @@ importers:
       '@types/react-dom':
         specifier: 18.3.1
         version: 18.3.1
-
-  packages/libs/date-utils:
-    dependencies:
-      dayjs:
-        specifier: 1.11.13
-        version: 1.11.13
 
   packages/libs/google-oauth-kit:
     dependencies:

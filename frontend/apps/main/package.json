@@ -12,7 +12,6 @@
   "dependencies": {
     "@forever/api": "workspace:*",
     "@forever/common-utils": "workspace:*",
-    "@forever/date-utils": "workspace:*",
     "@forever/google-oauth-kit": "workspace:*",
     "@forever/hook-kit": "workspace:*",
     "@forever/query-kit": "workspace:*",

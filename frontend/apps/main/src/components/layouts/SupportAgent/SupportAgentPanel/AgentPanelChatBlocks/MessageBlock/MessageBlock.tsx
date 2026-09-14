@@ -5,8 +5,22 @@ import { motion } from "framer-motion"
 import type { AgentMessageType } from "@/types/ai.type"
 import { memo } from "react"
 import { CiClock1 } from "react-icons/ci"
-import { formatMessageCreatedDate } from "@forever/date-utils"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
 import { MarkdownProviderWithGenerateEffect } from "./MarkdownProviderWithGenerateEffect/MarkdownProviderWithGenerateEffect"
+
+dayjs.extend(relativeTime);
+
+const formatMessageCreatedDate = (date: Date | string | number) => {
+    const targetDate = dayjs(date);
+    const diffDay = dayjs().diff(targetDate, 'day');
+
+    if (diffDay < 7) {
+        return targetDate.fromNow();
+    }
+
+    return targetDate.format('D MMMM YYYY HH:mm');
+};
 
 type MessageFieldType = Omit<AgentMessageType, "products"> & { isNewMessageAtRecent: boolean };
 
