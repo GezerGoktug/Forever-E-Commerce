@@ -6,6 +6,10 @@ import { normalizeChunkContent, parseAgentJSONContent, makeSafeForJsonRepair, is
 import { classifierAgentOutputSchema } from "../schemas/classifierAgentOutputSchema";
 import { AGENT_NODES } from "../constants";
 import Workflow from "./workflow";
+import type { StreamEvent } from "@langchain/core/tracers/log_stream";
+import { StreamerConfigType } from "../../../util/streaming";
+
+type StreamingResponseType<T> = { eventStream: AsyncIterable<T>, configs: StreamerConfigType<T> };
 
 export class SupportAgent {
     private static workflow: any = null;
@@ -58,7 +62,7 @@ export class SupportAgent {
         this.workflow = workflow.getWorkflow();
     }
 
-    public static async callAgent(query: string, threadId: string, res: Response) {
+    public static async callAgent(query: string, threadId: string): Promise<StreamingResponseType<StreamEvent>> {
         if (!this.workflow) {
             this.initializeWorkflow();
         }
@@ -68,89 +72,87 @@ export class SupportAgent {
         const invokeInput = { messages: [new HumanMessage(query)] };
 
         let mergedChunks = ""
-        res.setHeader('Content-Type', 'text/event-stream');
-        res.setHeader('Cache-Control', 'no-cache');
-        res.setHeader('Connection', 'keep-alive');
         const messageCreatedDate = new Date().toISOString();
-        const stream_id = crypto.randomUUID();
 
-        try {
-            const eventStream = await app.streamEvents(invokeInput, {
-                configurable: { thread_id: threadId },
-                recursionLimit: 90,
-                version: "v2"
-            });
-            for await (const event of eventStream) {
-                if (event.event === "on_chat_model_start") {
-                    mergedChunks = ""
-                }
+        const eventStream = await app.streamEvents(invokeInput, {
+            configurable: { thread_id: threadId },
+            recursionLimit: 90,
+            version: "v2"
+        });
 
-                if (event.event === "on_chat_model_stream") {
-                    const chunk = normalizeChunkContent(event.data.chunk?.content);
-                    const nodeName = event.metadata.langgraph_node;
+        const streamingResponse: StreamingResponseType<StreamEvent> = {
+            eventStream,
+            configs: {
+                onEventFromStreaming({ event, dt: { stream_id }, sendResponse }) {
+                    if (event.event === "on_chat_model_start") {
+                        mergedChunks = ""
+                    }
 
-                    if (chunk.trim().length > 0 && Object.values(AGENT_NODES).includes(nodeName)) {
-                        mergedChunks += chunk;
+                    if (event.event === "on_chat_model_stream") {
+                        const chunk = normalizeChunkContent(event.data.chunk?.content);
+                        const nodeName = event.metadata.langgraph_node;
 
-                        let repairedObject;
+                        if (chunk.trim().length > 0 && Object.values(AGENT_NODES).includes(nodeName)) {
+                            mergedChunks += chunk;
 
-                        if (isJsonStream(mergedChunks)) {
+                            let repairedObject;
 
-                            const safeForRepair = makeSafeForJsonRepair(mergedChunks);
+                            if (isJsonStream(mergedChunks)) {
 
-                            try {
-                                const repairedString = jsonrepair(safeForRepair);
-                                const parsed = JSON.parse(repairedString);
+                                const safeForRepair = makeSafeForJsonRepair(mergedChunks);
 
-                                repairedObject = (parsed !== null && typeof parsed === "object" && !Array.isArray(parsed))
-                                    ? parsed
-                                    : { message: String(parsed) };
-                            } catch {
-                                continue;
+                                try {
+                                    const repairedString = jsonrepair(safeForRepair);
+                                    const parsed = JSON.parse(repairedString);
+
+                                    repairedObject = (parsed !== null && typeof parsed === "object" && !Array.isArray(parsed))
+                                        ? parsed
+                                        : { message: String(parsed) };
+                                } catch {
+                                    return "CONTINUE";
+                                }
+
+                            }
+                            else {
+                                const cleanText = mergedChunks
+                                    .replace(/^```[a-zA-Z]*\s*/i, '')
+                                    .replace(/\s*```$/i, '');
+
+                                repairedObject = { message: cleanText };
                             }
 
-                        }
-                        else {
-                            const cleanText = mergedChunks
-                                .replace(/^```[a-zA-Z]*\s*/i, '')
-                                .replace(/\s*```$/i, '');
 
-                            repairedObject = { message: cleanText };
-                        }
+                            if (nodeName === AGENT_NODES.CLASSIFIER_AGENT) {
 
-
-                        if (nodeName === AGENT_NODES.CLASSIFIER_AGENT) {
-
-                            const parseResult = classifierAgentOutputSchema.safeParse(repairedObject);
-                            if (parseResult.error && repairedObject.message) {
-                                res.write(`data: ${JSON.stringify({
+                                const parseResult = classifierAgentOutputSchema.safeParse(repairedObject);
+                                if (parseResult.error && repairedObject.message) {
+                                    sendResponse({
+                                        type: "ai",
+                                        stream_id,
+                                        createdAt: messageCreatedDate,
+                                        ...repairedObject,
+                                        threadId
+                                    });
+                                }
+                            }
+                            else {
+                                sendResponse({
                                     type: "ai",
-                                    stream_id,
                                     createdAt: messageCreatedDate,
+                                    stream_id,
                                     ...repairedObject,
                                     threadId
-                                })} \n\n`);
+                                })
                             }
                         }
-                        else {
-                            res.write(`data: ${JSON.stringify({
-                                type: "ai",
-                                createdAt: messageCreatedDate,
-                                stream_id,
-                                ...repairedObject,
-                                threadId
-                            })} \n\n`);
-                        }
                     }
-                }
+                },
+                onStreamError(errorMessage) {
+                    console.log("Workflow running error: ", errorMessage);
+                },
             }
-        } catch (error) {
-            console.log("Workflow running error: ", error);
-            res.write(`error: [ERROR]\n\n`);
-            res.end();
         }
-        res.write(`data: [DONE]\n\n`);
-        res.end();
+        return streamingResponse;
     }
 
 

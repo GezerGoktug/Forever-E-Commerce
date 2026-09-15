@@ -16,7 +16,9 @@ export const askQuestionToAiChatbotByThreadId = async (req: Request, res: Respon
         randomUid = generateUUIDv4();
     }
 
-    await AiAgents.SupportAgent.callAgent(question, threadId || randomUid, res);
+    const streaming = await AiAgents.SupportAgent.callAgent(question, threadId || randomUid);
+
+    await ResponseHandler.streamer(res, streaming.eventStream, streaming.configs);
 }
 
 export const deleteAiConversationThreadByThreadId = async (req: Request, res: Response) => {
