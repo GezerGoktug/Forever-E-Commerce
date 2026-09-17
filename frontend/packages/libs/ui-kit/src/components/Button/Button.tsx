@@ -6,7 +6,7 @@ import { BiLoaderCircle } from "react-icons/bi";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   variant?: "primary" | "secondary" | "danger";
-  size?: "sm" | "md" | "lg";
+  size?: "icon" | "sm" | "md" | "lg";
   loading?: boolean;
 }
 
