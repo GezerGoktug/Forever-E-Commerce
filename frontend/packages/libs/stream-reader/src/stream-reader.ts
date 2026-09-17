@@ -1,17 +1,17 @@
 export const initStreamReader = async <T>({
-    stream,
+    streamer,
     onStreamStart,
     onChunkParseToData,
     onStreamFinish,
     onStreamError,
 }: {
-    stream: ReadableStream;
+    streamer: ReadableStream;
     onStreamStart: () => void;
     onChunkParseToData: (parsedData: T) => void;
     onStreamFinish: () => void;
     onStreamError: () => void;
 }): Promise<Partial<{ isFinishedRead: boolean; error: string }> | null | undefined> => {
-    const reader = stream?.getReader();
+    const reader = streamer?.getReader();
     const decoder = new TextDecoder("utf-8");
 
     if (!reader) {
@@ -20,11 +20,13 @@ export const initStreamReader = async <T>({
 
     onStreamStart();
 
+    let isError = false;
+
     while (true) {
         const { done, value } = await reader.read();
-        let isError = false;
+
         if (done) {
-            if(isError){
+            if (isError) {
                 onStreamError();
             }
             onStreamFinish();

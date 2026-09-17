@@ -137,7 +137,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
             const streamer = await mutation.mutateAsync({ question: question || text, ...(threadId && { threadId }) });
 
             await initStreamReader<IAgentMessage>({
-                stream: streamer,
+                streamer,
                 onStreamStart() {
                     setIsStreaming(true);
                     setText("");
