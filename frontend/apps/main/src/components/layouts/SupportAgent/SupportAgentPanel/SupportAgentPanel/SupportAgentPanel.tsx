@@ -93,7 +93,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
     }]);
     const isSmallWidthDevices = useMediaQuery({ maxWidth: 640 });
     const isSmallHeightDevices = useMediaQuery({ maxHeight: 550 });
-    const { data, isLoading, isError, error, refetch } = useGetAiConversationByThreadIdQuery(threadId as string, {
+    const { data, isLoading, isError, refetch } = useGetAiConversationByThreadIdQuery(threadId as string, {
         enabled: !!threadId,
         refetchOnWindowFocus: false,
     });
