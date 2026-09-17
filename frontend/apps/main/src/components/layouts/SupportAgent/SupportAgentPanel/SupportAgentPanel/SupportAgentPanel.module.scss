@@ -31,6 +31,36 @@
         border-radius: 0;
     }
 
+    &_error {
+        @include u.col-center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 65px;
+        padding: 24px;
+        max-height: 48vh;
+        min-height: 48vh;
+        text-align: center;
+
+        .agent_panel_error_icon {
+            position: relative;
+
+            .agent_panel_error_icon_cross {
+                position: absolute;
+                right: -6px;
+                bottom: 0;
+                fill: rgb(165, 1, 1);
+            }
+        }
+
+        h6 {
+            font-size: 25px;
+        }
+
+        p {
+            font-size: 15px;
+        }
+    }
+
     &_content {
         .agent_panel_message_history {
             overflow-y: auto;

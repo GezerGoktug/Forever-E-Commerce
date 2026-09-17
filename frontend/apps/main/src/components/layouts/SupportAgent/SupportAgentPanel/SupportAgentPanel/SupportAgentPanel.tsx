@@ -1,4 +1,6 @@
 ﻿import { BiSolidDownArrow } from 'react-icons/bi'
+import { PiArrowCounterClockwiseBold, PiChatTeardropDotsFill, PiXCircleFill } from 'react-icons/pi'
+import { Button } from '@forever/ui-kit'
 import styles from './SupportAgentPanel.module.scss'
 import { motion, type Variants } from 'framer-motion'
 import { useMediaQuery } from '@forever/hook-kit'
@@ -17,6 +19,7 @@ import ChatInput from '../AgentPanelChatInput/AgentPanelChatInput'
 import AgentPanelHeader from '../AgentPanelHeader/AgentPanelHeader'
 import { focusAgentChatInput, scrollToEndOfChatHistory, triggerAutoSizeAgentChatInput } from '../utils'
 import { handleShowApiErrorWithToastMessages } from '@/utils/common.utils'
+import ErrorBlock from '../AgentPanelChatBlocks/ErrorBlock/ErrorBlock'
 
 const panelAnimationVariant: Variants = {
     initial: (isSmallWidthDevices) => ({
@@ -90,12 +93,12 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
     }]);
     const isSmallWidthDevices = useMediaQuery({ maxWidth: 640 });
     const isSmallHeightDevices = useMediaQuery({ maxHeight: 550 });
-    const { data, isLoading } = useGetAiConversationByThreadIdQuery(threadId as string, {
+    const { data, isLoading, isError, error, refetch } = useGetAiConversationByThreadIdQuery(threadId as string, {
         enabled: !!threadId,
         refetchOnWindowFocus: false,
     });
 
-    const { mutateAsync, isPending } = useAskQuestionToAiAgentWithStreamMutation()
+    const mutation = useAskQuestionToAiAgentWithStreamMutation()
 
     useEffect(() => {
         if (sessionStorage.getItem("aiSupportAgentThreadId")) {
@@ -120,8 +123,6 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
             return;
         }
 
-        const notUpdatedMessages = [...messages];
-
         try {
             setMessages(prv => [...prv, {
                 type: "human",
@@ -133,7 +134,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                 scrollToEndOfChatHistory();
             }, 300);
 
-            const streamer = await mutateAsync({ question: question || text, ...(threadId && { threadId }) })
+            const streamer = await mutation.mutateAsync({ question: question || text, ...(threadId && { threadId }) });
 
             await initStreamReader<IAgentMessage>({
                 stream: streamer,
@@ -174,9 +175,11 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                         focusAgentChatInput();
                     }, 300);
                 },
+                onStreamError() {
+                    toast.error("A error occurred when response streaming from ai")
+                },
             });
         } catch (error) {
-            setMessages(notUpdatedMessages);
             setIsStreaming(false);
             if (error instanceof AxiosError) {
                 handleShowApiErrorWithToastMessages(error)
@@ -210,7 +213,25 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
 
                 <div className={styles.agent_panel_content}>
                     <AgentPanelHeader setShow={setShow} />
-                    <motion.div
+                    {
+                        isError && (
+                            <div className={styles.agent_panel_error}>
+                                <div className={styles.agent_panel_error_icon}>
+                                    <PiChatTeardropDotsFill size={45} />
+                                    <PiXCircleFill size={25} className={styles.agent_panel_error_icon_cross} />
+                                </div>
+                                <h6>Error</h6>
+                                <p>
+                                    An error occurred while retrieving the message history.
+                                </p>
+                                <Button onClick={() => refetch()} variant="danger" size='sm'>
+                                    <PiArrowCounterClockwiseBold />
+                                    REFRESH
+                                </Button>
+                            </div>
+                        )
+                    }
+                    {!isError && <motion.div
                         variants={messageHistoryVariant}
                         custom={{ isSmallWidthDevices, isSmallHeightDevices }}
                         initial="initial"
@@ -248,19 +269,28 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                             ))
                         }
 
-                        {isLoading && <>
-                            <MessageBlock isLoading={isLoading} loadingMsgType="human" />
-                            <MessageBlock isLoading={isLoading} loadingMsgType="ai" />
-                            <MessageBlock isLoading={isLoading} loadingMsgType="human" />
-                            <MessageBlock isLoading={isLoading} loadingMsgType="ai" />
-                        </>}
-                        <MessageBlock isLoading={isPending} loadingMsgType="ai" />
+                        {
+                            isLoading && <>
+                                <MessageBlock isLoading={isLoading} loadingMsgType="human" />
+                                <MessageBlock isLoading={isLoading} loadingMsgType="ai" />
+                                <MessageBlock isLoading={isLoading} loadingMsgType="human" />
+                                <MessageBlock isLoading={isLoading} loadingMsgType="ai" />
+                            </>
+                        }
+                        {mutation.isError &&
+                            typeof mutation.error?.response?.data.error.errorMessage === "string" &&
+                            <ErrorBlock
+                                error={mutation.error?.response?.data.error.errorMessage as string}
+                                refetch={() => askQuestionToAgent()}
+                            />
+                        }
+                        <MessageBlock isLoading={mutation.isPending} loadingMsgType="ai" />
                         <div id='agentChatMessageHistoryEnd' />
-                    </motion.div>
+                    </motion.div>}
                     <ChatInput
                         text={text}
                         setText={setText}
-                        isPending={isPending || isStreaming}
+                        isPending={mutation.isPending || isStreaming}
                         askQuestionToAgent={askQuestionToAgent}
                     />
                 </div>
