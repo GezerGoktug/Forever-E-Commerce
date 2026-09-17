@@ -1,12 +1,12 @@
-import { type FC, type ReactNode } from "react";
+import type { BaseHTMLAttributes, FC, ReactNode } from "react";
 import styles from "./Badge.module.scss";
 import { clsx } from "clsx";
 import { BiLoaderCircle } from "react-icons/bi";
 
-interface BadgeProps {
+interface BadgeProps extends BaseHTMLAttributes<HTMLDivElement> {
     children: ReactNode;
     variant?: "primary" | "secondary" | "danger";
-    size?: "xs" | "sm" | "md" | "lg" ;
+    size?: "xs" | "sm" | "md" | "lg";
     loading?: boolean;
     customLoadingContent?: ReactNode;
     className?: string
@@ -18,7 +18,8 @@ const Badge: FC<BadgeProps> = ({
     size = "md",
     loading = false,
     customLoadingContent,
-    className
+    className,
+    ...props
 }) => {
     return (
         <div
@@ -29,6 +30,7 @@ const Badge: FC<BadgeProps> = ({
                 { [styles.loading]: loading },
                 className
             )}
+            {...props}
         >
             {loading ? (
                 customLoadingContent ?? (
