@@ -1,10 +1,4 @@
-/**
- * Breakpoint değerleri — `src/_variables.scss` içindeki `$breakpoints` map'i ile
- * senkron tutulmalıdır. SCSS tarafı `responsive()` mixin'i üzerinden, JS tarafı
- * `useMediaQuery` üzerinden aynı eşikleri kullanır; biri değişirse diğeri de değişmeli.
- *
- * `xsw` = "xs-wide" — `xs`in genişletilmiş adımı (`xs` ile `sm` arasında).
- */
+
 export const BREAKPOINTS = {
   xs: 400,
   xsw: 550,

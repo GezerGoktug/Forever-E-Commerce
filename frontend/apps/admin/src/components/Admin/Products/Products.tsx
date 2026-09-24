@@ -9,7 +9,7 @@ import {
 import { Modal } from "@forever/ui-kit";
 import DeleteProductModal from "./DeleteProductModal/DeleteProductModal";
 import EditProductModal from "./EditProductModal/EditProductModal";
-import { type ExtendedProductType } from "@/types/product.type";
+import { type ExtendedProduct } from "@/types/product.type";
 import { useGetProductsForAdminQuery } from "@/services/hooks/queries/product.query";
 import { useIsAdmin } from "@/store/auth/hooks";
 
@@ -18,8 +18,8 @@ interface ModalState<T> {
   data: T;
 }
 
-export type EditProductDTO = Pick<
-  ExtendedProductType,
+export type ProductToEdit = Pick<
+  ExtendedProduct,
   | "_id"
   | "name"
   | "description"
@@ -30,33 +30,40 @@ export type EditProductDTO = Pick<
   | "category"
   | "subCategory"
 >;
-export type DeleteProductDTO = Pick<ExtendedProductType, "_id">;
+export type ProductToDelete = Pick<ExtendedProduct, "_id">;
 
 const Products = () => {
-  const [page, setPage] = useState(0);
+  const isAdmin = useIsAdmin();
 
+  const [page, setPage] = useState(0);
   const [modal, setModal] = useState<ModalState<
-    EditProductDTO | DeleteProductDTO
+    ProductToEdit | ProductToDelete
   > | null>(null);
 
   const { data } = useGetProductsForAdminQuery({ page }, {
-    enabled: useIsAdmin()
+    enabled: isAdmin
   });
+
+  const closeModal = () => setModal(null);
+
+  const goToPrevPage = () => setPage(data?.data.hasPrev ? page - 1 : page);
+
+  const goToNextPage = () => setPage(data?.data.hasNext ? page + 1 : page);
 
   return (
     <div>
       <DeleteProductModal
         open={modal?.modal_type === "DELETE"}
-        data={modal?.data as DeleteProductDTO}
-        closeModal={() => setModal(null)}
+        data={modal?.data as ProductToDelete | undefined}
+        closeModal={closeModal}
       />
       <Modal
         open={modal?.modal_type === "EDIT"}
-        closeModal={() => setModal(null)}
+        closeModal={closeModal}
       >
         <EditProductModal
-          data={modal?.data as EditProductDTO}
-          closeModal={() => setModal(null)}
+          data={modal?.data as ProductToEdit | undefined}
+          closeModal={closeModal}
         />
       </Modal>
       <table className={styles.table}>
@@ -125,18 +132,21 @@ const Products = () => {
       </table>
       <div className={styles.pagination}>
         <div
-          onClick={() => setPage(data?.data.hasPrev ? page - 1 : page)}
-          className={styles.pagination_item}
+          onClick={goToPrevPage}
+          className={clsx(styles.pagination_item, {
+            [styles.disabled]: !data?.data.hasPrev,
+          })}
         >
           <IoIosArrowDropleftCircle fill="white" size={25} />
         </div>
-        <div className={styles.pagination_item}>{page}</div>
-        <div className={styles.pagination_item}>
-          <IoIosArrowDroprightCircle
-            onClick={() => setPage(data?.data.hasNext ? page + 1 : page)}
-            fill="white"
-            size={25}
-          />
+        <div className={styles.pagination_item}>{page + 1}</div>
+        <div
+          onClick={goToNextPage}
+          className={clsx(styles.pagination_item, {
+            [styles.disabled]: !data?.data.hasNext,
+          })}
+        >
+          <IoIosArrowDroprightCircle fill="white" size={25} />
         </div>
       </div>
     </div>

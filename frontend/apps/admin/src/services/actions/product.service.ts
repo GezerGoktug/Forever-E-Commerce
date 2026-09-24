@@ -1,8 +1,8 @@
 import api from "@/utils/api";
 import type { IDefaultResponse, IPaginationResult, IResponse } from "@forever/api";
-import type { ExtendedProductType } from "@/types/product.type";
+import type { ExtendedProduct } from "@/types/product.type";
 
-const getProductsForAdmin = (q: string): Promise<IResponse<IPaginationResult<ExtendedProductType, object>>> => api.get(`/product/admin/list?${q}`);
+const getProductsForAdmin = (q: string): Promise<IResponse<IPaginationResult<ExtendedProduct, object>>> => api.get(`/product/admin/list?${q}`);
 
 const deleteProduct = (id: string): Promise<IResponse<IDefaultResponse>> => api.delete(`/product/${id}`);
 

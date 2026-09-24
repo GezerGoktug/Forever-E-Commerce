@@ -1,11 +1,14 @@
 import { IoChevronBackCircle } from "react-icons/io5";
-import styles from "./Error.module.scss";
+import styles from "./NotFound.module.scss";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Button } from "@forever/ui-kit"
 
-const Error = () => {
+const NotFoundPage = () => {
   const navigate = useNavigate();
+
+  const goToStatsPage = () => navigate("/stats");
+
   return (
     <div className={styles.error}>
       <Helmet>
@@ -13,8 +16,8 @@ const Error = () => {
       </Helmet>
       <h5>404</h5>
       <h6>Error</h6>
-      <p>Page not founded</p>
-      <Button onClick={() => navigate("/stats")}>
+      <p>Page not found</p>
+      <Button onClick={goToStatsPage}>
         <IoChevronBackCircle size={20} />
         Return admin main page
       </Button>
@@ -22,4 +25,4 @@ const Error = () => {
   );
 };
 
-export default Error;
+export default NotFoundPage;

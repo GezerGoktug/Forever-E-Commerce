@@ -81,5 +81,9 @@
         fill: v.$primary-color;
       }
     }
+    &.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
   }
 }

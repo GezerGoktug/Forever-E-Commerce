@@ -1,4 +1,4 @@
-export interface IAdminStatResponse {
+export interface AdminStatResponse {
     stats_card: {
         dt: number;
         key:
@@ -60,3 +60,16 @@ export interface IAdminStatResponse {
         }[];
     };
 }
+
+export type StatKey = AdminStatResponse["stats_card"][number]["key"];
+
+export type BestSellingProduct = AdminStatResponse["bestSellingProducts"][number];
+
+export type CategoryOrderDistribution = AdminStatResponse["categoryOrderDistribution"][number];
+
+export type GeographicDistribution = AdminStatResponse["geographicDistribution"][number];
+
+export type SalesEntry = AdminStatResponse["sales"]["yearlySales"][number];
+
+export type ProductCountEntry =
+    AdminStatResponse["productCountsByQueries"]["productCountsByCategory"][number];

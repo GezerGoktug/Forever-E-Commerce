@@ -37,8 +37,8 @@ const NavMenuDrawer = () => {
             <Logo isAdminLogo={true} className={styles.nav_menu_logo} />
             <nav>
                 <ul>
-                    {links.map(({ icon: Icon, href, label }, i) => (
-                        <li key={"admin_link" + i}>
+                    {links.map(({ icon: Icon, href, label }) => (
+                        <li key={href}>
                             <NavLink
                                 className={({ isActive }) =>
                                     clsx(styles.nav_link, { [styles.active]: isActive })

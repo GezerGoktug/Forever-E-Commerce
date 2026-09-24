@@ -1,7 +1,7 @@
 import { useMutation, type UseMutationOptions, useQueryClient } from "@tanstack/react-query";
 import type { IError, IResponse, IDefaultResponse } from "@forever/api";
 import ProductService from "@/services/actions/product.service";
-import type { IUpdateProductVariables } from "@/types/product.type";
+import type { UpdateProductVariables } from "@/types/product.type";
 
 const useAddProductMutation = (
     mutationDetails?: UseMutationOptions<IResponse<IDefaultResponse>, IError, FormData>
@@ -32,12 +32,12 @@ const useDeleteProductMutation = (
 };
 
 const useUpdateProductMutation = (
-    mutationDetails?: UseMutationOptions<IResponse<IDefaultResponse>, IError, IUpdateProductVariables>
+    mutationDetails?: UseMutationOptions<IResponse<IDefaultResponse>, IError, UpdateProductVariables>
 ) => {
     const queryClient = useQueryClient();
     const { onSuccess, ...details } = mutationDetails ?? {};
 
-    return useMutation<IResponse<IDefaultResponse>, IError, IUpdateProductVariables>({
+    return useMutation<IResponse<IDefaultResponse>, IError, UpdateProductVariables>({
         mutationKey: ["admin_update_product"],
         mutationFn: ({ id, updatedProduct }) => ProductService.updateProduct(id, updatedProduct),
         onSuccess: async (data, variables, context) => {

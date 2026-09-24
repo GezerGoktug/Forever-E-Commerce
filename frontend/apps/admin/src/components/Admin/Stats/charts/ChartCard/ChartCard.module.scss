@@ -1,0 +1,38 @@
+@use "@forever/sass-utils/utils-mixins" as u;
+@use "@forever/sass-utils/mixins" as m;
+@use "@forever/sass-utils/variables" as v;
+
+.chart_card {
+  padding: 25px 15px;
+  box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px,
+    rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+  border: 1px solid rgba(237, 237, 237, 0.842);
+  border-radius: 10px;
+  background: rgb(240, 240, 240);
+  background: linear-gradient(
+    0deg,
+    rgba(240, 240, 240, 0.6896008403361344) 0%,
+    rgba(255, 255, 255, 1) 56%
+  );
+  width: 50%;
+  @include u.dark-mode {
+    background: rgb(240, 240, 240);
+    background: linear-gradient(
+      0deg,
+      rgba(49, 49, 49, 0.69) 0%,
+      rgb(0, 0, 0) 56%
+    );
+  }
+  @include m.responsive(md) {
+    width: 100%;
+  }
+  &_header {
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 45px;
+  }
+}
+
+.chart_default_tooltip {
+  background-color: v.$primary-color !important;
+}

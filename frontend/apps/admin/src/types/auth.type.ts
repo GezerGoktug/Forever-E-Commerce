@@ -1,22 +1,13 @@
-import type { ExtendedUserType } from "./user.type";
+import type { ExtendedUser } from "./user.type";
 
 
-export interface ILoginVariables {
+export interface LoginVariables {
     email: string;
     password: string;
 }
 
-export interface IRegisterVariables {
-    name: string,
-    email: string,
-    password: string,
-    confirmPassword: string,
-}
-
-export interface IAuthResponse {
+export interface AuthResponse {
   message: string;
-  user: ExtendedUserType,
+  user: ExtendedUser,
   accessToken: string,
 }
-
-

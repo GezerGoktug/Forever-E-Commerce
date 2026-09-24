@@ -1,5 +1,5 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import Error from "./pages/Error/Error";
+import NotFoundPage from "./pages/NotFound/NotFound";
 import AdminLayout from "./layouts/AdminLayout/AdminLayout";
 import { Toaster } from "react-hot-toast";
 import { useIsAdmin } from "./store/auth/hooks";
@@ -12,7 +12,9 @@ import AuthGuard from "./guards/AuthGuard";
 import AdminLogin from "./components/Admin/AdminLogin/AdminLogin";
 
 const AdminPrivateRoute = () => {
-  return useIsAdmin() ? <Outlet /> : <Navigate to="/login" />;
+  const isAdmin = useIsAdmin();
+
+  return isAdmin ? <Outlet /> : <Navigate to="/login" />;
 };
 
 function App() {
@@ -29,7 +31,7 @@ function App() {
               <Route path="add-product" element={<AdminAddProduct />} />
               <Route path="products" element={<AdminProducts />} />
               <Route path="orders" element={<AdminOrders />} />
-              <Route path="*" element={<Error />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Route>
         </Routes>

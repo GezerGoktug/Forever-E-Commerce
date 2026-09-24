@@ -22,7 +22,7 @@ const Topbar = () => {
       clearUser();
       navigate("/login");
       removeLocalStorage("accessToken");
-      toast.success("Logout succesfully");
+      toast.success("Signed out");
     },
   })
 

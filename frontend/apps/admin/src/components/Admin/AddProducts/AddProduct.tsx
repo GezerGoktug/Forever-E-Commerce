@@ -11,23 +11,29 @@ import toast from "react-hot-toast";
 import { productSchema } from "@/schemas/schema";
 import { useAddProductMutation } from "@/services/hooks/mutations/product.mutations";
 import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
+import { getSize } from "@/utils/product.utils";
 
-type ImagesType = {
-  mainImage: string | null;
-  subImage1: string | null;
-  subImage2: string | null;
-  subImage3: string | null;
+type ImageField = "mainImage" | "subImage1" | "subImage2" | "subImage3";
+
+type ImagePreviews = Record<ImageField, string | null>;
+
+type ProductFormValues = z.infer<typeof productSchema>;
+
+const SUB_IMAGE_FIELDS: ImageField[] = ["subImage1", "subImage2", "subImage3"];
+
+const SIZES: SizeType[] = ["SMALL", "MEDIUM", "LARGE", "XLARGE", "XXLARGE"];
+
+const EMPTY_IMAGE_PREVIEWS: ImagePreviews = {
+  mainImage: null,
+  subImage1: null,
+  subImage2: null,
+  subImage3: null,
 };
 
 const AddProduct = () => {
-  const [images, setImages] = useState<ImagesType>({
-    mainImage: null,
-    subImage1: null,
-    subImage2: null,
-    subImage3: null,
-  });
+  const [images, setImages] = useState<ImagePreviews>(EMPTY_IMAGE_PREVIEWS);
 
-  const form = useForm<z.infer<typeof productSchema>>({
+  const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       mainImage: null,
@@ -39,13 +45,20 @@ const AddProduct = () => {
       price: 1,
       sizes: [],
     },
-
   });
 
-  const onChangeImage = (
-    e: ChangeEvent<HTMLInputElement>,
-    field: "mainImage" | "subImage1" | "subImage2" | "subImage3"
-  ) => {
+  const { mutate, isPending } = useAddProductMutation({
+    onSuccess: (response) => {
+      toast.success(response.data.message);
+      form.reset();
+      setImages(EMPTY_IMAGE_PREVIEWS);
+    },
+    onError: (error) => handleShowApiErrorWithToastMessages(error),
+  });
+
+  const selectedSizes = form.watch("sizes");
+
+  const onChangeImage = (e: ChangeEvent<HTMLInputElement>, field: ImageField) => {
     const file = e.target.files ? e.target.files[0] : undefined;
 
     if (file) {
@@ -69,21 +82,7 @@ const AddProduct = () => {
     }
   };
 
-  const { mutate, isPending } = useAddProductMutation({
-    onSuccess: (data) => {
-      toast.success(data.data.message);
-      form.reset();
-      setImages({
-        mainImage: null,
-        subImage1: null,
-        subImage2: null,
-        subImage3: null,
-      });
-    },
-    onError: (err) => handleShowApiErrorWithToastMessages(err),
-  });
-
-  const onSubmit = (data: z.infer<typeof productSchema>) => {
+  const onSubmit = (data: ProductFormValues) => {
     const formData = new FormData();
 
     if (!data.mainImage) {
@@ -106,7 +105,6 @@ const AddProduct = () => {
     mutate(formData);
   };
 
-
   return (
     <div className={styles.add_product_wrapper}>
       <h6>Add Product</h6>
@@ -116,7 +114,7 @@ const AddProduct = () => {
       >
         <div className={styles.add_product_form_files_upload}>
           <div className={styles.add_product_form_main_image}>
-            {images?.mainImage && <img src={images.mainImage} alt="" />}
+            {images.mainImage && <img src={images.mainImage} alt="" />}
             <input
               accept="image/*"
               className={styles.add_product_form_file_input}
@@ -126,36 +124,18 @@ const AddProduct = () => {
             <IoCloudUploadOutline size={40} />
           </div>
           <div className={styles.add_product_form_sub_images}>
-            <div className={styles.add_product_form_sub_image}>
-              {images?.subImage1 && <img src={images.subImage1} alt="" />}
-              <input
-                accept="image/*"
-                className={styles.add_product_form_file_input}
-                onChange={(e) => onChangeImage(e, "subImage1")}
-                type="file"
-              />
-              <IoCloudUploadOutline size={40} />
-            </div>
-            <div className={styles.add_product_form_sub_image}>
-              {images?.subImage2 && <img src={images.subImage2} alt="" />}
-              <input
-                accept="image/*"
-                className={styles.add_product_form_file_input}
-                onChange={(e) => onChangeImage(e, "subImage2")}
-                type="file"
-              />
-              <IoCloudUploadOutline size={40} />
-            </div>
-            <div className={styles.add_product_form_sub_image}>
-              {images?.subImage3 && <img src={images.subImage3} alt="" />}
-              <input
-                accept="image/*"
-                className={styles.add_product_form_file_input}
-                onChange={(e) => onChangeImage(e, "subImage3")}
-                type="file"
-              />
-              <IoCloudUploadOutline size={40} />
-            </div>
+            {SUB_IMAGE_FIELDS.map((field) => (
+              <div key={field} className={styles.add_product_form_sub_image}>
+                {images[field] && <img src={images[field]} alt="" />}
+                <input
+                  accept="image/*"
+                  className={styles.add_product_form_file_input}
+                  onChange={(e) => onChangeImage(e, field)}
+                  type="file"
+                />
+                <IoCloudUploadOutline size={40} />
+              </div>
+            ))}
           </div>
         </div>
         <label>Product Name:</label>
@@ -212,52 +192,23 @@ const AddProduct = () => {
         </div>
         <label>Select sizes:</label>
         <div className={styles.add_product_form_sizes}>
-          <div
-            onClick={() => onChangeSizes("SMALL")}
-            className={clsx(styles.add_product_form_size, {
-              [styles.active]: form.watch("sizes").includes("SMALL"),
-            })}
-          >
-            S
-          </div>
-          <div
-            onClick={() => onChangeSizes("MEDIUM")}
-            className={clsx(styles.add_product_form_size, {
-              [styles.active]: form.watch("sizes").includes("MEDIUM"),
-            })}
-          >
-            M
-          </div>
-          <div
-            onClick={() => onChangeSizes("LARGE")}
-            className={clsx(styles.add_product_form_size, {
-              [styles.active]: form.watch("sizes").includes("LARGE"),
-            })}
-          >
-            L
-          </div>
-          <div
-            onClick={() => onChangeSizes("XLARGE")}
-            className={clsx(styles.add_product_form_size, {
-              [styles.active]: form.watch("sizes").includes("XLARGE"),
-            })}
-          >
-            X
-          </div>
-          <div
-            onClick={() => onChangeSizes("XXLARGE")}
-            className={clsx(styles.add_product_form_size, {
-              [styles.active]: form.watch("sizes").includes("XXLARGE"),
-            })}
-          >
-            XXL
-          </div>
+          {SIZES.map((size) => (
+            <div
+              key={size}
+              onClick={() => onChangeSizes(size)}
+              className={clsx(styles.add_product_form_size, {
+                [styles.active]: selectedSizes.includes(size),
+              })}
+            >
+              {getSize(size)}
+            </div>
+          ))}
         </div>
         <div className={styles.add_product_form_errors}>
-          {Object.values(form.formState.errors).map((val, i) => (
+          {Object.values(form.formState.errors).map((error, i) => (
             <div className={styles.add_product_form_error} key={"error_" + i}>
               <span>&#9679;</span>
-              <div>{val.message as string}</div>
+              <div>{error.message as string}</div>
             </div>
           ))}
         </div>

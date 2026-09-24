@@ -1,0 +1,107 @@
+@use "@forever/sass-utils/utils-mixins" as u;
+@use "@forever/sass-utils/mixins" as m;
+@use "@forever/sass-utils/variables" as v;
+
+.stat_cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px 15px;
+  margin-bottom: 50px;
+  @include m.responsive(lg) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @include m.responsive(xs) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .stat_card {
+    padding: 25px 15px;
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px,
+      rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+    border: 1px solid rgba(237, 237, 237, 0.842);
+    border-radius: 10px;
+    background: rgb(240, 240, 240);
+    background: linear-gradient(
+      0deg,
+      rgba(240, 240, 240, 0.6896008403361344) 0%,
+      rgba(255, 255, 255, 1) 56%
+    );
+    @include u.dark-mode {
+      background: rgb(240, 240, 240);
+      background: linear-gradient(
+        0deg,
+        rgba(49, 49, 49, 0.69) 0%,
+        rgb(0, 0, 0) 56%
+      );
+    }
+    &_top {
+      @include u.flex-between;
+      margin-bottom: 20px;
+      gap: 15px;
+      @include m.responsive(xsw) {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        text-align: center;
+      }
+      .stat_card_header {
+        flex: 1;
+        h6 {
+          font-size: 18px;
+          font-weight: 500;
+          color: v.$text-color;
+          margin-bottom: 10px;
+        }
+        span {
+          font-family: v.$secondary-font-family;
+          font-size: 34px;
+          font-weight: 700;
+          letter-spacing: 2px;
+          background: #8e2de2;
+          background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
+          background: linear-gradient(to right, #4a00e0, #8e2de2);
+          background-clip: text;
+          color: transparent;
+          @include u.dark-mode {
+            background: #ab4bff;
+            background: -webkit-linear-gradient(to right, #5601ff, #ab4bff);
+            background: linear-gradient(to right, #5601ff, #ab4bff);
+            background-clip: text;
+            color: transparent;
+          }
+        }
+      }
+      .stat_card_icon_container {
+        width: 60px;
+        height: 60px;
+        @include u.flex-center;
+        gap: 15px;
+        background: #bc4e9c;
+        outline: 2px solid #f80759;
+        outline-offset: 3px;
+        border-radius: 50%;
+        background: -webkit-linear-gradient(to right, #f80759, #bc4e9c);
+        background: linear-gradient(to right, #f80759, #bc4e9c);
+        margin-right: 10px;
+        @include m.responsive(xsw) {
+          margin-right: 0px;
+        }
+        .stat_card_icon {
+          font-size: 35px;
+          fill: white;
+        }
+      }
+    }
+
+    &_bottom {
+      @include u.row-center;
+      gap: 13px;
+      span {
+        font-size: 20px;
+        margin-bottom: auto;
+      }
+      .stat_card_desc {
+        color: v.$text-color;
+      }
+    }
+  }
+}

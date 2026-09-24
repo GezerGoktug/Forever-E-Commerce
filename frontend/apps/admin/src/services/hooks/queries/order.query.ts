@@ -1,13 +1,13 @@
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import OrderService from "@/services/actions/order.service";
 import type { IResponse, IError } from "@forever/api";
-import type { IOrder } from "@/types/order.type";
+import type { Order } from "@/types/order.type";
 
 
 const useAdminOrdersQuery = (
-    queryOptions?: UseQueryOptions<IResponse<IOrder[]>, IError>
+    queryOptions?: UseQueryOptions<IResponse<Order[]>, IError>
 ) =>
-    useQuery<IResponse<IOrder[]>, IError>({
+    useQuery<IResponse<Order[]>, IError>({
         queryKey: ["admin-orders"],
         queryFn: () => OrderService.getAdminOrders(),
         ...queryOptions,

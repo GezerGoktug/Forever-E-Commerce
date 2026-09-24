@@ -12,14 +12,17 @@ import Logo from '@/components/common/Logo/Logo';
 import { setLocalStorage } from '@forever/storage-kit';
 import { handleShowApiErrorWithToastMessages } from '@/utils/common.utils';
 
-interface Login_Form_Types {
+interface LoginFormValues {
     email: string;
     password: string;
 }
 
 const AdminLogin = () => {
     const navigate = useNavigate();
-    const form = useForm<Login_Form_Types>({
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const form = useForm<LoginFormValues>({
         defaultValues: {
             email: "",
             password: "",
@@ -33,7 +36,7 @@ const AdminLogin = () => {
             toast.success(data.data.message);
 
             if (data.data.user.role === "ADMIN") {
-                navigate("/stats"); 
+                navigate("/stats");
                 return;
             }
             navigate("/profile");
@@ -41,11 +44,11 @@ const AdminLogin = () => {
         onError: (error) => handleShowApiErrorWithToastMessages(error),
     })
 
-    const onSubmit: SubmitHandler<Login_Form_Types> = (data) => mutate(data);
-
-    const [showPassword, setShowPassword] = useState<boolean>(false);
-
     const ShowPasswordIcon = showPassword ? FaEye : FaEyeSlash;
+
+    const onSubmit: SubmitHandler<LoginFormValues> = (data) => mutate(data);
+
+    const toggleShowPassword = () => setShowPassword(!showPassword);
 
     return (
         <div className={styles.admin_login_wrapper}>
@@ -74,7 +77,7 @@ const AdminLogin = () => {
                         size="lg"
                         className={styles.admin_login_form_input}
                         rightIcon={ShowPasswordIcon}
-                        rightIconOnClick={() => setShowPassword(!showPassword)}
+                        rightIconOnClick={toggleShowPassword}
                         placeholder="Password"
                         type={showPassword ? "text" : "password"}
                         {...form.register("password", { required: "Password is required" })}
