@@ -53,7 +53,7 @@
         height: auto;
         margin: auto;
       }
-      @include m.responsive(xls) {
+      @include m.responsive(xsw) {
         width: 100%;
       }
     }

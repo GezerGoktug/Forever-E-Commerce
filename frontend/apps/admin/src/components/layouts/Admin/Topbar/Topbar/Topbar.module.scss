@@ -11,7 +11,7 @@
     display: block;
   }
 
-  @include m.responsive(xls) {
+  @include m.responsive(xsw) {
     width: 45% !important;
   }
 
@@ -37,7 +37,7 @@
     padding: 10px 30px;
   }
 
-  @include m.responsive(xls) {
+  @include m.responsive(xsw) {
     padding: 10px 20px;
   }
 

@@ -4,6 +4,7 @@ import { Button } from '@forever/ui-kit'
 import styles from './SupportAgentPanel.module.scss'
 import { motion, type Variants } from 'framer-motion'
 import { useMediaQuery } from '@forever/hook-kit'
+import { BREAKPOINTS } from '@forever/sass-utils/breakpoints'
 import { OutsideClickHandler } from '@forever/common-utils'
 import { Fragment, useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import toast from 'react-hot-toast'
@@ -91,7 +92,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
         message: "Hello 👋, I'm Sora, your e-commerce store assistant 😊. How can I help you? Here are some sample questions you can ask me:",
         products: []
     }]);
-    const isSmallWidthDevices = useMediaQuery({ maxWidth: 640 });
+    const isSmallWidthDevices = useMediaQuery({ maxWidth: BREAKPOINTS.sm });
     const isSmallHeightDevices = useMediaQuery({ maxHeight: 550 });
     const { data, isLoading, isError, refetch } = useGetAiConversationByThreadIdQuery(threadId as string, {
         enabled: !!threadId,

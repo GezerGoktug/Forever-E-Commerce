@@ -12,6 +12,10 @@
         },
         "./variables": {
             "import": "./variables.scss"
+        },
+        "./breakpoints": {
+            "import": "./breakpoints.ts",
+            "types": "./breakpoints.ts"
         }
     }
 }

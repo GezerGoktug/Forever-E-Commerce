@@ -3,6 +3,7 @@ import styles from "./Filter.module.scss";
 import { IoIosArrowUp } from "react-icons/io";
 import clsx from "clsx";
 import { useDebounce, useMediaQuery } from "@forever/hook-kit"
+import { BREAKPOINTS } from "@forever/sass-utils/breakpoints";
 import { useMaxPrice } from "@/store/product/hooks";
 import { useQueryParams } from "@forever/query-kit";
 import type { CategoriesType, ProductSearchQuery, SubCategoriesType } from "@/types/product.type";
@@ -29,7 +30,7 @@ const Filter = () => {
   const [openFilterOptions, setOpenFilterOptions] = useState(true);
   const [lowerPrice, setLowerPrice] = useState(0);
 
-  const isMobile = useMediaQuery({ maxWidth: 640 });
+  const isMobile = useMediaQuery({ maxWidth: BREAKPOINTS.sm });
   const [debouncedText, setText, text] = useDebounce<string>(searchQuery, 700);
 
   useEffect(() => {

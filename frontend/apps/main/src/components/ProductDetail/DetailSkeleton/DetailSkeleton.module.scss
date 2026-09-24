@@ -13,7 +13,7 @@
         height: 600px;
     }
 
-    @include m.responsive(xls) {
+    @include m.responsive(xsw) {
         height: 500px;
     }
 
@@ -30,7 +30,7 @@
             width: 100%;
         }
 
-        @include m.responsive(xls) {
+        @include m.responsive(xsw) {
             height: 120px;
         }
 
@@ -128,7 +128,7 @@
             margin-top: 10px;
             @include u.skeleton_animate(350px, 15px);
 
-            @include m.responsive(xls) {
+            @include m.responsive(xsw) {
                 @include u.skeleton_animate(80%, 15px);
             }
         }

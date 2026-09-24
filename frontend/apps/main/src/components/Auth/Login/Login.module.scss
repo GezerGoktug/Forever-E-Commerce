@@ -26,7 +26,7 @@
   .login_form {
     width: 450px;
 
-    @include m.responsive(xls) {
+    @include m.responsive(xsw) {
       width: 100%;
     }
 
@@ -64,7 +64,7 @@
   .login_with_app_provider_section {
     width: 450px;
 
-    @include m.responsive(xls) {
+    @include m.responsive(xsw) {
       width: 100%;
     }
 

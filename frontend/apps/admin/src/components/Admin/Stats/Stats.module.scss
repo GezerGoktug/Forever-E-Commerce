@@ -38,7 +38,7 @@
         @include u.flex-between;
         margin-bottom: 20px;
         gap: 15px;
-        @include m.responsive(xls) {
+        @include m.responsive(xsw) {
           display: flex;
           flex-direction: column-reverse;
           align-items: center;
@@ -83,7 +83,7 @@
           background: -webkit-linear-gradient(to right, #f80759, #bc4e9c);
           background: linear-gradient(to right, #f80759, #bc4e9c);
           margin-right: 10px;
-          @include m.responsive(xls) {
+          @include m.responsive(xsw) {
             margin-right: 0px;
           }
           .admin_stats_icon {
