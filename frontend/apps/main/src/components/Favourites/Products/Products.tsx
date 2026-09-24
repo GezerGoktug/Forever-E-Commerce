@@ -1,9 +1,9 @@
 import styles from './Products.module.scss'
-import ProductItemSkeleton from '@/components/common/ProductItem/ProductItemSkeleton'
+import ProductCardSkeleton from '@/components/common/ProductCard/ProductCardSkeleton'
 import { RiMenuSearchLine } from 'react-icons/ri'
 import { GrPowerReset } from 'react-icons/gr'
-import ProductCard from '@/components/common/ProductItem/ProductItem'
-import type { ProductSearchQueryType } from '@/types/product.type'
+import ProductCard from '@/components/common/ProductCard/ProductCard'
+import type { ProductSearchQuery } from '@/types/product.type'
 import { useQueryParams } from '@forever/query-kit'
 import { useEffect } from 'react'
 import { setPagination } from '@/store/product/actions'
@@ -13,7 +13,7 @@ import { useGetFavProductsQuery } from '@/services/hooks/queries/product.query'
 import { Button } from '@forever/ui-kit'
 
 const Products = () => {
-    const { queryState, clearQuery } = useQueryParams<Pick<ProductSearchQueryType, 'page' | 'categories' | 'searchQuery' | 'subCategories' | 'sorting'>>({
+    const { queryState, clearQuery } = useQueryParams<Pick<ProductSearchQuery, 'page' | 'categories' | 'searchQuery' | 'subCategories' | 'sorting'>>({
         page: 0,
         categories: [],
         subCategories: [],
@@ -53,7 +53,7 @@ const Products = () => {
                         <div className={styles.products_error_text}>
                             <h6>Error</h6>
                             <p>
-                                We occurred a error while your get products with your desired filters .Please you retry to get products with your desired filters.
+                                We couldn't load products with those filters. Please try again.
                             </p>
                             <Button
                                 className={styles.products_error_btn}
@@ -70,16 +70,16 @@ const Products = () => {
                     <div className={styles.products_no_content}>
                         <RiMenuSearchLine className={styles.products_no_content_icon} />
                         <div className={styles.products_no_content_text}>
-                            <h6>Not found anything product</h6>
+                            <h6>No products found</h6>
                             <p>
-                                We not found anything a product according to your search query.You try to search with different a query
+                                No products match your search. Try a different query.
                             </p>
                             <Button
                                 className={styles.products_no_content_btn}
                                 variant="secondary"
-                                onClick={() => clearQuery()}
+                                onClick={clearQuery}
                             >
-                                RESET FILTRE
+                                RESET FILTERS
                                 <GrPowerReset size={20} />
                             </Button>
                         </div>
@@ -87,17 +87,17 @@ const Products = () => {
                 }
                 loadingFallback={
                     <>
-                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
-                            <ProductItemSkeleton key={'product_skeleton_item' + item} />
+                        {Array.from({ length: 12 }, (_, index) => (
+                            <ProductCardSkeleton key={`product-skeleton-${index}`} />
                         ))}
                     </>
                 }
             >
                 {
-                    (data) => data.map((item) => (
+                    (products) => products.map((product) => (
                         <ProductCard
-                            key={"fav_product" + item._id}
-                            product={{ ...item, isFav: true }}
+                            key={"fav_product" + product._id}
+                            product={{ ...product, isFav: true }}
                         />
                     ))
                 }

@@ -8,7 +8,7 @@ import { lazy, Suspense } from "react";
 import { Loading } from "@forever/ui-kit";
 
 const Home = lazy(() => import("./pages/Home"));
-const Error = lazy(() => import("./pages/Error/Error"));
+const NotFoundPage = lazy(() => import("./pages/NotFound/NotFound"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Cart = lazy(() => import("./pages/Cart/Cart"));
@@ -22,7 +22,9 @@ const Favourites = lazy(() => import("./pages/Favourites"));
 
 
 const PrivateRoute = () => {
-  return useIsAccess() ? <Outlet /> : <Navigate to="/auth" />;
+  const isAccess = useIsAccess();
+
+  return isAccess ? <Outlet /> : <Navigate to="/auth" />;
 };
 
 function App() {
@@ -46,7 +48,7 @@ function App() {
                 <Route path="/payment/result" element={<PaymentResult />} />
                 <Route path="/profile" element={<Profile />} />
               </Route>
-              <Route path="/*" element={<Error />} />
+              <Route path="/*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </AuthGuard>

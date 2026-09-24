@@ -1,12 +1,12 @@
 import api from "@/utils/api";
 import type { IDefaultResponse, IResponse } from "@forever/api";
-import type { ICreateOrderVariables, ICreateOrderWithStripeResponse, IOrder } from "@/types/order.type";
+import type { CreateOrderVariables, CreateOrderWithStripeResponse, Order } from "@/types/order.type";
 
-const getMyOrders = (): Promise<IResponse<IOrder[]>> => api.get("/order/my-order");
+const getMyOrders = (): Promise<IResponse<Order[]>> => api.get("/order/my-order");
 
-const createOrderWithCashOnDeliveryPaymentMethod = (body: ICreateOrderVariables): Promise<IResponse<IDefaultResponse>> => api.post("/order/add", body)
+const createOrderWithCashOnDeliveryPaymentMethod = (body: CreateOrderVariables): Promise<IResponse<IDefaultResponse>> => api.post("/order/add", body)
 
-const createOrderWithStripePaymentMethod = (body: ICreateOrderVariables): Promise<IResponse<ICreateOrderWithStripeResponse>> => api.post("/payment", body)
+const createOrderWithStripePaymentMethod = (body: CreateOrderVariables): Promise<IResponse<CreateOrderWithStripeResponse>> => api.post("/payment", body)
 
 const confirmOrderPayment = (orderId: string, isPayment: boolean, sessionId: string): Promise<IResponse<IDefaultResponse>> => api.put(`/order/confirm-order-payment/${orderId}`, { payment: isPayment, sessionId });
 

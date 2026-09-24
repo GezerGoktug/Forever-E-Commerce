@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./EditReviewModal.module.scss";
 import { FaPencil } from "react-icons/fa6";
-import type { EditReviewModalDTO } from "@/components/ProductDetail/Reviews/Reviews/Reviews";
+import type { ReviewToEdit } from "@/components/ProductDetail/Reviews/Reviews/Reviews";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useUpdateCommentMutation } from "@/services/hooks/mutations/product.mutations";
@@ -9,7 +9,7 @@ import { Button, Modal, Rating } from "@forever/ui-kit";
 import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 interface EditReviewModalProps {
-  data: EditReviewModalDTO | undefined;
+  data: ReviewToEdit | undefined;
   closeModal: () => void;
   open: boolean;
 }
@@ -17,8 +17,16 @@ interface EditReviewModalProps {
 const EditReviewModal = ({ data, closeModal, open }: EditReviewModalProps) => {
   const params = useParams();
 
-  const [rating, setRating] = useState<number>(0);
-  const [content, setContent] = useState<string>("");
+  const [rating, setRating] = useState(0);
+  const [content, setContent] = useState("");
+
+  const { mutate, isPending } = useUpdateCommentMutation({
+    onSuccess: (response) => {
+      toast.success(response.data?.message);
+      closeModal();
+    },
+    onError: (error) => handleShowApiErrorWithToastMessages(error)
+  })
 
   useEffect(() => {
     if (open && data) {
@@ -26,15 +34,6 @@ const EditReviewModal = ({ data, closeModal, open }: EditReviewModalProps) => {
       setContent(data.content);
     }
   }, [open, data]);
-
-
-  const { mutate, isPending } = useUpdateCommentMutation({
-    onSuccess: (data) => {
-      toast.success(data.data?.message);
-      closeModal();
-    },
-    onError: (error) => handleShowApiErrorWithToastMessages(error)
-  })
 
   const updateComment = () => {
     if (params.id && data) {
@@ -53,7 +52,7 @@ const EditReviewModal = ({ data, closeModal, open }: EditReviewModalProps) => {
         <h6>Edit Comment</h6>
         <Rating
           defaultRating={data?.rating}
-          rateAction={(rate: number) => setRating(rate)}
+          rateAction={setRating}
         />
         <textarea
           autoFocus
@@ -65,13 +64,13 @@ const EditReviewModal = ({ data, closeModal, open }: EditReviewModalProps) => {
           id="edit-review-modal"
         ></textarea>
         <div className={styles.edit_review_modal_btn_group}>
-          <Button onClick={() => closeModal()} size="sm" variant="secondary">
+          <Button onClick={closeModal} size="sm" variant="secondary">
             CANCEL
           </Button>
           <Button
             size="sm"
             loading={isPending}
-            onClick={() => updateComment()}
+            onClick={updateComment}
           >
             UPDATE
             <FaPencil size={15} />

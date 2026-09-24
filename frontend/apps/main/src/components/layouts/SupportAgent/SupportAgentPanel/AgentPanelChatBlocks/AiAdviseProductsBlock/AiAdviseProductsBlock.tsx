@@ -6,24 +6,15 @@ import { Link } from 'react-router-dom'
 import { useIsProductsInFavQuery } from '@/services/hooks/queries/product.query'
 import { useIsAccess } from '@/store/auth/hooks'
 import { useHandleFavouriteMutation } from '@/services/hooks/mutations/product.mutations'
-import { type AgentMessageType } from '@/types/ai.type'
+import { type AgentMessage } from '@/types/ai.type'
 import TshirtIcon from '@/icons/TshirtIcon'
 import { getSize } from '@/utils/product.utils'
 import { handleShowApiErrorWithToastMessages } from '@/utils/common.utils'
 
-const AiAdviseProductItem = ({ product }: { product: NonNullable<(AgentMessageType["products"])>[number] & { isFav: boolean } }) => {
+const AiAdviseProductItem = ({ product }: { product: NonNullable<(AgentMessage["products"])>[number] & { isFav: boolean } }) => {
     const isAccess = useIsAccess();
+
     const [isFav, setIsFav] = useState(false);
-
-    useEffect(() => {
-        setIsFav(product.isFav);
-    }, [product.isFav])
-
-    useEffect(() => {
-        if (!isAccess) {
-            setIsFav(false)
-        }
-    }, [isAccess])
 
     const { mutate } = useHandleFavouriteMutation({
         onSuccess: async (data) => {
@@ -36,7 +27,17 @@ const AiAdviseProductItem = ({ product }: { product: NonNullable<(AgentMessageTy
         }
     });
 
-    const toggleFavourite = () => isAccess ? mutate({ isFav, productId: product._id }) : toast.error('Please you login for add product to your favourites');
+    useEffect(() => {
+        setIsFav(product.isFav);
+    }, [product.isFav])
+
+    useEffect(() => {
+        if (!isAccess) {
+            setIsFav(false)
+        }
+    }, [isAccess])
+
+    const toggleFavourite = () => isAccess ? mutate({ isFav, productId: product._id }) : toast.error('Please log in to add favourites');
     return (
         <Link className={styles.agent_panel_chat_block_product_wrapper} to={`/product/${product._id}`}>
             <div className={styles.agent_panel_chat_block_product}>
@@ -54,7 +55,7 @@ const AiAdviseProductItem = ({ product }: { product: NonNullable<(AgentMessageTy
                     <div className={styles.agent_panel_chat_block_product_sizes}>
                         {
                             product.sizes.map((size) => (
-                                <div>{getSize(size)}</div>
+                                <div key={size}>{getSize(size)}</div>
                             ))
                         }
                     </div>
@@ -103,17 +104,19 @@ const AiAdviseProductSkeletonItem = () => (
     </div>
 )
 
-const AiAdviseProductsBlock = memo(({ products, isLoading = false }: { products: AgentMessageType["products"], isLoading?: boolean }) => {
+const AiAdviseProductsBlock = memo(({ products, isLoading = false }: { products: AgentMessage["products"], isLoading?: boolean }) => {
+    const isAccess = useIsAccess();
 
-    const { data } = useIsProductsInFavQuery(products ? products?.map(p => p._id) : [], ["ai-agent-fav-product"], {
-        enabled: useIsAccess() && !!products?.length
+    const skeletonId = useId();
+
+    const { data } = useIsProductsInFavQuery(products ? products.map(product => product._id) : [], ["ai-agent-fav-product"], {
+        enabled: isAccess && !!products?.length
     })
 
-    const isFavProduct = (id: string) => data?.data.find(dt => dt._id === id)?.isFav;
-    const id = useId();
+    const isFavProduct = (productId: string) => data?.data.find(favInfo => favInfo._id === productId)?.isFav;
 
     if (isLoading) {
-        return [0, 1, 2, 3, 4].map(dt => <AiAdviseProductSkeletonItem key={`ai-product-skeleton-${id}-${dt}`} />)
+        return Array.from({ length: 5 }, (_, index) => <AiAdviseProductSkeletonItem key={`ai-product-skeleton-${skeletonId}-${index}`} />)
     }
 
     return products && products.map((product) => <AiAdviseProductItem product={{ ...product, isFav: isFavProduct(product._id) || false }} key={`ai-product-${product._id}`} />)

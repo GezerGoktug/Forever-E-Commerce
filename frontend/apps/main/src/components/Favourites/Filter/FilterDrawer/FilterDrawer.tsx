@@ -4,27 +4,26 @@ import Select from 'react-select';
 import styles from './FilterDrawer.module.scss';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
 import { useQueryParams } from '@forever/query-kit';
-import type { CategoriesType, ProductSearchQueryType, SubCategoriesType } from '@/types/product.type';
-import { type OptionsType } from '@/components/Favourites/Filter/Filter';
+import type { CategoriesType, ProductSearchQuery, SubCategoriesType } from '@/types/product.type';
+import { type SelectOptions } from '@/components/Favourites/Filter/Filter';
 import { Button, Input } from '@forever/ui-kit';
 import { MdOutlineClose } from 'react-icons/md';
 import { AiFillFilter } from 'react-icons/ai';
 
-const categoriesOptions: OptionsType<CategoriesType> = [
+const categoriesOptions: SelectOptions<CategoriesType> = [
     { value: 'Men', label: 'Men' },
     { value: 'Women', label: 'Women' },
     { value: 'Kids', label: 'Kids' }
 ]
 
-const subCategoriesOptions: OptionsType<SubCategoriesType> = [
+const subCategoriesOptions: SelectOptions<SubCategoriesType> = [
     { value: 'Topwear', label: 'Topwear' },
     { value: 'Bottomwear', label: 'Bottomwear' },
     { value: 'Winterwear', label: 'Winterwear' }
 ]
 
 const FilterDrawer = ({ open, onClose }: { open: boolean, onClose: () => void }) => {
-
-    const { queryState, setQueries } = useQueryParams<Pick<ProductSearchQueryType, 'categories' | 'searchQuery' | 'subCategories'>>({
+    const { queryState, setQueries } = useQueryParams<Pick<ProductSearchQuery, 'categories' | 'searchQuery' | 'subCategories'>>({
         categories: [],
         subCategories: [],
         searchQuery: '',
@@ -56,7 +55,7 @@ const FilterDrawer = ({ open, onClose }: { open: boolean, onClose: () => void })
             subCategories: filterData.subCategories,
             searchQuery: filterData.text
         })
-        onClose();  
+        onClose();
     }
 
     return (
@@ -73,29 +72,29 @@ const FilterDrawer = ({ open, onClose }: { open: boolean, onClose: () => void })
                     rightIconSize={15}
                     className={styles.search_input} />
                 <Select
-                    defaultValue={categories.map((dt) => ({ value: dt, label: dt }))}
+                    defaultValue={categories.map((category) => ({ value: category, label: category }))}
                     placeholder='Category'
-                    onChange={(dt) => setFilterData({ ...filterData, categories: dt.map(item => item.value) })}
+                    onChange={(options) => setFilterData({ ...filterData, categories: options.map(option => option.value) })}
                     isMulti
                     className={styles.form_select}
                     options={categoriesOptions}
                     classNamePrefix="react-select"
                 />
                 <Select
-                    defaultValue={subCategories.map((dt) => ({ value: dt, label: dt }))}
+                    defaultValue={subCategories.map((subCategory) => ({ value: subCategory, label: subCategory }))}
                     placeholder='Type'
                     isMulti
                     className={styles.form_select}
-                    onChange={(dt) => setFilterData({ ...filterData, subCategories: dt.map(item => item.value) })}
+                    onChange={(options) => setFilterData({ ...filterData, subCategories: options.map(option => option.value) })}
                     options={subCategoriesOptions}
                     classNamePrefix="react-select"
                 />
                 <div className={styles.filter_drawer_btn_group}>
-                    <Button onClick={() => onClose()}>
+                    <Button onClick={onClose}>
                         CLOSE
                         <MdOutlineClose size={20} />
                     </Button>
-                    <Button onClick={() => applyFilter()}>
+                    <Button onClick={applyFilter}>
                         APPLY
                         <AiFillFilter size={20} />
                     </Button>

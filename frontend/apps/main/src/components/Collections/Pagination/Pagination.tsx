@@ -5,31 +5,29 @@ import { useQueryParams } from "@forever/query-kit";
 import { useEffect } from "react";
 
 const Pagination = () => {
-  const pageCount = usePageCount();
-  const hasNext = useHasNextPage();
-  const hasPrev = useHasPrevPage();
-
   const { queryState: { page }, querySetters: { setPage } } = useQueryParams<{ page: number }>({
     page: 0
   })
 
-  const nextPage = () => setPage(hasNext ? page + 1 : page);
-  const prevPage = () => setPage(hasPrev ? page - 1 : page);
+  const pageCount = usePageCount();
+  const hasNext = useHasNextPage();
+  const hasPrev = useHasPrevPage();
 
   useEffect(() => {
-
     if (page < 0)
       setPage(0);
     else if (pageCount !== null && (page > pageCount - 1) && pageCount !== 0)
       setPage(pageCount - 1);
   }, [page, pageCount])
 
+  const nextPage = () => setPage(hasNext ? page + 1 : page);
+  const prevPage = () => setPage(hasPrev ? page - 1 : page);
 
   return (
     <div className={styles.pagination_wrapper}>
       <div className={styles.pagination}>
         <div
-          onClick={() => prevPage()}
+          onClick={prevPage}
           className={styles.pagination_arrow_icon_wrapper}
         >
           <FaArrowLeft className={styles.pagination_arrow_icon} size={20} />
@@ -42,7 +40,7 @@ const Pagination = () => {
           </span>
         </div>
         <div
-          onClick={() => nextPage()}
+          onClick={nextPage}
           className={styles.pagination_arrow_icon_wrapper}
         >
           <FaArrowRight className={styles.pagination_arrow_icon} size={20} />

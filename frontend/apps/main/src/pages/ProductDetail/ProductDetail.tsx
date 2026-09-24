@@ -12,37 +12,43 @@ import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { Helmet } from "react-helmet";
 import { useIsAccess } from "@/store/auth/hooks";
 import { useGetProductDetailQuery, useIsFavouriteProductById } from "@/services/hooks/queries/product.query";
-import type { ProductDetailType } from "@/types/product.type";
 import DetailSkeleton from "@/components/ProductDetail/DetailSkeleton/DetailSkeleton";
 
-const ProductDetail = () => {
-  const [tabChange, setTabChange] = useState(true);
+const ProductNotFound = () => (
+  <div className={styles.error_product_detail_wrapper}>
+    <div className={styles.error_product_detail}>
+      <MdOutlineProductionQuantityLimits size={120} />
+      <h6 className={styles.error_product_detail_title}>
+        No product found
+      </h6>
+      <p className={styles.error_product_detail_content}>
+        The product you want was not found. Maybe you can try another
+        search.
+      </p>
+    </div>
+  </div>
+);
 
+const ProductDetail = () => {
   const params = useParams();
+
+  const isAccess = useIsAccess();
+
+  const [activeTab, setActiveTab] = useState<"description" | "reviews">("description");
 
   const { data, error, isPending } = useGetProductDetailQuery(params.id as string);
 
-  const { data: productFavData } = useIsFavouriteProductById(params.id as string, { enabled: useIsAccess() })
+  const { data: productFavData } = useIsFavouriteProductById(params.id as string, { enabled: isAccess })
+
+  const productDetail = data?.data;
+  const comments = productDetail?.comments ?? [];
+  const relatedProducts = productDetail?.relatedProducts ?? [];
+
+  const showDescriptionTab = () => setActiveTab("description");
+  const showReviewsTab = () => setActiveTab("reviews");
 
   if (error)
-    return (
-      <div className={styles.error_product_detail_wrapper}>
-        <div className={styles.error_product_detail}>
-          <MdOutlineProductionQuantityLimits size={120} />
-          <h6 className={styles.error_product_detail_title}>
-            No product found
-          </h6>
-          <p className={styles.error_product_detail_content}>
-            The product you want was not found. Maybe you can try another
-            search.
-          </p>
-        </div>
-      </div>
-    );
-
-  const { comments = [], relatedProducts = [], ...otherProductProperties } =
-    (data?.data as Omit<ProductDetailType, "isFav">) || {};
-  const { image, subImages, ...productDetail } = otherProductProperties || {};
+    return <ProductNotFound />;
 
   return (
     <div className={styles.product_detail_wrapper}>
@@ -60,12 +66,12 @@ const ProductDetail = () => {
         />
       </Helmet>
       <div className={styles.product_detail_top}>
-        {isPending ? (
+        {isPending || !productDetail ? (
           <DetailSkeleton />
         ) : (
           <>
-            <DetailPictures images={{ image, subImages }} />
-            <DetailContent productDetail={{ image, isFav: productFavData?.data.isFav as boolean, ...productDetail }} />
+            <DetailPictures images={{ image: productDetail.image, subImages: productDetail.subImages }} />
+            <DetailContent productDetail={{ ...productDetail, isFav: productFavData?.data.isFav ?? false }} />
           </>
         )}
       </div>
@@ -78,20 +84,20 @@ const ProductDetail = () => {
         <div className={styles.product_detail_bottom}>
           <div className={styles.product_detail_tab}>
             <div
-              className={clsx({ [styles.active]: tabChange })}
-              onClick={() => setTabChange(true)}
+              className={clsx({ [styles.active]: activeTab === "description" })}
+              onClick={showDescriptionTab}
             >
               Description
             </div>
             <div
-              className={clsx({ [styles.active]: !tabChange })}
-              onClick={() => setTabChange(false)}
+              className={clsx({ [styles.active]: activeTab === "reviews" })}
+              onClick={showReviewsTab}
             >
-              Reviews ({productDetail.reviewsCount})
+              Reviews ({productDetail?.reviewsCount})
             </div>
           </div>
           <div className={styles.product_detail_tab_content}>
-            {tabChange ? (
+            {activeTab === "description" ? (
               <Description />
             ) : (
               <div>

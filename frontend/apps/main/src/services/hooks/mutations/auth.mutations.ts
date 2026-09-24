@@ -1,7 +1,7 @@
 import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import AuthService from "@/services/actions/auth.service";
 import type { IError, IResponse, IDefaultResponse } from "@forever/api";
-import type { ILoginVariables, IAuthResponse, IRegisterVariables, IGoogleOauthVariables } from "@/types/auth.type";
+import type { LoginVariables, AuthResponse, RegisterVariables, GoogleOauthVariables } from "@/types/auth.type";
 
 const useLogoutMutation = (mutationDetails?: UseMutationOptions<IResponse<IDefaultResponse>, IError>) =>
     useMutation<IResponse<IDefaultResponse>, IError>({
@@ -10,22 +10,22 @@ const useLogoutMutation = (mutationDetails?: UseMutationOptions<IResponse<IDefau
         ...mutationDetails
     })
 
-const useLoginMutation = (mutationDetails?: UseMutationOptions<IResponse<IAuthResponse>, IError, ILoginVariables>) =>
-    useMutation<IResponse<IAuthResponse>, IError, ILoginVariables>({
+const useLoginMutation = (mutationDetails?: UseMutationOptions<IResponse<AuthResponse>, IError, LoginVariables>) =>
+    useMutation<IResponse<AuthResponse>, IError, LoginVariables>({
         mutationKey: ["login"],
         mutationFn: (body) => AuthService.login(body),
         ...mutationDetails
     })
 
-const useRegisterMutation = (mutationDetails?: UseMutationOptions<IResponse<IAuthResponse>, IError, IRegisterVariables>) =>
-    useMutation<IResponse<IAuthResponse>, IError, IRegisterVariables>({
+const useRegisterMutation = (mutationDetails?: UseMutationOptions<IResponse<AuthResponse>, IError, RegisterVariables>) =>
+    useMutation<IResponse<AuthResponse>, IError, RegisterVariables>({
         mutationKey: ["register"],
         mutationFn: (body) => AuthService.register(body),
         ...mutationDetails
     })
 
-const useLoginGoogleOauthMutation = (mutationDetails?: UseMutationOptions<IResponse<IAuthResponse>, IError, IGoogleOauthVariables>) =>
-    useMutation<IResponse<IAuthResponse>, IError, IGoogleOauthVariables>({
+const useLoginGoogleOauthMutation = (mutationDetails?: UseMutationOptions<IResponse<AuthResponse>, IError, GoogleOauthVariables>) =>
+    useMutation<IResponse<AuthResponse>, IError, GoogleOauthVariables>({
         mutationKey: ["google-oauth"],
         mutationFn: (body) => AuthService.loginWithGoogleOAuth(body),
         ...mutationDetails

@@ -1,22 +1,25 @@
-import type { ProductType } from "@/types/product.type";
 import styles from "./LatestCollections.module.scss";
-import ProductItemSkeleton from "@/components/common/ProductItem/ProductItemSkeleton";
-import ProductCard from "@/components/common/ProductItem/ProductItem";
+import ProductCardSkeleton from "@/components/common/ProductCard/ProductCardSkeleton";
+import ProductCard from "@/components/common/ProductCard/ProductCard";
 import { useIsAccess } from "@/store/auth/hooks";
 import { useGetLatestProductsQuery, useIsProductsInFavQuery } from "@/services/hooks/queries/product.query";
 
 const LatestCollections = () => {
+  const isAccess = useIsAccess();
+
   const { data, isPending } = useGetLatestProductsQuery();
 
+  const productIds = data?.data?.map((product) => product._id) ?? [];
+
   const { data: favProductInfo } = useIsProductsInFavQuery(
-    data?.data?.map(p => p._id) || [],
+    productIds,
     ["isLatestProductInFavProduct"],
     {
-      enabled: (useIsAccess() && !!data?.data?.length)
+      enabled: isAccess && productIds.length > 0
     }
   )
 
-  const isFavProduct = (_id: string) => favProductInfo?.data.find(dt => dt._id === _id)?.isFav || false
+  const isFavProduct = (productId: string) => favProductInfo?.data.find(favInfo => favInfo._id === productId)?.isFav || false
 
   return (
     <div className={styles.latest_collections}>
@@ -33,19 +36,20 @@ const LatestCollections = () => {
       <div className={styles.latest_collections_products}>
         {isPending ? (
           <>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
-              <ProductItemSkeleton
-                key={"latest_collection_skeleton_" + item}
+            {Array.from({ length: 10 }, (_, index) => (
+              <ProductCardSkeleton
+                key={`latest-collection-skeleton-${index}`}
               />
             ))}
           </>
         ) : (
           <>
-            {data?.data.map((item: ProductType, i: number) => (
+            {data?.data.map((product, index) => (
               <ProductCard
-                useWhileInView                product={{ ...item, isFav: isFavProduct(item._id) }}
-                customIndex={i}
-                key={"latest_collection_" + item._id}
+                useWhileInView
+                product={{ ...product, isFav: isFavProduct(product._id) }}
+                customIndex={index}
+                key={"latest_collection_" + product._id}
               />
             ))}
           </>

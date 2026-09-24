@@ -2,7 +2,7 @@ import { BaseImage } from "@forever/ui-kit"
 import styles from "./MessageBlock.module.scss"
 import clsx from 'clsx'
 import { motion } from "framer-motion"
-import type { AgentMessageType } from "@/types/ai.type"
+import type { AgentMessage } from "@/types/ai.type"
 import { memo } from "react"
 import { CiClock1 } from "react-icons/ci"
 import dayjs from "dayjs"
@@ -22,15 +22,15 @@ const formatMessageCreatedDate = (date: Date | string | number) => {
     return targetDate.format('D MMMM YYYY HH:mm');
 };
 
-type MessageFieldType = Omit<AgentMessageType, "products"> & { isNewMessageAtRecent: boolean };
+type MessageBlockMessage = Omit<AgentMessage, "products"> & { isNewMessageAtRecent: boolean };
 
-interface IMessageBlockProps {
+interface MessageBlockProps {
     isLoading?: boolean
-    message?: MessageFieldType,
+    message?: MessageBlockMessage,
     loadingMsgType?: "ai" | "human"
 }
 
-const MessageBlock = memo(({ message, isLoading = false, loadingMsgType = "ai" }: IMessageBlockProps) => {
+const MessageBlock = memo(({ message, isLoading = false, loadingMsgType = "ai" }: MessageBlockProps) => {
 
     if (isLoading) {
         return (

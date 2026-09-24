@@ -7,6 +7,12 @@ import { BaseImage, Button } from "@forever/ui-kit";
 const OrdersDetail = () => {
   const form = useFormContext();
 
+  const selectedPaymentMethod = form.watch("paymentMethod");
+
+  const selectStripePayment = () => form.setValue("paymentMethod", "STRIPE");
+
+  const selectCashOnDeliveryPayment = () => form.setValue("paymentMethod", "CASH_ON_DELIVERY");
+
   return (
     <div className={styles.order_detail}>
       <Cash isCheckoutButton={false} />
@@ -17,22 +23,22 @@ const OrdersDetail = () => {
         </h6>
         <div className={styles.payment_method_select}>
           <div
-            onClick={() => form.setValue("paymentMethod", "STRIPE")}
+            onClick={selectStripePayment}
             className={styles.payment_method_option}
           >
-            {form.watch("paymentMethod") === "STRIPE" ? (
+            {selectedPaymentMethod === "STRIPE" ? (
               <GoDotFill fill="green" size={25} />
             ) : (
               <GoDot size={25} />
             )}
 
-            <BaseImage   src="/stripe.png" alt="" />
+            <BaseImage src="/stripe.png" alt="" />
           </div>
           <div
-            onClick={() => form.setValue("paymentMethod", "CASH_ON_DELIVERY")}
+            onClick={selectCashOnDeliveryPayment}
             className={styles.payment_method_option}
           >
-            {form.watch("paymentMethod") === "CASH_ON_DELIVERY" ? (
+            {selectedPaymentMethod === "CASH_ON_DELIVERY" ? (
               <GoDotFill fill="green" size={25} />
             ) : (
               <GoDot size={25} />

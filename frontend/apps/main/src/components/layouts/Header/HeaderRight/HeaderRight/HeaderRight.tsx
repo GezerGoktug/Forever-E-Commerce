@@ -14,12 +14,14 @@ import NavMenuDrawer from "../NavMenuDrawer/NavMenuDrawer";
 
 
 const HeaderRight = () => {
+  const isAccess = useIsAccess();
   const totalQuantity = useTotalCartQuantities();
-  const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useThemeStore();
 
-  const { data, isLoading } = useGetFavProductsCountQuery([useIsAccess() ? "favProductEnabled" : "favProductDisabled"], {
-    enabled: useIsAccess(),
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { data, isLoading } = useGetFavProductsCountQuery([isAccess ? "favProductEnabled" : "favProductDisabled"], {
+    enabled: isAccess,
   });
 
   const links = [
@@ -31,7 +33,7 @@ const HeaderRight = () => {
           }
         </Tooltip>
       ),
-      is_custom_item: true
+      isCustomItem: true
     },
     {
       icon: RiUser3Line,
@@ -42,53 +44,57 @@ const HeaderRight = () => {
       icon: RiHeartLine,
       href: "/favourite",
       message: "Favourite",
-      badge_data: data?.data.count || 0,
-      is_count_badge: true,
-      is_fav_badge: true,
+      badgeData: data?.data.count || 0,
+      isCountBadge: true,
+      isFavBadge: true,
     },
     {
       icon: HiOutlineShoppingBag,
       href: "/cart",
-      is_count_badge: true,
-      badge_data: totalQuantity,
+      isCountBadge: true,
+      badgeData: totalQuantity,
       message: "Cart",
     },
     {
       icon: FaBars,
-      menu_icon: true,
+      menuIcon: true,
     }
   ];
 
+  const closeNavMenuDrawer = () => setIsOpen(false);
+
+  const toggleNavMenuDrawer = () => setIsOpen(!isOpen);
+
   return (
     <nav>
-      <Drawer align="right" isDisableCloseBtn={true} className={styles.nav_menu_drawer} open={isOpen} onClose={() => setIsOpen(false)}>
-        <NavMenuDrawer onClose={() => setIsOpen(false)} />
+      <Drawer align="right" isDisableCloseBtn={true} className={styles.nav_menu_drawer} open={isOpen} onClose={closeNavMenuDrawer}>
+        <NavMenuDrawer onClose={closeNavMenuDrawer} />
       </Drawer>
       <ul className={styles.header_right_links}>
-        {links.map(({ icon: Icon, href, is_count_badge, menu_icon, badge_data, is_fav_badge, message, is_custom_item, render }, i) => (
+        {links.map(({ icon: Icon, href, isCountBadge, menuIcon, badgeData, isFavBadge, message, isCustomItem, render }, i) => (
           <li key={"header_links_" + i}>
-            {menu_icon ? (
+            {menuIcon ? (
               <>
                 <Icon
-                  onClick={() => setIsOpen(!isOpen)}
+                  onClick={toggleNavMenuDrawer}
                   className={styles.toggle_menu_icon}
                   size={25}
                 />
               </>
             ) :
-              is_custom_item ? render : (
+              isCustomItem ? render : (
                 href && (
                   <Tooltip message={message}>
                     <Link to={{ pathname: href }}>
                       <Icon size={25} />
-                      {is_count_badge && (
+                      {isCountBadge && (
                         <Badge
                           className={styles.header_right_link_badge}
                           size="xs"
-                          loading={is_fav_badge ? isLoading : false}
-                          variant={is_fav_badge ? "danger" : "primary"}
+                          loading={isFavBadge ? isLoading : false}
+                          variant={isFavBadge ? "danger" : "primary"}
                         >
-                          {badge_data}
+                          {badgeData}
                         </Badge>
                       )}
                     </Link>

@@ -33,7 +33,7 @@ const GoogleOAuthPopupProvider = ({ children }: { children: ReactNode }) => {
             setUser(data.data.user);
             setTimeout(() => {
                 navigate("/profile");
-                toast.success("Login with Google succesfully");
+                toast.success("Signed in with Google");
             }, 1000);
         },
         onError: (error) => handleShowApiErrorWithToastMessages(error),

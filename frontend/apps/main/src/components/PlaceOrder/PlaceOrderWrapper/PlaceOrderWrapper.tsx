@@ -16,7 +16,7 @@ import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 const schema = z.object({
   firstName: z.string().min(3, "First name must be at least 3 characters long"),
   lastName: z.string().min(3, "Last name must be at least 3 characters long"),
-  email: z.string().email("İnvalid email"),
+  email: z.string().email("Invalid email"),
   street: z.string().min(3, "Street must be at least 3 characters long"),
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
@@ -35,12 +35,15 @@ const schema = z.object({
     .default("CASH_ON_DELIVERY"),
 });
 
+type PlaceOrderFormValues = z.infer<typeof schema>;
+
 const PlaceOrderWrapper = () => {
-  const cart = useCart();
   const navigate = useNavigate();
+
+  const cart = useCart();
   const isAccess = useIsAccess();
 
-  const form = useForm<z.infer<typeof schema>>({
+  const form = useForm<PlaceOrderFormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       firstName: "",
@@ -67,7 +70,7 @@ const PlaceOrderWrapper = () => {
 
   const { mutateAsync: createOrderWithStripeMutation } = useCreateOrderWithStripePaymentMethodMutation()
 
-  const onSubmit = async (data: z.infer<typeof schema>) => {
+  const onSubmit = async (data: PlaceOrderFormValues) => {
     if (!isAccess) {
       toast.error("You must log in to make payment.");
       return;

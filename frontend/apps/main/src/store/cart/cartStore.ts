@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { CartProductType, SizeType } from "@/types/product.type";
+import type { CartProduct, SizeType } from "@/types/product.type";
 
 type Store = {
-  cart: CartProductType[];
-  __addProductOfCart: (product: Omit<CartProductType, "quantity">) => void;
-  __removeProductOfCart: (id: string, size: SizeType) => void;
+  cart: CartProduct[];
+  __addProductToCart: (product: Omit<CartProduct, "quantity">) => void;
+  __removeProductFromCart: (id: string, size: SizeType) => void;
   __clearCart: () => void;
-  __applyQuantityToProduct: (
+  __setProductQuantity: (
     quantity: number,
     id: string,
     size: SizeType
@@ -18,7 +18,7 @@ const cartStore = create<Store>()(
   persist(
     (set) => ({
       cart: [],
-      __addProductOfCart: (product) =>
+      __addProductToCart: (product) =>
         set((state) => {
           if (
             state.cart.find(
@@ -39,14 +39,14 @@ const cartStore = create<Store>()(
             cart: [...state.cart, { ...product, quantity: 1 }],
           };
         }),
-      __removeProductOfCart: (id, size) =>
+      __removeProductFromCart: (id, size) =>
         set((state) => ({
           cart: state.cart.filter(
             (item) => item._id !== id || item.size !== size
           ),
         })),
       __clearCart: () => set(() => ({ cart: [] })),
-      __applyQuantityToProduct: (quantity, id, size) =>
+      __setProductQuantity: (quantity, id, size) =>
         set((state) => ({
           cart: state.cart.map((item) => {
             if (item._id === id && item.size === size) {

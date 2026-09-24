@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { ExtendedUserType } from "@/types/user.type";
+import type { ExtendedUser } from "@/types/user.type";
 
 type Store = {
-  user: ExtendedUserType | null;
-  __setUser: (user: ExtendedUserType) => void;
+  user: ExtendedUser | null;
+  __setUser: (user: ExtendedUser) => void;
   __clearUser: () => void;
 };
 
@@ -28,7 +28,6 @@ const authStore = create<Store>()(
     {
       name: "user",
       storage: createJSONStorage(() => localStorage),
-      
     }
   )
 );

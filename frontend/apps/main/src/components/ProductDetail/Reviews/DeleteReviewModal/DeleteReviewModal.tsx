@@ -1,13 +1,13 @@
 import { IoMdTrash } from "react-icons/io";
 import toast from "react-hot-toast";
-import type { DeleteReviewModalDTO } from "@/components/ProductDetail/Reviews/Reviews/Reviews";
+import type { ReviewToDelete } from "@/components/ProductDetail/Reviews/Reviews/Reviews";
 import { useParams } from "react-router-dom";
 import { useDeleteCommentMutation } from "@/services/hooks/mutations/product.mutations";
 import { AlertModal } from "@forever/ui-kit";
 import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 interface DeleteReviewModalProps {
-  data: DeleteReviewModalDTO | undefined;
+  data: ReviewToDelete | undefined;
   closeModal: () => void;
   open: boolean;
 }
@@ -16,8 +16,8 @@ const DeleteReviewModal = ({ data, closeModal, open }: DeleteReviewModalProps) =
   const params = useParams();
 
   const { mutate, isPending } = useDeleteCommentMutation({
-    onSuccess: (data) => {
-      toast.success(data.data.message);
+    onSuccess: (response) => {
+      toast.success(response.data.message);
       closeModal();
     },
     onError: (error) => handleShowApiErrorWithToastMessages(error),

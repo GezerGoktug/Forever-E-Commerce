@@ -1,7 +1,7 @@
 import TshirtIcon from "@/icons/TshirtIcon";
-import styles from "./ProductItemSkeleton.module.scss";
+import styles from "./ProductCardSkeleton.module.scss";
 
-const ProductItemSkeleton = () => {
+const ProductCardSkeleton = () => {
   return (
     <div className={styles.product_card_skeleton}>
       <div className={styles.product_skeleton_image}>
@@ -15,4 +15,4 @@ const ProductItemSkeleton = () => {
   );
 };
 
-export default ProductItemSkeleton;
+export default ProductCardSkeleton;

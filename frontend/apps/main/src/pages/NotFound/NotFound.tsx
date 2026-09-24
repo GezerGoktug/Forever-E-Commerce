@@ -1,11 +1,14 @@
 import { IoChevronBackCircle } from "react-icons/io5";
-import styles from "./Error.module.scss";
+import styles from "./NotFound.module.scss";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Button } from "@forever/ui-kit";
 
-const Error = ({ isAdmin = false }: { isAdmin?: boolean }) => {
+const NotFoundPage = () => {
   const navigate = useNavigate();
+
+  const goToHomePage = () => navigate("/");
+
   return (
     <div className={styles.error}>
       <Helmet>
@@ -13,13 +16,13 @@ const Error = ({ isAdmin = false }: { isAdmin?: boolean }) => {
       </Helmet>
       <h5>404</h5>
       <h6>Error</h6>
-      <p>Page not founded</p>
-      <Button onClick={() => navigate(isAdmin ? "/admin/stats" : "/")}>
+      <p>Page not found</p>
+      <Button onClick={goToHomePage}>
         <IoChevronBackCircle size={20} />
-        {isAdmin ? "Return admin main page" : "Return home page"}
+        Return home page
       </Button>
     </div>
   );
 };
 
-export default Error;
+export default NotFoundPage;

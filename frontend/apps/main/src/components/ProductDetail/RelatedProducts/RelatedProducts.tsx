@@ -1,7 +1,7 @@
 import styles from "./RelatedProducts.module.scss";
-import type { ProductType } from "@/types/product.type";
-import ProductItemSkeleton from "@/components/common/ProductItem/ProductItemSkeleton";
-import ProductCard from "@/components/common/ProductItem/ProductItem";
+import type { Product } from "@/types/product.type";
+import ProductCardSkeleton from "@/components/common/ProductCard/ProductCardSkeleton";
+import ProductCard from "@/components/common/ProductCard/ProductCard";
 import { useIsAccess } from "@/store/auth/hooks";
 import { useIsProductsInFavQuery } from "@/services/hooks/queries/product.query";
 
@@ -9,19 +9,23 @@ const RelatedProducts = ({
   products = [],
   isPending,
 }: {
-  products: ProductType[];
+  products: Product[];
   isPending: boolean;
 }) => {
+  const isAccess = useIsAccess();
+
+  const productIds = products.map((product) => product._id);
+
   const { data: favProductInfo } = useIsProductsInFavQuery(
-    products.map(item => item._id),
+    productIds,
     ["isRelatedProductInFavProduct"],
     {
-      enabled: (useIsAccess() && !!products.length)
+      enabled: isAccess && productIds.length > 0
     }
   )
 
-  const isFavProduct = (_id: string) => favProductInfo?.data.find(dt => dt._id === _id)?.isFav || false
-  
+  const isFavProduct = (productId: string) => favProductInfo?.data.find(favInfo => favInfo._id === productId)?.isFav || false
+
   return (
     <div className={styles.related_products}>
       <div className={styles.related_products_top}>
@@ -33,16 +37,16 @@ const RelatedProducts = ({
       <div className={styles.related_products_products}>
         {isPending ? (
           <>
-            {[0, 1, 2, 3, 4].map((item) => (
-              <ProductItemSkeleton key={'related_product_skeleton_' + item} />
+            {Array.from({ length: 5 }, (_, index) => (
+              <ProductCardSkeleton key={`related-product-skeleton-${index}`} />
             ))}
           </>
         ) : (
           <>
-            {products.map((item, i) => (
+            {products.map((product) => (
               <ProductCard
-                key={"product" + i}
-                product={{ ...item, isFav: isFavProduct(item._id) }}
+                key={"product" + product._id}
+                product={{ ...product, isFav: isFavProduct(product._id) }}
               />
             ))}
           </>

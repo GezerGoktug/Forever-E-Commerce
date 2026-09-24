@@ -1,10 +1,7 @@
 import { GrTrash } from "react-icons/gr";
 import styles from "./CartProducts.module.scss";
 import { useCart } from "@/store/cart/hooks";
-import {
-  applyQuantityToProduct,
-  removeProductOfCart,
-} from "@/store/cart/actions";
+import { removeProductFromCart, setProductQuantity } from "@/store/cart/actions";
 import { Image, Input } from "@forever/ui-kit";
 import TshirtIcon from "@/icons/TshirtIcon";
 import { cloudinaryImageOptimizer } from "@forever/common-utils";
@@ -49,14 +46,14 @@ const CartProducts = () => {
                 max={20}
                 value={item.quantity}
                 onBlur={(e) =>
-                  applyQuantityToProduct(Math.min(20, Math.max(1, +e.target.value)), item._id, item.size)}
+                  setProductQuantity(Math.min(20, Math.max(1, +e.target.value)), item._id, item.size)}
                 onChange={(e) =>
-                  applyQuantityToProduct(Math.min(20, +e.target.value), item._id, item.size)
+                  setProductQuantity(Math.min(20, +e.target.value), item._id, item.size)
                 }
               />
             </div>
             <GrTrash
-              onClick={() => removeProductOfCart(item._id, item.size)}
+              onClick={() => removeProductFromCart(item._id, item.size)}
               className={styles.cart_product_item_trash_icon}
               size={25}
             />

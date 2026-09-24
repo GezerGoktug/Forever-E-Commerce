@@ -9,7 +9,7 @@ import { Fragment, useEffect, useState, type Dispatch, type SetStateAction } fro
 import toast from 'react-hot-toast'
 import { useAskQuestionToAiAgentWithStreamMutation } from '@/services/hooks/mutations/ai.mutations'
 import { AxiosError } from 'axios'
-import { type AgentMessageType, type IAgentMessage } from '@/types/ai.type'
+import { type AgentMessage, type AgentStreamMessage } from '@/types/ai.type'
 import { useGetAiConversationByThreadIdQuery } from '@/services/hooks/queries/ai.query'
 import { initStreamReader } from '@forever/stream-reader'
 import AiAdviseProductsBlock from '../AgentPanelChatBlocks/AiAdviseProductsBlock/AiAdviseProductsBlock'
@@ -86,7 +86,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
     const [text, setText] = useState("");
     const [isStreaming, setIsStreaming] = useState(false);
     const [activeStream, setActiveStream] = useState<string | null>(null);
-    const [messages, setMessages] = useState<AgentMessageType[]>([{
+    const [messages, setMessages] = useState<AgentMessage[]>([{
         type: "system",
         message: "Hello 👋, I'm Sora, your e-commerce store assistant 😊. How can I help you? Here are some sample questions you can ask me:",
         products: []
@@ -119,14 +119,13 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
 
     const askQuestionToAgent = async (question?: string) => {
         if (!question && text.trim().length < 2) {
-            toast.error("Text field must be least 2 character length.")
+            toast.error("Please enter at least 2 characters")
             return;
         }
 
         try {
-            setMessages(prv => [...prv, {
+            setMessages(prev => [...prev, {
                 type: "human",
-                isNewMessageAtRecent: true,
                 createdAt: new Date().toISOString(),
                 message: question || text
             }])
@@ -136,7 +135,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
 
             const streamer = await mutation.mutateAsync({ question: question || text, ...(threadId && { threadId }) });
 
-            await initStreamReader<IAgentMessage>({
+            await initStreamReader<AgentStreamMessage>({
                 streamer,
                 onStreamStart() {
                     setIsStreaming(true);
@@ -176,7 +175,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                     }, 300);
                 },
                 onStreamError() {
-                    toast.error("A error occurred when response streaming from ai")
+                    toast.error("Something went wrong while streaming the response")
                 },
             });
         } catch (error) {
@@ -243,7 +242,7 @@ const SupportAgentPanel = ({ setShow }: { setShow: Dispatch<SetStateAction<boole
                     >
                         {
                             !isLoading && messages.map((msg, i) => (
-                                <Fragment key={`agent-message-` + msg.type + "-" + (msg.stream_id || "") + "-" + i}>
+                                <Fragment key={`agent-message-${msg.type}-${msg.stream_id ?? ""}-${i}`}>
                                     <MessageBlock message={{
                                         message: msg.message,
                                         type: msg.type,

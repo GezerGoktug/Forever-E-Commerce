@@ -2,7 +2,7 @@ import { IoMdTrash } from "react-icons/io";
 import styles from "./Reviews.module.scss";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import type { ReviewType } from "@/types/product.type";
+import type { Review } from "@/types/product.type";
 import { HiDotsVertical } from "react-icons/hi";
 import { GoPencil } from "react-icons/go";
 import { lazy, Suspense, useState } from "react";
@@ -17,17 +17,17 @@ interface ModalState<T> {
   data: T;
 }
 
-export type DeleteReviewModalDTO = Pick<ReviewType, "_id">;
+export type ReviewToDelete = Pick<Review, "_id">;
 
-export type EditReviewModalDTO = Pick<ReviewType, "content" | "rating" | "_id">;
+export type ReviewToEdit = Pick<Review, "content" | "rating" | "_id">;
 
-const Reviews = ({ reviews }: { reviews: ReviewType[] }) => {
+const Reviews = ({ reviews }: { reviews: Review[] }) => {
   dayjs.extend(relativeTime);
 
   const user = useAccount();
 
   const [modal, setModal] = useState<ModalState<
-    EditReviewModalDTO | DeleteReviewModalDTO
+    ReviewToEdit | ReviewToDelete
   > | null>(null);
 
   return (
@@ -36,12 +36,12 @@ const Reviews = ({ reviews }: { reviews: ReviewType[] }) => {
         <EditReviewModal
           open={modal?.modal_type === "EDIT"}
           closeModal={() => setModal(null)}
-          data={modal?.data as EditReviewModalDTO | undefined}
+          data={modal?.data as ReviewToEdit | undefined}
         />
         <DeleteReviewModal
           closeModal={() => setModal(null)}
           open={modal?.modal_type === "DELETE"}
-          data={modal?.data as DeleteReviewModalDTO | undefined}
+          data={modal?.data as ReviewToDelete | undefined}
         />
       </Suspense>
       <h5>{reviews.length} Reviews</h5>

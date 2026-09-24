@@ -14,15 +14,17 @@ import { removeLocalStorage } from "@forever/storage-kit";
 
 const ProfileOverview = () => {
   dayjs.extend(relativeTime);
-  const user = useAccount();
+
   const navigate = useNavigate();
+
+  const user = useAccount();
 
   const { mutate, isPending } = useLogoutMutation({
     onSuccess: () => {
       clearUser();
       navigate("/");
       removeLocalStorage("accessToken");
-      toast.success("Logout succesfully");
+      toast.success("Signed out");
     },
   })
 

@@ -1,41 +1,41 @@
-import type { BasicUserType } from "./user.type";
+import type { BasicUser } from "./user.type";
 
 export type CategoriesType = "Kids" | "Men" | "Women";
 export type SubCategoriesType = "Topwear" | "Bottomwear" | "Winterwear";
 export type SizeType = "SMALL" | "MEDIUM" | "LARGE" | "XLARGE" | "XXLARGE";
 export type SortType = "DEFAULT" | "LOW_TO_HIGH" | "HIGH_TO_LOW";
 
-export type ProductType = {
+export type Product = {
   _id: string;
   name: string;
   price: number;
   image: string;
 };
 
-export type CartProductType = ProductType & {
+export type CartProduct = Product & {
   size: SizeType;
   quantity: number;
 }
 
-export type ReviewType = {
+export type Review = {
   _id: string;
   content: string;
   rating: number;
   createdAt: Date;
-  user: BasicUserType
+  user: BasicUser
 };
 
-export type ExtendedProductType = ProductType & {
+export type ExtendedProduct = Product & {
   description: string;
   subImages: string[];
   sizes: Array<SizeType>;
   category: CategoriesType;
   subCategory: SubCategoriesType;
   isBestseller: boolean;
-  comments: Omit<ReviewType, "user">[];
+  comments: Omit<Review, "user">[];
 }
 
-export type ProductDetailContentType = {
+export type ProductDetailContent = {
   _id: string;
   name: string;
   price: number;
@@ -45,11 +45,10 @@ export type ProductDetailContentType = {
   reviewsCount: number;
   category: CategoriesType;
   subCategory: SubCategoriesType;
-  __v: number;
   totalRating: number;
 };
 
-export type ProductSearchQueryType = {
+export type ProductSearchQuery = {
   categories: CategoriesType[];
   subCategories: SubCategoriesType[];
   page: number;
@@ -58,22 +57,22 @@ export type ProductSearchQueryType = {
   sorting: SortType
 }
 
-export type ProductDetailType = ProductDetailContentType & {
-  comments: ReviewType[];
-  relatedProducts: ProductType[];
+export type ProductDetail = ProductDetailContent & {
+  comments: Review[];
+  relatedProducts: Product[];
   subImages: string[];
 };
 
-export interface IIsProductInFavResponse {
+export interface IsProductInFavResponse {
   _id: string,
   isFav: boolean
 }
 
-export interface IFavProductCountResponse {
+export interface FavProductCountResponse {
   count: number
 }
 
-export interface ICreateCommentVariables {
+export interface CreateCommentVariables {
   rating: number;
   content: string;
   productId: string;
@@ -81,7 +80,7 @@ export interface ICreateCommentVariables {
 
 export interface UpdateCommentVariables {
   commentId: string;
-  body: ICreateCommentVariables;
+  body: CreateCommentVariables;
 }
 
 export interface DeleteCommentVariables {

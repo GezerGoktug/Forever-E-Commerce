@@ -1,7 +1,7 @@
 import { useMutation, type UseMutationOptions, useQueryClient } from "@tanstack/react-query";
 import type { IError, IResponse, IDefaultResponse } from "@forever/api";
 import ProductService from "@/services/actions/product.service";
-import type { DeleteCommentVariables, HandleFavouriteVariables, ICreateCommentVariables, UpdateCommentVariables } from "@/types/product.type";
+import type { DeleteCommentVariables, HandleFavouriteVariables, CreateCommentVariables, UpdateCommentVariables } from "@/types/product.type";
 
 
 const useHandleFavouriteMutation = (
@@ -66,12 +66,12 @@ const useDeleteCommentMutation = (
 };
 
 const useCreateCommentMutation = (
-    mutationDetails?: UseMutationOptions<IResponse<IDefaultResponse>, IError, ICreateCommentVariables>
+    mutationDetails?: UseMutationOptions<IResponse<IDefaultResponse>, IError, CreateCommentVariables>
 ) => {
     const queryClient = useQueryClient();
     const { onSuccess, ...details } = mutationDetails ?? {};
 
-    return useMutation<IResponse<IDefaultResponse>, IError, ICreateCommentVariables>({
+    return useMutation<IResponse<IDefaultResponse>, IError, CreateCommentVariables>({
         mutationKey: ["create_comment"],
         mutationFn: (data) =>
             ProductService.createComment(data),

@@ -2,8 +2,8 @@ import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import styles from "./DetailContent.module.scss";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import type { ProductDetailContentType, SizeType } from "@/types/product.type";
-import { addProductOfCart } from "@/store/cart/actions";
+import type { ProductDetailContent, SizeType } from "@/types/product.type";
+import { addProductToCart } from "@/store/cart/actions";
 import toast from "react-hot-toast";
 import { useIsAccess } from "@/store/auth/hooks";
 import { useHandleFavouriteMutation } from "@/services/hooks/mutations/product.mutations";
@@ -14,22 +14,12 @@ import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 const DetailContent = ({
   productDetail,
 }: {
-  productDetail: ProductDetailContentType & { isFav: boolean };
+  productDetail: ProductDetailContent & { isFav: boolean };
 }) => {
-  const [selectedSize, setSelectedSize] = useState<SizeType | null>(null);
-  const [isFav, setIsFav] = useState(false);
   const isAccess = useIsAccess();
 
-  useEffect(() => {
-    setIsFav(productDetail.isFav);
-  }, [productDetail.isFav])
-
-  useEffect(() => {
-    if (!isAccess) {
-      setIsFav(false)
-    }
-  }, [isAccess])
-
+  const [selectedSize, setSelectedSize] = useState<SizeType | null>(null);
+  const [isFav, setIsFav] = useState(false);
 
   const { mutate } = useHandleFavouriteMutation({
     onSuccess: (data) => {
@@ -42,21 +32,31 @@ const DetailContent = ({
     }
   })
 
-  const toggleFavourite = () => isAccess ? mutate({ productId: productDetail._id, isFav }) : toast.error('Please you login for add product to your favourites');
+  useEffect(() => {
+    setIsFav(productDetail.isFav);
+  }, [productDetail.isFav])
+
+  useEffect(() => {
+    if (!isAccess) {
+      setIsFav(false)
+    }
+  }, [isAccess])
+
+  const toggleFavourite = () => isAccess ? mutate({ productId: productDetail._id, isFav }) : toast.error('Please log in to add favourites');
 
   const handleAddCart = () => {
     if (selectedSize === null) {
       toast.error("Please select a size for product.");
       return;
     }
-    addProductOfCart({
+    addProductToCart({
       _id: productDetail._id,
       size: selectedSize,
       price: productDetail.price,
       name: productDetail.name,
       image: productDetail.image,
     });
-    toast.success("Added product to successfully of cart");
+    toast.success("Product added to your cart");
   };
 
   return (
@@ -76,13 +76,13 @@ const DetailContent = ({
           Select Size
         </div>
         <div className={styles.product_detail_sizes}>
-          {productDetail.sizes.map((size, i) => (
+          {productDetail.sizes.map((size) => (
             <div
-              key={"product_detail_size_" + i}
+              key={"product_detail_size_" + size}
               className={clsx({
                 [styles.selected]: selectedSize === size,
               })}
-              onClick={() => setSelectedSize(size as SizeType)}
+              onClick={() => setSelectedSize(size)}
             >
               {getSize(size)}
             </div>
@@ -90,14 +90,14 @@ const DetailContent = ({
         </div>
       </div>
       <div className={styles.product_detail_actions}>
-        <Button onClick={() => handleAddCart()}>ADD TO CART</Button>
-        <div onClick={() => toggleFavourite()} className={styles.product_detail_fav_action_btn}>
+        <Button onClick={handleAddCart}>ADD TO CART</Button>
+        <div onClick={toggleFavourite} className={styles.product_detail_fav_action_btn}>
           {isFav ? <IoMdHeart fill="red" size={20} /> : <IoMdHeartEmpty size={20} />}
         </div>
       </div>
       <div className={styles.product_detail_short_features}>
         <ul>
-          <li>100% Original p roduct.</li>
+          <li>100% original product.</li>
           <li>Cash on delivery is available on this product.</li>
           <li>Easy return and exchange policy within 7 days.</li>
         </ul>

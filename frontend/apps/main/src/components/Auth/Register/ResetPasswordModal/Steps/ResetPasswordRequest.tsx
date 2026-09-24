@@ -32,17 +32,13 @@ const ResetPasswordRequest = ({
         placeholder="Your Email"
         size="lg"
         type="email"
-        onChange={(e) => {
-          setResetPasswordEmail(e.target.value)
-        }}
+        onChange={(e) => setResetPasswordEmail(e.target.value)}
       />
       <Button
         loading={isPending}
-        onClick={() => handleResetPasswordRequest()}>
+        onClick={handleResetPasswordRequest}>
         SEND REQUEST
       </Button>
-
-
     </>
   )
 }

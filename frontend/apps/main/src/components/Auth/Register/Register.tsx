@@ -19,13 +19,13 @@ import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 const ResetPasswordModal = lazy(() => import("./ResetPasswordModal/ResetPasswordModal"));
 
 type RegisterProps = {
-  chanceForm: () => void;
+  changeAuthForm: () => void;
 };
 
 const schema = z
   .object({
     name: z.string().min(3, "Name must be at least 3 characters long"),
-    email: z.string().email("İnvalid email"),
+    email: z.string().email("Invalid email"),
     password: z
       .string()
       .min(6, "Password must be at least 6 characters long")
@@ -40,10 +40,17 @@ const schema = z
     path: ["confirmPassword"],
   });
 
-const Register = ({ chanceForm }: RegisterProps) => {
+type RegisterFormValues = z.infer<typeof schema>;
+
+const Register = ({ changeAuthForm }: RegisterProps) => {
   const navigate = useNavigate();
+
   const { isPopupOpen, loading } = useGoogleOauth();
-  const form = useForm<z.infer<typeof schema>>({
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
+
+  const form = useForm<RegisterFormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: "",
@@ -63,17 +70,20 @@ const Register = ({ chanceForm }: RegisterProps) => {
     onError: (error) => handleShowApiErrorWithToastMessages(error),
   });
 
-  const onSubmit = (data: z.infer<typeof schema>) => mutate(data);
-
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [modal, setModal] = useState<boolean>(false);
-
   const ShowPasswordIcon = showPassword ? FaEye : FaEyeSlash;
+
+  const onSubmit = (data: RegisterFormValues) => mutate(data);
+
+  const openResetPasswordModal = () => setIsResetPasswordModalOpen(true);
+
+  const closeResetPasswordModal = () => setIsResetPasswordModalOpen(false);
+
+  const toggleShowPassword = () => setShowPassword(!showPassword);
 
   return (
     <div className={styles.register_wrapper}>
       <Suspense fallback={<div></div>}>
-        <ResetPasswordModal open={modal} closeModal={() => setModal(false)} />
+        <ResetPasswordModal open={isResetPasswordModalOpen} closeModal={closeResetPasswordModal} />
       </Suspense>
       <h5>Sign Up</h5>
       <form
@@ -112,7 +122,7 @@ const Register = ({ chanceForm }: RegisterProps) => {
           size="lg"
           className={styles.register_form_input}
           rightIcon={ShowPasswordIcon}
-          rightIconOnClick={() => setShowPassword(!showPassword)}
+          rightIconOnClick={toggleShowPassword}
           placeholder="Password"
           type={showPassword ? "text" : "password"}
           {...form.register("password")}
@@ -139,8 +149,8 @@ const Register = ({ chanceForm }: RegisterProps) => {
           )}
         />
         <div className={styles.register_form_interactions}>
-          <span onClick={() => setModal(true)}>Forgot your password?</span>
-          <span onClick={() => chanceForm()}>Login here</span>
+          <span onClick={openResetPasswordModal}>Forgot your password?</span>
+          <span onClick={changeAuthForm}>Login here</span>
         </div>
         <Button className={styles.register_form_btn} type="submit" loading={isPending} >
           Sign Up

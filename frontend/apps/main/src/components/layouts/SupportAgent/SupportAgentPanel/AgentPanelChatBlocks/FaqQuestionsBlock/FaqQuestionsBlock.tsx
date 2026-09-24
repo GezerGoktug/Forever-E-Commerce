@@ -66,14 +66,16 @@ const FAQ_QUESTIONS = [
 ];
 
 const FaqQuestionsBlock = memo(({ onSelectQuestion }: { onSelectQuestion: (question: string) => void }) => {
-    const [ramdomNumber] = useState(() => Math.floor(Math.random() * 10));
+    const [randomGroupIndex] = useState(
+        () => Math.floor(Math.random() * FAQ_QUESTIONS.length)
+    );
 
     return (
         <div className={styles.agent_panel_chat_block_faq_questions}>
             {
-                FAQ_QUESTIONS[ramdomNumber].map((question, i) => (
+                FAQ_QUESTIONS[randomGroupIndex].map((question, i) => (
                     <motion.div
-                        key={`faq_question_` + i}
+                        key={`faq_question_${i}`}
                         initial={{ x: -10, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ duration: 0.4, delay: 1 + ((i + 1) * 0.2) }}

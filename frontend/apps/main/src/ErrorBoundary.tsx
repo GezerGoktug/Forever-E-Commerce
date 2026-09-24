@@ -8,7 +8,6 @@ interface Props {
 
 interface State {
     hasError: boolean;
-    error?: Error;
 }
 
 class ErrorBoundary extends Component<Props, State> {
@@ -23,7 +22,7 @@ class ErrorBoundary extends Component<Props, State> {
     }
 
     handleReload = () => {
-        this.setState({ hasError: false, error: undefined });
+        this.setState({ hasError: false });
         window.location.reload();
     };
 

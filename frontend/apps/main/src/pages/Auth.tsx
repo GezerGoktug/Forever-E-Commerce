@@ -5,18 +5,21 @@ import { Helmet } from "react-helmet";
 import GoogleOauthPopupProvider from "@/providers/GoogleOauthPopupProvider";
 
 const Auth = () => {
-  const [form, setForm] = useState<boolean>(true);
+  const [authForm, setAuthForm] = useState<"login" | "register">("login");
+
+  const showLoginForm = () => setAuthForm("login");
+  const showRegisterForm = () => setAuthForm("register");
 
   return (
     <div>
       <Helmet>
-        <title>{form ? "Login" : "Register"} - Forever</title>
+        <title>{authForm === "login" ? "Login" : "Register"} - Forever</title>
       </Helmet>
       <GoogleOauthPopupProvider>
-        {form ? (
-          <Login chanceForm={() => setForm(false)} />
+        {authForm === "login" ? (
+          <Login changeAuthForm={showRegisterForm} />
         ) : (
-          <Register chanceForm={() => setForm(true)} />
+          <Register changeAuthForm={showLoginForm} />
         )}
       </GoogleOauthPopupProvider>
     </div>

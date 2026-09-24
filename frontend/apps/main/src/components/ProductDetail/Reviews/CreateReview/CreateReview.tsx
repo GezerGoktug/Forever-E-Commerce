@@ -8,10 +8,13 @@ import { Button, Rating } from "@forever/ui-kit";
 import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 
 const CreateReview = () => {
-  const currentUser = useAccount();
   const params = useParams();
-  const [rating, setRating] = useState<number>(0);
-  const [content, setContent] = useState<string>("");
+
+  const currentUser = useAccount();
+  const isAccess = useIsAccess();
+
+  const [rating, setRating] = useState(0);
+  const [content, setContent] = useState("");
   const [clearRating, setClearRating] = useState(false);
 
   const { mutate, isPending } = useCreateCommentMutation({
@@ -36,9 +39,10 @@ const CreateReview = () => {
       setClearRating(true);
     }
   };
+
   return (
     <>
-      {useIsAccess() ? (
+      {isAccess ? (
         <div className={styles.create_review_wrapper}>
           <h5 className={styles.create_review_title}>Create Comment</h5>
           <div className={styles.create_review}>
@@ -47,7 +51,7 @@ const CreateReview = () => {
               <h6>{currentUser?.name}</h6>
               <Rating
                 clearRating={clearRating}
-                rateAction={(rate: number) => setRating(rate)}
+                rateAction={setRating}
               />
               <textarea
                 value={content}
@@ -59,7 +63,7 @@ const CreateReview = () => {
               ></textarea>
               <Button
                 loading={isPending}
-                onClick={() => handleComment()}
+                onClick={handleComment}
                 className={styles.create_review_btn}
               >
                 SEND

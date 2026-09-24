@@ -13,11 +13,11 @@ const ErrorBlock = memo(({ error, refetch }: { error?: string, refetch: () => vo
             <div className={styles.agent_panel_chat_block_error_content}>
                 <h6>Error</h6>
                 <p>
-                    {error || "An error occurred while send message to agent."}
+                    {error || "Couldn't send your message"}
                 </p>
 
             </div>
-            <Button onClick={() => refetch()} variant="danger" size="icon">
+            <Button onClick={refetch} variant="danger" size="icon">
                 <PiArrowCounterClockwiseBold />
             </Button>
         </div>

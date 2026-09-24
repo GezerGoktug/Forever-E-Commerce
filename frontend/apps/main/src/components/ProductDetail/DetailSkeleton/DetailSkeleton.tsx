@@ -33,8 +33,8 @@ const DetailSkeleton = () => {
                         className={styles.skeleton_product_detail_select_size_title}
                     />
                     <div className={styles.skeleton_product_detail_sizes}>
-                        {[0, 1, 2, 3, 4].map((item) => (
-                            <div key={"skeleton_product_detail_size_" + item} />
+                        {Array.from({ length: 5 }, (_, index) => (
+                            <div key={`skeleton-product-detail-size-${index}`} />
                         ))}
                     </div>
                 </div>

@@ -1,22 +1,25 @@
-import type { ProductType } from "@/types/product.type";
 import styles from "./BestSellers.module.scss";
-import ProductCard from "@/components/common/ProductItem/ProductItem";
-import ProductItemSkeleton from "@/components/common/ProductItem/ProductItemSkeleton";
+import ProductCard from "@/components/common/ProductCard/ProductCard";
+import ProductCardSkeleton from "@/components/common/ProductCard/ProductCardSkeleton";
 import { useIsAccess } from "@/store/auth/hooks";
 import { useGetBestSellerProductsQuery, useIsProductsInFavQuery } from "@/services/hooks/queries/product.query";
 
 const BestSellers = () => {
+  const isAccess = useIsAccess();
+
   const { data, isPending } = useGetBestSellerProductsQuery();
 
+  const productIds = data?.data?.map((product) => product._id) ?? [];
+
   const { data: favProductInfo } = useIsProductsInFavQuery(
-    data?.data?.map(p => p._id) || [],
+    productIds,
     ["isBestSellerProductInFavProduct"],
     {
-      enabled: (useIsAccess() && !!data?.data?.length)
+      enabled: isAccess && productIds.length > 0
     }
   )
 
-  const isFavProduct = (_id: string) => favProductInfo?.data.find(dt => dt._id === _id)?.isFav || false
+  const isFavProduct = (productId: string) => favProductInfo?.data.find(favInfo => favInfo._id === productId)?.isFav || false
 
   return (
     <div className={styles.best_sellers}>
@@ -33,20 +36,20 @@ const BestSellers = () => {
       <div className={styles.best_sellers_products}>
         {isPending ? (
           <>
-            {[0, 1, 2, 3, 4].map((item) => (
-              <ProductItemSkeleton
-                key={"best_sellers_collection_skeleton_" + item}
+            {Array.from({ length: 5 }, (_, index) => (
+              <ProductCardSkeleton
+                key={`best-sellers-collection-skeleton-${index}`}
               />
             ))}
           </>
         ) : (
           <>
-            {data?.data.map((item: ProductType, i: number) => (
+            {data?.data.map((product, index) => (
               <ProductCard
                 useWhileInView
-                product={{ ...item, isFav: isFavProduct(item._id) }}
-                customIndex={i}
-                key={"best_sellers_collection_" + item._id}
+                product={{ ...product, isFav: isFavProduct(product._id) }}
+                customIndex={index}
+                key={"best_sellers_collection_" + product._id}
               />
             ))}
           </>

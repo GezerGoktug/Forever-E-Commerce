@@ -7,15 +7,19 @@ import { isEmptyString } from "@forever/common-utils";
 
 const ErrorModal = lazy(() => import("@/components/PlaceOrder/ErrorModal/ErrorModal"));
 
-type CountryDataType = {
+type CountryData = {
   country: string;
   city: string[];
 };
 
 const DeliveryInfoForm = () => {
   const form = useFormContext();
+
   const [isOpen, setIsOpen] = useState(false);
-  const [countryData, setCountryData] = useState<CountryDataType[]>([]);
+  const [countryData, setCountryData] = useState<CountryData[]>([]);
+
+  const selectedCountry = form.watch("country");
+  const selectedCity = form.watch("city");
 
   useEffect(() => {
     if (form.formState.isSubmitting && !form.formState.isValid) {
@@ -25,9 +29,9 @@ const DeliveryInfoForm = () => {
 
   useEffect(() => {
     const fetchCountriesData = async () => {
-      const res = await fetch("/@forever-static/data/country.json");
-      const dt = await res.json();
-      setCountryData(dt);
+      const response = await fetch("/@forever-static/data/country.json");
+      const countries = await response.json();
+      setCountryData(countries);
     };
     fetchCountriesData();
   }, []);
@@ -39,12 +43,14 @@ const DeliveryInfoForm = () => {
 
   const cityOptions = useMemo(() =>
     countryData
-      .find((item) => item.country === form.watch("country"))
+      .find((item) => item.country === selectedCountry)
       ?.city
-      ?.map((item) => ({ value: item, label: item })) || [],
-    [form.watch("country"), countryData]);
+      ?.map((city) => ({ value: city, label: city })) ?? [],
+    [selectedCountry, countryData]);
 
-  const cityValue = isEmptyString(form.watch("city")) ? null : { value: form.watch("city"), label: form.watch("city") }
+  const cityValue = isEmptyString(selectedCity) ? null : { value: selectedCity, label: selectedCity };
+
+  const closeErrorModal = () => setIsOpen(false);
 
   return (
     <div className={styles.delivery_info_form_wrapper}>
@@ -52,7 +58,7 @@ const DeliveryInfoForm = () => {
         <ErrorModal
           open={isOpen}
           errors={form.formState.errors}
-          closeModal={() => setIsOpen(false)}
+          closeModal={closeErrorModal}
         />
       </Suspense>
       <h6>
@@ -97,7 +103,7 @@ const DeliveryInfoForm = () => {
             isClearable
           />
           <Select
-            isDisabled={isEmptyString(form.watch("country"))}
+            isDisabled={isEmptyString(selectedCountry)}
             placeholder="Select a city"
             className={styles.delivery_info_form_select}
             onChange={(e) => form.setValue("city", e?.value)}

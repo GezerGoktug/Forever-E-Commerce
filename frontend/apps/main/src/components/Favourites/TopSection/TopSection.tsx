@@ -1,5 +1,5 @@
 import { useQueryParams } from '@forever/query-kit';
-import type { ProductSearchQueryType, SortType } from '@/types/product.type';
+import type { ProductSearchQuery, SortType } from '@/types/product.type';
 import styles from './TopSection.module.scss';
 import { motion } from 'framer-motion'
 
@@ -7,7 +7,7 @@ const TopSection = () => {
     const {
         queryState: { sorting },
         querySetters: { setSorting }
-    } = useQueryParams<Pick<ProductSearchQueryType, 'sorting'>>({
+    } = useQueryParams<Pick<ProductSearchQuery, 'sorting'>>({
         sorting: 'DEFAULT'
     })
 
@@ -27,7 +27,7 @@ const TopSection = () => {
                 className={styles.sort_select}
                 name="sorting_products"
             >
-                <option value="DEFAULT">Sort by: Relavent</option>
+                <option value="DEFAULT">Sort by: Relevant</option>
                 <option value="LOW_TO_HIGH">Sort by: Low to High</option>
                 <option value="HIGH_TO_LOW">Sort by: High to Low</option>
             </select>

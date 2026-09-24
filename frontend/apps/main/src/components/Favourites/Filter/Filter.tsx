@@ -3,30 +3,28 @@ import Select from 'react-select';
 import styles from './Filter.module.scss';
 import { FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
 import { useQueryParams } from '@forever/query-kit';
-import type { CategoriesType, ProductSearchQueryType, SortType, SubCategoriesType } from '@/types/product.type';
+import type { CategoriesType, ProductSearchQuery, SortType, SubCategoriesType } from '@/types/product.type';
 import { useDebounce } from '@forever/hook-kit';
 import { AiFillFilter } from 'react-icons/ai';
 import { Input } from '@forever/ui-kit';
 import FilterDrawer from './FilterDrawer/FilterDrawer';
 
-export type OptionsType<T> = { value: T, label: T }[]
+export type SelectOptions<T> = { value: T, label: T }[]
 
-const categoriesOptions: OptionsType<CategoriesType> = [
+const categoriesOptions: SelectOptions<CategoriesType> = [
     { value: 'Men', label: 'Men' },
     { value: 'Women', label: 'Women' },
     { value: 'Kids', label: 'Kids' }
 ]
 
-const subCategoriesOptions: OptionsType<SubCategoriesType> = [
+const subCategoriesOptions: SelectOptions<SubCategoriesType> = [
     { value: 'Topwear', label: 'Topwear' },
     { value: 'Bottomwear', label: 'Bottomwear' },
     { value: 'Winterwear', label: 'Winterwear' }
 ]
 
 const Filter = () => {
-    const [isOpen, setIsOpen] = useState(false)
-
-    const { queryState, querySetters } = useQueryParams<Pick<ProductSearchQueryType, 'categories' | 'sorting' | 'searchQuery' | 'subCategories'>>({
+    const { queryState, querySetters } = useQueryParams<Pick<ProductSearchQuery, 'categories' | 'sorting' | 'searchQuery' | 'subCategories'>>({
         categories: [],
         subCategories: [],
         searchQuery: '',
@@ -36,32 +34,42 @@ const Filter = () => {
     const { categories, subCategories, sorting, searchQuery } = queryState;
     const { setCategories, setSubCategories, setSearchQuery, setSorting } = querySetters;
 
-    const [debouncedVal, setText, text] = useDebounce<string>(searchQuery, 700);
+    const [isOpen, setIsOpen] = useState(false)
+
+    const [debouncedSearchText, setText, text] = useDebounce<string>(searchQuery, 700);
 
     useEffect(() => {
-        setSearchQuery(debouncedVal)
-    }, [debouncedVal])
+        setSearchQuery(debouncedSearchText)
+    }, [debouncedSearchText])
 
+    const openFilterDrawer = () => setIsOpen(true);
+
+    const closeFilterDrawer = () => setIsOpen(false);
+
+    const clearSearchText = () => {
+        if (text.trim().length > 0)
+            setText('')
+    };
 
     return (
         <div className={styles.filter}>
-            <FilterDrawer open={isOpen} onClose={() => setIsOpen(false)} />
+            <FilterDrawer open={isOpen} onClose={closeFilterDrawer} />
             <div className={styles.filter_left}>
                 <Select
-                    defaultValue={categories.map((dt) => ({ value: dt, label: dt }))}
+                    defaultValue={categories.map((category) => ({ value: category, label: category }))}
                     placeholder='Category'
-                    onChange={(dt) => setCategories(dt.map(item => item.value))}
+                    onChange={(options) => setCategories(options.map(option => option.value))}
                     isMulti
                     className={styles.form_select}
                     options={categoriesOptions}
                     classNamePrefix="react-select"
                 />
                 <Select
-                    defaultValue={subCategories.map((dt) => ({ value: dt, label: dt }))}
+                    defaultValue={subCategories.map((subCategory) => ({ value: subCategory, label: subCategory }))}
                     placeholder='Type'
                     isMulti
                     className={styles.form_select}
-                    onChange={(dt) => setSubCategories(dt.map(item => item.value))}
+                    onChange={(options) => setSubCategories(options.map(option => option.value))}
                     options={subCategoriesOptions}
                     classNamePrefix="react-select"
                 />
@@ -70,10 +78,7 @@ const Filter = () => {
                     onChange={(e) => setText(e.target.value)}
                     value={text}
                     rightIcon={text.trim().length > 0 ? FaXmark : FaMagnifyingGlass}
-                    rightIconOnClick={() => {
-                        if (text.trim().length > 0)
-                            setText('')
-                    }}
+                    rightIconOnClick={clearSearchText}
                     rightIconSize={15}
                     className={styles.search_input}
                 />
@@ -85,11 +90,11 @@ const Filter = () => {
                     className={styles.sort_select}
                     name="sorting_products"
                 >
-                    <option value="DEFAULT">Sort by: Relavent</option>
+                    <option value="DEFAULT">Sort by: Relevant</option>
                     <option value="LOW_TO_HIGH">Sort by: Low to High</option>
                     <option value="HIGH_TO_LOW">Sort by: High to Low</option>
                 </select>
-                <AiFillFilter onClick={() => setIsOpen(true)} size={25} className={styles.filter_modal_icon} />
+                <AiFillFilter onClick={openFilterDrawer} size={25} className={styles.filter_modal_icon} />
 
             </div>
         </div>

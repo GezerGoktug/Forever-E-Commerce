@@ -1,30 +1,33 @@
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import ProductService from "@/services/actions/product.service";
 import { buildQuery } from "@forever/query-kit";
-import type { IFavProductCountResponse, IIsProductInFavResponse, ProductDetailType, ProductSearchQueryType, ProductType, SortType } from "@/types/product.type";
+import type { FavProductCountResponse, IsProductInFavResponse, ProductDetail, ProductSearchQuery, Product, SortType } from "@/types/product.type";
 import type { IResponse, IError, IPaginationResult } from "@forever/api"
 
-const generateSortingType = (sort: SortType) => {
+type SortParams = {
+  type: "default" | "asc" | "desc";
+  field: "price" | null;
+};
+
+const generateSortingType = (sort: SortType): SortParams => {
   switch (sort) {
-    case "DEFAULT":
-      return { type: "default", field: null };
     case "HIGH_TO_LOW":
       return { type: "desc", field: "price" };
     case "LOW_TO_HIGH":
       return { type: "asc", field: "price" };
-    default:
+    case "DEFAULT":
       return { type: "default", field: null };
   }
 };
 
 const useGetProductsQuery = (
-    searchQueries: ProductSearchQueryType,
-    queryOptions?: Omit<UseQueryOptions<IResponse<IPaginationResult<Omit<ProductType, "isFav">, { maxPrice: number }>>, IError>, "queryKey">
+    searchQueries: ProductSearchQuery,
+    queryOptions?: Omit<UseQueryOptions<IResponse<IPaginationResult<Omit<Product, "isFav">, { maxPrice: number }>>, IError>, "queryKey">
 ) => {
     const { searchQuery, sorting, subCategories, categories, page, minPrice } = searchQueries;
     const sortProps = generateSortingType(sorting);
 
-    return useQuery<IResponse<IPaginationResult<Omit<ProductType, "isFav">, { maxPrice: number }>>, IError>({
+    return useQuery<IResponse<IPaginationResult<Omit<Product, "isFav">, { maxPrice: number }>>, IError>({
         queryKey: [
             "products",
             searchQuery,
@@ -51,12 +54,12 @@ const useGetProductsQuery = (
 };
 
 const useGetFavProductsQuery = (
-    searchQueries: Omit<ProductSearchQueryType, "minPrice">,
-    queryOptions?: Omit<UseQueryOptions<IResponse<IPaginationResult<Omit<ProductType, "isFav">, object>>, IError>, "queryKey">
+    searchQueries: Omit<ProductSearchQuery, "minPrice">,
+    queryOptions?: Omit<UseQueryOptions<IResponse<IPaginationResult<Omit<Product, "isFav">, object>>, IError>, "queryKey">
 ) => {
     const { categories, page, searchQuery, sorting, subCategories } = searchQueries;
     const sortProps = generateSortingType(sorting);
-    return useQuery<IResponse<IPaginationResult<Omit<ProductType, "isFav">, object>>, IError>({
+    return useQuery<IResponse<IPaginationResult<Omit<Product, "isFav">, object>>, IError>({
         queryKey: [
             "favProducts",
             searchQuery,
@@ -82,7 +85,7 @@ const useGetFavProductsQuery = (
 
 const useGetFavProductsCountQuery = (
     extraKeys: string[] = [],
-    queryOptions?: Omit<UseQueryOptions<IResponse<IFavProductCountResponse>, IError>, "queryKey">
+    queryOptions?: Omit<UseQueryOptions<IResponse<FavProductCountResponse>, IError>, "queryKey">
 ) => useQuery({
     queryKey: ['favProductCount', ...extraKeys],
     queryFn: () => ProductService.getFavProductsCount(),
@@ -90,40 +93,40 @@ const useGetFavProductsCountQuery = (
 })
 
 
-const useGetLatestProductsQuery = (queryOptions?: Omit<UseQueryOptions<IResponse<ProductType[]>, IError>, "queryKey">) =>
-    useQuery<IResponse<ProductType[]>, IError>({
+const useGetLatestProductsQuery = (queryOptions?: Omit<UseQueryOptions<IResponse<Product[]>, IError>, "queryKey">) =>
+    useQuery<IResponse<Product[]>, IError>({
         queryKey: ["latest_collections"],
         queryFn: () =>
             ProductService.getLatestProducts(),
         ...queryOptions
     });
 
-const useGetBestSellerProductsQuery = (queryOptions?: Omit<UseQueryOptions<IResponse<ProductType[]>, IError>, "queryKey">) =>
-    useQuery<IResponse<ProductType[]>, IError>({
+const useGetBestSellerProductsQuery = (queryOptions?: Omit<UseQueryOptions<IResponse<Product[]>, IError>, "queryKey">) =>
+    useQuery<IResponse<Product[]>, IError>({
         queryKey: ["best-seller-products"],
         queryFn: () =>
             ProductService.getBestSellerProducts(),
         ...queryOptions
     });
 
-const useGetProductDetailQuery = (id: string, queryOptions?: Omit<UseQueryOptions<IResponse<Omit<ProductDetailType, "isFav">>, IError>, "queryKey">) =>
-    useQuery<IResponse<Omit<ProductDetailType, "isFav">>, IError>({
+const useGetProductDetailQuery = (id: string, queryOptions?: Omit<UseQueryOptions<IResponse<Omit<ProductDetail, "isFav">>, IError>, "queryKey">) =>
+    useQuery<IResponse<Omit<ProductDetail, "isFav">>, IError>({
         queryKey: ["product_detail", id],
         queryFn: () =>
             ProductService.getProductDetail(id),
         ...queryOptions
     });
 
-const useIsProductsInFavQuery = (productsIds: string[], extraKeys: string[] = [], queryOptions?: Omit<UseQueryOptions<IResponse<IIsProductInFavResponse[]>, IError>, "queryKey">) =>
-    useQuery<IResponse<IIsProductInFavResponse[]>, IError>({
+const useIsProductsInFavQuery = (productsIds: string[], extraKeys: string[] = [], queryOptions?: Omit<UseQueryOptions<IResponse<IsProductInFavResponse[]>, IError>, "queryKey">) =>
+    useQuery<IResponse<IsProductInFavResponse[]>, IError>({
         queryKey: ["is_fav_product_info", (productsIds || []).toString(), ...extraKeys],
         queryFn: () =>
             ProductService.isProductsInFav(productsIds),
         ...queryOptions
     });
 
-const useIsFavouriteProductById = (id: string, queryOptions?: Omit<UseQueryOptions<IResponse<IIsProductInFavResponse>, IError>, "queryKey">) =>
-    useQuery<IResponse<IIsProductInFavResponse>, IError>({
+const useIsFavouriteProductById = (id: string, queryOptions?: Omit<UseQueryOptions<IResponse<IsProductInFavResponse>, IError>, "queryKey">) =>
+    useQuery<IResponse<IsProductInFavResponse>, IError>({
         queryKey: ["productDetailFav", id],
         queryFn: () =>
             ProductService.isFavProductById(id),

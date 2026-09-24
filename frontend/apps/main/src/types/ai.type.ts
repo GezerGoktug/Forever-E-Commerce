@@ -1,23 +1,23 @@
-﻿import type { ExtendedProductType } from "./product.type"
+﻿import type { ExtendedProduct } from "./product.type"
 
-export interface IAskQuestionToAiAgentVariables {
+export interface AskQuestionToAiAgentVariables {
     question: string,
     threadId?: string
 }
 
-export interface IAskQuestionToAiAgentResponse extends AgentMessageType {
+export interface AskQuestionToAiAgentResponse extends AgentMessage {
     threadId: string
 }
 
-export type AgentMessageType = {
+export type AgentMessage = {
     type: "ai" | "human" | "system"
     message: string,
     createdAt?: string,
-    products?: Array<ExtendedProductType & { averageRating: number }>
+    products?: Array<ExtendedProduct & { averageRating: number }>
     stream_id?: string
 }
 
-export type IAgentMessage = AgentMessageType & {
+export type AgentStreamMessage = AgentMessage & {
     stream_id: string
     threadId: string
 }

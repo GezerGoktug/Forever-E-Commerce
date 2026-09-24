@@ -26,6 +26,8 @@ const schema = z
     path: ["confirmPassword"],
   });
 
+type ChangePasswordFormValues = z.infer<typeof schema>;
+
 const ChangePassword = ({
   resetPasswordEmail,
   closeModal,
@@ -35,8 +37,9 @@ const ChangePassword = ({
   closeModal: () => void
   resetPasswordToken: string
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
 
-  const form = useForm<z.infer<typeof schema>>({
+  const form = useForm<ChangePasswordFormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       newPassword: '',
@@ -52,10 +55,12 @@ const ChangePassword = ({
     onError: (error) => handleShowApiErrorWithToastMessages(error)
   });
 
-  const onSubmit = (data: z.infer<typeof schema>) => mutate({ newPassword: data.newPassword, resetPasswordEmail, resetPasswordToken })
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
   const ShowPasswordIcon = showPassword ? FaEye : FaEyeSlash;
+
+  const onSubmit = (data: ChangePasswordFormValues) => mutate({ newPassword: data.newPassword, resetPasswordEmail, resetPasswordToken })
+
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+
   return (
     <>
       <h6>Change Password</h6>
@@ -65,7 +70,7 @@ const ChangePassword = ({
           size="lg"
           className={styles.change_password_form_input}
           rightIcon={ShowPasswordIcon}
-          rightIconOnClick={() => setShowPassword(!showPassword)}
+          rightIconOnClick={toggleShowPassword}
           placeholder="New Password"
           type={showPassword ? "text" : "password"}
           {...form.register("newPassword")}

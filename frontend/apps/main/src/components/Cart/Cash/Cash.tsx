@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { usePrice } from "@/store/cart/hooks";
+import { useCartSubtotal } from "@/store/cart/hooks";
 import styles from "./Cash.module.scss";
 import { Button } from "@forever/ui-kit";
 
 const Cash = ({ isCheckoutButton = true }: { isCheckoutButton?: boolean }) => {
-  const price = usePrice();
+  const subtotal = useCartSubtotal();
 
   return (
     <div className={styles.cash_wrapper}>
@@ -14,7 +14,7 @@ const Cash = ({ isCheckoutButton = true }: { isCheckoutButton?: boolean }) => {
       <ul className={styles.cash_infos}>
         <li>
           <span>Subtotal</span>
-          <span>$ {price.toFixed(2)}</span>
+          <span>$ {subtotal.toFixed(2)}</span>
         </li>
         <li>
           <span>Shipping Fee</span>
@@ -22,7 +22,7 @@ const Cash = ({ isCheckoutButton = true }: { isCheckoutButton?: boolean }) => {
         </li>
         <li>
           <span>Total</span>
-          <span>$ {(price + 10.0).toFixed(2)}</span>
+          <span>$ {(subtotal + 10.0).toFixed(2)}</span>
         </li>
       </ul>
       {isCheckoutButton && (

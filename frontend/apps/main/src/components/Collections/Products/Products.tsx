@@ -1,9 +1,9 @@
-import type { ProductSearchQueryType, SortType } from "@/types/product.type";
+import type { ProductSearchQuery, SortType } from "@/types/product.type";
 import styles from "./Products.module.scss";
 import { useEffect } from "react";
 import { setMaxPrice, setPagination } from "@/store/product/actions";
-import ProductCard from "@/components/common/ProductItem/ProductItem";
-import ProductItemSkeleton from "@/components/common/ProductItem/ProductItemSkeleton";
+import ProductCard from "@/components/common/ProductCard/ProductCard";
+import ProductCardSkeleton from "@/components/common/ProductCard/ProductCardSkeleton";
 import { useQueryParams } from "@forever/query-kit";
 import { RiMenuSearchLine } from "react-icons/ri";
 import { GrPowerReset } from "react-icons/gr";
@@ -14,7 +14,7 @@ import { useGetProductsQuery, useIsProductsInFavQuery } from "@/services/hooks/q
 import { Button } from "@forever/ui-kit";
 
 const Products = () => {
-  const { queryState, clearQuery, querySetters: { setSorting } } = useQueryParams<Pick<ProductSearchQueryType, 'page' | 'categories' | 'minPrice' | 'searchQuery' | 'subCategories' | 'sorting'>>({
+  const { queryState, clearQuery, querySetters: { setSorting } } = useQueryParams<Pick<ProductSearchQuery, 'page' | 'categories' | 'minPrice' | 'searchQuery' | 'subCategories' | 'sorting'>>({
     page: 0,
     categories: [],
     subCategories: [],
@@ -25,6 +25,8 @@ const Products = () => {
 
   const { searchQuery, minPrice, page, categories, subCategories, sorting } = queryState;
 
+  const isAccess = useIsAccess();
+
   const { data, isPending, isError, refetch } = useGetProductsQuery({
     page,
     sorting,
@@ -34,11 +36,13 @@ const Products = () => {
     searchQuery
   })
 
+  const productIds = data?.data.content.map((product) => product._id) ?? [];
+
   const { data: favProductInfo } = useIsProductsInFavQuery(
-    data?.data.content.map(p => p._id) || [],
+    productIds,
     ["isProductInFavProduct"],
     {
-      enabled: (useIsAccess() && !!data?.data?.content?.length)
+      enabled: isAccess && productIds.length > 0
     }
   )
 
@@ -53,8 +57,7 @@ const Products = () => {
     }
   }, [data]);
 
-  const isFavProduct = (_id: string) => favProductInfo?.data.find(dt => dt._id === _id)?.isFav || false
-
+  const isFavProduct = (productId: string) => favProductInfo?.data.find(favInfo => favInfo._id === productId)?.isFav || false
 
   return (
     <div className={styles.product_wrapper}>
@@ -68,7 +71,7 @@ const Products = () => {
           className={styles.product_sort_select}
           name="sorting_products"
         >
-          <option value="DEFAULT">Sort by: Relavent</option>
+          <option value="DEFAULT">Sort by: Relevant</option>
           <option value="LOW_TO_HIGH">Sort by: Low to High</option>
           <option value="HIGH_TO_LOW">Sort by: High to Low</option>
         </select>
@@ -84,7 +87,7 @@ const Products = () => {
               <div className={styles.products_error_text}>
                 <h6>Error</h6>
                 <p>
-                  We occurred a error while your get products with your desired filters .Please you retry to get products with your desired filters.
+                  We couldn't load products with those filters. Please try again.
                 </p>
                 <Button
                   className={styles.products_error_btn}
@@ -99,8 +102,8 @@ const Products = () => {
           }
           loadingFallback={
             <>
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
-                <ProductItemSkeleton key={'product_skeleton_item' + item} />
+              {Array.from({ length: 12 }, (_, index) => (
+                <ProductCardSkeleton key={`product-skeleton-${index}`} />
               ))}
             </>
           }
@@ -108,16 +111,16 @@ const Products = () => {
             <div className={styles.products_no_content}>
               <RiMenuSearchLine className={styles.products_no_content_icon} />
               <div className={styles.products_no_content_text}>
-                <h6>Not found anything product</h6>
+                <h6>No products found</h6>
                 <p>
-                  We not found anything a product according to your search query.You try to search with different a query
+                  No products match your search. Try a different query.
                 </p>
                 <Button
                   className={styles.products_no_content_btn}
                   variant="secondary"
-                  onClick={() => clearQuery()}
+                  onClick={clearQuery}
                 >
-                  RESET FILTRE
+                  RESET FILTERS
                   <GrPowerReset size={20} />
                 </Button>
               </div>
@@ -125,10 +128,10 @@ const Products = () => {
           }
         >
           {
-            (data) => data.map((item) => (
+            (products) => products.map((product) => (
               <ProductCard
-                key={"product" + item._id}
-                product={{ ...item, isFav: isFavProduct(item._id) }}
+                key={"product" + product._id}
+                product={{ ...product, isFav: isFavProduct(product._id) }}
               />
             ))
           }

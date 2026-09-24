@@ -2,10 +2,10 @@ import useCartStore from "./cartStore";
 
 export const useCart = () => useCartStore((state) => state.cart);
 
-export const usePrice = () => {
+export const useCartSubtotal = () => {
   const cart = useCartStore((state) => state.cart);
-  const price = cart.reduce((acc, item) => item.price * item.quantity + acc, 0);
-  return price;
+  const subtotal = cart.reduce((acc, item) => item.price * item.quantity + acc, 0);
+  return subtotal;
 };
 
 export const useTotalCartQuantities = () => {

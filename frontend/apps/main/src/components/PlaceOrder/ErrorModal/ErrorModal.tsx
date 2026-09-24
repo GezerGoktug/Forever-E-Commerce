@@ -35,7 +35,7 @@ const ErrorModal = ({
         </div>
         <div className={styles.error_modal_actions}>
           <Button
-            onClick={() => closeModal()}
+            onClick={closeModal}
             className={styles.error_modal_btn}
             variant="danger"
           >

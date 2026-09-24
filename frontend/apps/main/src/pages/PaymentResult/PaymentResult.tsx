@@ -15,6 +15,10 @@ const PaymentResult = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
+  const sessionId = searchParams.get("sessionId");
+  const orderId = searchParams.get("orderId");
+  const isSuccess = searchParams.get("isSuccess") === "1";
+
   const { mutate: confirmOrderMutation } = useConfirmOrderPaymentMutation({
     onSuccess: (data) => {
       clearCart();
@@ -28,26 +32,24 @@ const PaymentResult = () => {
   });
   const { mutate: deleteOrderMutation } = useDeleteOrderMutation();
 
-  const isSuccess = searchParams.get("isSuccess") && Number(searchParams.get("isSuccess"));
-
   useEffect(() => {
-    if (searchParams.get("sessionId") && searchParams.get("orderId")) {
-      if (isSuccess) {
-        confirmOrderMutation({ orderId: searchParams.get("orderId") as string, isPayment: true, sessionId: searchParams.get("sessionId") as string });
-      } else if (!isSuccess) {
-        deleteOrderMutation(searchParams.get("orderId") as string);
-      }
+    if (!sessionId || !orderId)
+      return;
+
+    if (isSuccess) {
+      confirmOrderMutation({ orderId, isPayment: true, sessionId });
+    } else {
+      deleteOrderMutation(orderId);
     }
-  }, [searchParams, isSuccess]);
+  }, [sessionId, orderId, isSuccess]);
 
   useEffect(() => {
-    if (!searchParams.get("sessionId"))
+    if (!sessionId)
       navigate("/");
-    
-  }, [searchParams, navigate])
 
+  }, [sessionId, navigate])
 
-  if(!searchParams.get("sessionId"))
+  if (!sessionId)
     return null;
 
   return (

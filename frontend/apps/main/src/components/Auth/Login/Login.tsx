@@ -17,18 +17,23 @@ import { handleShowApiErrorWithToastMessages } from "@/utils/common.utils";
 const ResetPasswordModal = lazy(() => import("@/components/Auth/Register/ResetPasswordModal/ResetPasswordModal"));
 
 type LoginProps = {
-  chanceForm: () => void;
+  changeAuthForm: () => void;
 };
 
-interface Login_Form_Types {
+interface LoginFormValues {
   email: string;
   password: string;
 }
 
-const Login = ({ chanceForm }: LoginProps) => {
+const Login = ({ changeAuthForm }: LoginProps) => {
   const navigate = useNavigate();
+
   const { isPopupOpen, loading } = useGoogleOauth();
-  const form = useForm<Login_Form_Types>({
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
+
+  const form = useForm<LoginFormValues>({
     defaultValues: {
       email: "",
       password: "",
@@ -50,17 +55,20 @@ const Login = ({ chanceForm }: LoginProps) => {
     onError: (error) => handleShowApiErrorWithToastMessages(error)
   })
 
-  const onSubmit: SubmitHandler<Login_Form_Types> = (data) => mutate(data);
-
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [modal, setModal] = useState<boolean>(false);
-
   const ShowPasswordIcon = showPassword ? FaEye : FaEyeSlash;
+
+  const onSubmit: SubmitHandler<LoginFormValues> = (data) => mutate(data);
+
+  const openResetPasswordModal = () => setIsResetPasswordModalOpen(true);
+
+  const closeResetPasswordModal = () => setIsResetPasswordModalOpen(false);
+
+  const toggleShowPassword = () => setShowPassword(!showPassword);
 
   return (
     <div className={styles.login_wrapper}>
       <Suspense fallback={<div></div>}>
-        <ResetPasswordModal open={modal} closeModal={() => setModal(false)} />
+        <ResetPasswordModal open={isResetPasswordModalOpen} closeModal={closeResetPasswordModal} />
       </Suspense>
       <h5>Login</h5>
       <form
@@ -85,7 +93,7 @@ const Login = ({ chanceForm }: LoginProps) => {
           size="lg"
           className={styles.login_form_input}
           rightIcon={ShowPasswordIcon}
-          rightIconOnClick={() => setShowPassword(!showPassword)}
+          rightIconOnClick={toggleShowPassword}
           placeholder="Password"
           type={showPassword ? "text" : "password"}
           {...form.register("password", { required: "Password is required" })}
@@ -98,8 +106,8 @@ const Login = ({ chanceForm }: LoginProps) => {
           )}
         />
         <div className={styles.login_form_interactions}>
-          <span onClick={() => setModal(true)}>Forgot your password?</span>
-          <span onClick={() => chanceForm()}>Create account</span>
+          <span onClick={openResetPasswordModal}>Forgot your password?</span>
+          <span onClick={changeAuthForm}>Create account</span>
         </div>
         <Button className={styles.login_form_btn} type="submit" loading={isPending}>
           Sign In

@@ -1,8 +1,8 @@
-import type { CartProductType } from "./product.type";
-import type { BasicUserType } from "./user.type";
+import type { CartProduct } from "./product.type";
+import type { BasicUser } from "./user.type";
 
 
-export interface DeliveryInfoType {
+export interface DeliveryInfo {
   firstName: string,
   lastName: string,
   email: string,
@@ -14,23 +14,23 @@ export interface DeliveryInfoType {
   phoneNumber: string,
   paymentMethod: "CASH_ON_DELIVERY" | "STRIPE",
 }
-export interface ICreateOrderVariables {
-  products: CartProductType[];
+export interface CreateOrderVariables {
+  products: CartProduct[];
   cargoFee: number;
-  delivery_info: DeliveryInfoType
+  delivery_info: DeliveryInfo
 }
 
-export interface IConfirmOrderVariables {
+export interface ConfirmOrderVariables {
   orderId: string
   isPayment: boolean,
   sessionId: string
 }
-export interface ICreateOrderWithStripeResponse {
+export interface CreateOrderWithStripeResponse {
   sessionId: string
 }
 
 
-export interface IOrder {
+export interface Order {
   locationInfo: {
     street: string;
     city: string;
@@ -44,10 +44,9 @@ export interface IOrder {
   emailAddress: string;
   phoneNumber: string;
   payment: boolean;
-  user: BasicUserType,
+  user: BasicUser,
   totalPrice: number;
   paymentMethod: "STRIPE" | "CASH_ON_DELIVERY";
   createdAt: Date;
-  products: (CartProductType & { product: string })[];
-  __v: number;
+  products: (CartProduct & { product: string })[];
 }

@@ -32,11 +32,11 @@ const VerifyResetPasswordCode = ({
       <p>You can verify with fill your code from incoming in your gmail box from below</p>
       <PinInput
         characterLength={6}
-        onInputChange={(val) => setResetPasswordCode(val)}
+        onInputChange={setResetPasswordCode}
       />
       <Button
         loading={isPending}
-        onClick={() => handleVerifyResetPasswordCode()}>
+        onClick={handleVerifyResetPasswordCode}>
         VERIFY
       </Button>
     </>
