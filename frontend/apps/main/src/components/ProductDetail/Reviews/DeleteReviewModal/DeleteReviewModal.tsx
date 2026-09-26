@@ -1,6 +1,6 @@
 import { IoMdTrash } from "react-icons/io";
 import toast from "react-hot-toast";
-import type { ReviewToDelete } from "@/components/ProductDetail/Reviews/Reviews/Reviews";
+import type { ReviewToDelete } from "@/components/ProductDetail/Reviews/Reviews";
 import { useParams } from "react-router-dom";
 import { useDeleteCommentMutation } from "@/services/hooks/mutations/product.mutations";
 import { AlertModal } from "@forever/ui-kit";

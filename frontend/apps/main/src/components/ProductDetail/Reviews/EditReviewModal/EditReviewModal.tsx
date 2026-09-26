@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./EditReviewModal.module.scss";
 import { FaPencil } from "react-icons/fa6";
-import type { ReviewToEdit } from "@/components/ProductDetail/Reviews/Reviews/Reviews";
+import type { ReviewToEdit } from "@/components/ProductDetail/Reviews/Reviews";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useUpdateCommentMutation } from "@/services/hooks/mutations/product.mutations";

@@ -2,7 +2,7 @@
 import Header from "@/components/layouts/Header/Header";
 import Footer from "@/components/layouts/Footer/Footer";
 import ReturnTop from "@/components/layouts/ReturnTopButton/ReturnTop";
-import SupportAgent from "@/components/layouts/SupportAgent/SupportAgent/SupportAgent";
+import SupportAgent from "@/components/layouts/SupportAgent/SupportAgent";
 
 const MainLayout = () => {
   return (

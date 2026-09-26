@@ -4,7 +4,7 @@ import DetailContent from "@/components/ProductDetail/DetailContent/DetailConten
 import DetailPictures from "@/components/ProductDetail/DetailPictures/DetailPictures";
 import RelatedProducts from "@/components/ProductDetail/RelatedProducts/RelatedProducts";
 import CreateReview from "@/components/ProductDetail/Reviews/CreateReview/CreateReview";
-import Reviews from "@/components/ProductDetail/Reviews/Reviews/Reviews";
+import Reviews from "@/components/ProductDetail/Reviews/Reviews";
 import styles from "./ProductDetail.module.scss";
 import clsx from "clsx";
 import { useParams } from "react-router-dom";
