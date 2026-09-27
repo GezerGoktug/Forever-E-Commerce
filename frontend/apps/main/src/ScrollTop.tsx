@@ -5,7 +5,9 @@ const ScrollTop = ({ children }: { children: ReactNode }) => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollY = 0;
+    window.scrollTo({
+      top: 0
+    });
   }, [pathname]);
 
   return <>{children}</>;
