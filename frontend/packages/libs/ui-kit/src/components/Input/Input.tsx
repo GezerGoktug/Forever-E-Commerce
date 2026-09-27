@@ -56,7 +56,7 @@ const Input = forwardRef((inputProps: InputProps, ref) => {
   }
 
   const handleOnInput = (e: ChangeEvent<HTMLInputElement>) => {
-    if(isAutoSize){
+    if (isAutoSize) {
       const el = e.target;
       if (el) resize(el);
     }
@@ -68,8 +68,8 @@ const Input = forwardRef((inputProps: InputProps, ref) => {
       const newValue = isIncrease ? +input.value + stepIncrement : +input.value - stepIncrement;
       if (
         checkClampLogic(
-          props.min ? +props?.min : null,
-          props.max ? +props?.max : null,
+          props.min !== undefined ? +props?.min : null,
+          props.max !== undefined ? +props?.max : null,
           newValue
         )) {
         triggerNativeInputChange(input, newValue.toString());
