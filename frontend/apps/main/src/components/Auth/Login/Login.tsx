@@ -47,7 +47,7 @@ const Login = ({ changeAuthForm }: LoginProps) => {
       toast.success(data.data.message);
 
       if (data.data.user.role === "ADMIN") {
-        navigate("/admin/stats");
+        window.location.href = "/admin/stats";
         return;
       }
       navigate("/profile");

@@ -14,7 +14,7 @@ import AdminLogin from "./components/Admin/AdminLogin/AdminLogin";
 const AdminPrivateRoute = () => {
   const isAdmin = useIsAdmin();
 
-  return isAdmin ? <Outlet /> : <Navigate to="/login" />;
+  return isAdmin ? <Outlet /> : <Navigate to="/not-found" />;
 };
 
 function App() {
@@ -23,10 +23,10 @@ function App() {
       <Toaster position="top-right" reverseOrder={false} />
       <AuthGuard>
         <Routes>
-          <Route path="/login" element={<AdminLogin />} />
-          <Route element={<AdminPrivateRoute />}>
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminPrivateRoute />}>
             <Route element={<AdminLayout />}>
-              <Route index element={<Navigate to="/stats" />} />
+              <Route index element={<Navigate to="/admin/stats" />} />
               <Route path="stats" element={<AdminStats />} />
               <Route path="add-product" element={<AdminAddProduct />} />
               <Route path="products" element={<AdminProducts />} />
@@ -34,6 +34,7 @@ function App() {
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Route>
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthGuard>
     </ErrorBoundary>

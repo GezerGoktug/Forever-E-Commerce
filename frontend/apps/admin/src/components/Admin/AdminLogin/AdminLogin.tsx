@@ -36,10 +36,10 @@ const AdminLogin = () => {
             toast.success(data.data.message);
 
             if (data.data.user.role === "ADMIN") {
-                navigate("/stats");
+                navigate("/admin/stats");
                 return;
             }
-            navigate("/profile");
+            window.location.href = "/profile";
         },
         onError: (error) => handleShowApiErrorWithToastMessages(error),
     })

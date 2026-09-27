@@ -13,22 +13,22 @@ const NavMenuDrawer = () => {
     const links = [
         {
             icon: IoIosStats,
-            href: "/stats",
+            href: "/admin/stats",
             label: "Stats",
         },
         {
             icon: AiOutlineProduct,
-            href: "/products",
+            href: "/admin/products",
             label: "Products",
         },
         {
             icon: IoAddCircleOutline,
-            href: "/add-product",
+            href: "/admin/add-product",
             label: "Add Product",
         },
         {
             icon: IoIosList,
-            href: "/orders",
+            href: "/admin/orders",
             label: "Orders",
         },
     ];

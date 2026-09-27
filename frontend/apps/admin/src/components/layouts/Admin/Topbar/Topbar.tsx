@@ -19,10 +19,12 @@ const Topbar = () => {
 
   const { mutate, isPending } = useLogoutMutation({
     onSuccess() {
-      clearUser();
-      navigate("/login");
-      removeLocalStorage("accessToken");
-      toast.success("Signed out");
+      navigate("/admin/login");
+      setTimeout(() => {
+        clearUser();
+        removeLocalStorage("accessToken");
+        toast.success("Signed out");
+      }, 10)
     },
   })
 
