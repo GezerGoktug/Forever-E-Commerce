@@ -36,7 +36,7 @@ const AddProduct = () => {
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      mainImage: null,
+      mainImage: "",
       subImage1: null,
       subImage2: null,
       subImage3: null,
@@ -85,15 +85,12 @@ const AddProduct = () => {
   const onSubmit = (data: ProductFormValues) => {
     const formData = new FormData();
 
-    if (!data.mainImage) {
-      toast.error("The product must have one main image.");
-      return;
+    if (data.mainImage instanceof File) {
+      formData.append("mainImage", data.mainImage);
     }
-
-    formData.append("mainImage", data.mainImage);
-    formData.append("subImage1", data.subImage1);
-    formData.append("subImage2", data.subImage2);
-    formData.append("subImage3", data.subImage3);
+    if (data.subImage1 instanceof File) formData.append("subImage1", data.subImage1);
+    if (data.subImage2 instanceof File) formData.append("subImage2", data.subImage2);
+    if (data.subImage3 instanceof File) formData.append("subImage3", data.subImage3);
 
     formData.append("name", data.name);
     formData.append("description", data.description);

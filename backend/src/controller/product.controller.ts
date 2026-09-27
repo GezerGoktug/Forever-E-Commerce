@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Product } from "../models/Product.schema";
-import { ExtendedRequest } from "../types/types";
+import { ExtendedRequest, Files } from "../types/types";
 import { JwtPayload } from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
 import ResponseHandler from "../util/response";
@@ -44,7 +44,7 @@ const getPublicIdFromUrl = (url: string): string | null => {
 };
 
 export const addProduct = async (req: Request, res: Response) => {
-  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+  const files = req.files as Files;
 
   const { name, price, description, sizes, category, subCategory } = req.body;
 
@@ -140,7 +140,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
 };
 
 export const updateProduct = async (req: Request, res: Response) => {
-  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+  const files = req.files as Files;
 
   const { name, price, description, sizes, category, subCategory } = req.body;
 

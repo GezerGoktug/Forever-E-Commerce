@@ -45,3 +45,5 @@ export interface IProduct {
   subCategory: "Topwear" | "Bottomwear" | "Winterwear";
   comments: IComment[];
 }
+
+export type Files = { [fieldname: string]: Express.Multer.File[] }

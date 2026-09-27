@@ -40,10 +40,10 @@ const EditProductModal = ({ data, closeModal }: EditProductModalProps) => {
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      mainImage: null,
-      subImage1: null,
-      subImage2: null,
-      subImage3: null,
+      mainImage: data?.image ?? "",
+      subImage1: data?.subImages[1] || null,
+      subImage2: data?.subImages[2] || null,
+      subImage3: data?.subImages[3] || null,
       name: data?.name,
       description: data?.description,
       price: Number(data?.price),
@@ -94,15 +94,12 @@ const EditProductModal = ({ data, closeModal }: EditProductModalProps) => {
 
     const formData = new FormData();
 
-    if (!formValues.mainImage) {
-      toast.error("The product must have one main image.");
-      return;
+    if (formValues.mainImage instanceof File) {
+      formData.append("mainImage", formValues.mainImage);
     }
-
-    formData.append("mainImage", formValues.mainImage);
-    formData.append("subImage1", formValues.subImage1);
-    formData.append("subImage2", formValues.subImage2);
-    formData.append("subImage3", formValues.subImage3);
+    if (formValues.subImage1 instanceof File) formData.append("subImage1", formValues.subImage1);
+    if (formValues.subImage2 instanceof File) formData.append("subImage2", formValues.subImage2);
+    if (formValues.subImage3 instanceof File) formData.append("subImage3", formValues.subImage3);
 
     formData.append("name", formValues.name);
     formData.append("description", formValues.description);

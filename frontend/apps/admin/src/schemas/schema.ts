@@ -1,10 +1,12 @@
 import { z } from "zod";
 
+const imageField = z.union([z.instanceof(File), z.string()]);
+
 export const productSchema = z.object({
-  mainImage: z.any(),
-  subImage1: z.any(),
-  subImage2: z.any(),
-  subImage3: z.any(),
+  mainImage: imageField.refine(Boolean, "Product must have a main image."),
+  subImage1: imageField.nullable(),
+  subImage2: imageField.nullable(),
+  subImage3: imageField.nullable(),
   name: z.string().min(5, "Product name cannot be less than 5 characters."),
   description: z
     .string()
