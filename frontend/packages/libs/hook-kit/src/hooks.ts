@@ -1,6 +1,7 @@
 import { type DependencyList, type Dispatch, type ReactNode, type RefObject, type SetStateAction, useEffect, useRef, useState } from "react";
+import { getSessionStorage, removeSessionStorage, setSessionStorage } from "@forever/storage-kit";
 
-const useMultipleStepForm = (comps: ReactNode[]) => {
+const useMultiStepFlow = (comps: ReactNode[]) => {
     const [currentStep, setCurrentStep] = useState(0);
 
     const next = () => {
@@ -18,6 +19,58 @@ const useMultipleStepForm = (comps: ReactNode[]) => {
     };
 };
 
+const getRemainSecond = (seconds: number, timerId: string) => {
+    const startedAt = getSessionStorage<number | undefined>(`timer-${timerId}`, undefined);
+
+    if (startedAt) {
+        const elapsedSecond = Math.floor((Date.now() - startedAt) / 1000);
+        return Math.max(0, seconds - elapsedSecond);
+    }
+
+    setSessionStorage(`timer-${timerId}`, Date.now(), seconds * 1000);
+    return seconds;
+};
+
+const useTimer = (seconds: number = 60, timerId: string) => {
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const [remainSecond, setRemainSecond] = useState(() => getRemainSecond(seconds, timerId));
+
+    const startInterval = () => {
+        if (timerRef.current) clearInterval(timerRef.current);
+
+        timerRef.current = setInterval(() => {
+            setRemainSecond((prev) => {
+                if (prev <= 1) {
+                    removeSessionStorage(`timer-${timerId}`)
+                    if (timerRef.current) clearInterval(timerRef.current);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+    };
+
+    useEffect(() => {
+        if (remainSecond <= 0) {
+            removeSessionStorage(`timer-${timerId}`)
+            return;
+        }
+
+        startInterval();
+
+        return () => {
+            if (timerRef.current) clearInterval(timerRef.current);
+        };
+    }, []);
+
+    const resetTimer = () => {
+        setSessionStorage(`timer-${timerId}`, Date.now(), seconds * 1000);
+        setRemainSecond(seconds);
+        startInterval();
+    };
+
+    return [remainSecond, resetTimer] as const;
+};
 
 const useDebounce = <T>(value: T, delay: number = 500): [T, Dispatch<SetStateAction<T>>, T] => {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -106,4 +159,4 @@ const useMediaQuery = ({
     return isCorrectScreenSize;
 }
 
-export { useEffectIgnoreFirst, useClickOutside, useDebounce, useMultipleStepForm, useMediaQuery }
+export { useEffectIgnoreFirst, useClickOutside, useDebounce, useMultiStepFlow, useMediaQuery, useTimer }

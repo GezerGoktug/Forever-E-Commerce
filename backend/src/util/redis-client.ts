@@ -9,6 +9,10 @@ const RedisClient = {
     return redisClient.get(key);
   },
 
+  update: (key: string, value: string) => {
+    return redisClient.set(key, value, { KEEPTTL: true });
+  },
+
   del: (key: string) => {
     return redisClient.del(key);
   },
