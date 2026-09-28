@@ -1,7 +1,7 @@
-import { useMultipleStepForm } from "@forever/hook-kit";
-import ChangePassword from "./Steps/ChangePassword";
-import ResetPasswordRequest from "./Steps/ResetPasswordRequest";
-import VerifyResetPasswordCode from "./Steps/VerifyResetPasswordCode";
+import { useMultiStepFlow } from "@forever/hook-kit";
+import ChangePassword from "./Steps/ChangePassword/ChangePassword";
+import ResetPasswordRequest from "./Steps/ResetPasswordRequest/ResetPasswordRequest";
+import VerifyResetPasswordCode from "./Steps/VerifyResetPasswordCode/VerifyResetPasswordCode";
 import styles from './ResetPasswordModal.module.scss';
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "@forever/ui-kit";
@@ -19,7 +19,7 @@ const ResetPasswordModal = ({ open, closeModal }: ResetPasswordModalProps) => {
 
   const handleNext = () => callbackRef.current();
 
-  const { next, step } = useMultipleStepForm([
+  const { next, step } = useMultiStepFlow([
     <ResetPasswordRequest
       resetPasswordEmail={resetPasswordEmail}
       setResetPasswordEmail={setResetPasswordEmail}

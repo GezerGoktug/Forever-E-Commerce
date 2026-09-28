@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import RedisClient from "../util/redis-client";
 import { ErrorHandler } from "../error/errorHandler";
+import { hashToken } from "../util/hash";
 
 export const protectResetPasswordRequest = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const uidToken = req.headers.authorization?.substring(7);
+  const token = req.headers.authorization?.substring(7);
 
   const resetPasswordEmail = req.body.resetPasswordEmail;
 
@@ -25,7 +26,9 @@ export const protectResetPasswordRequest = async (
 
   const val = await RedisClient.get(`reset-password-uid:${resetPasswordEmail}`);
 
-  if (val !== uidToken) throw new ErrorHandler(401, "Unauthorized");
+  const hashedToken = hashToken(token || "");
+
+  if (val !== hashedToken) throw new ErrorHandler(401, "Unauthorized");
 
   next();
 };
