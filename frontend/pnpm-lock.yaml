@@ -387,6 +387,9 @@ importers:
 
   packages/libs/hook-kit:
     dependencies:
+      '@forever/storage-kit':
+        specifier: workspace:*
+        version: link:../storage-kit
       react:
         specifier: 18.3.1
         version: 18.3.1
