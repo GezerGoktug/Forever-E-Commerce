@@ -77,6 +77,13 @@ const useDebounce = <T>(value: T, delay: number = 500): [T, Dispatch<SetStateAct
     const [text, setText] = useState(value);
 
     useEffect(() => {
+        if (value !== debouncedValue) {
+            setText(value);
+            setDebouncedValue(value);
+        }
+    }, [value]);
+
+    useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedValue(text);
         }, delay);
