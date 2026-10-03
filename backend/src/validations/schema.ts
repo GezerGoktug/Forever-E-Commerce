@@ -73,9 +73,11 @@ export const productSchema = z.object({
     .min(1, "There must be at least one product size"),
 });
 
-export const paginationRequestSchema = z.object({
+export const paginationRequestSchema = (maxPageSize: number = 30) => z.object({
   page: z.number().min(0, "Minimum page number can be 0"),
-  pageSize: z.number().min(0, "Minimum number of page elements can be 0"),
+  pageSize: z.number()
+    .min(0, "Minimum number of page elements can be 0")
+    .max(maxPageSize, `Maximum number of page elements can be ${maxPageSize}`),
   sortType: z.enum(["asc", "desc", "default"], {
     errorMap: () => ({
       message: "Please select a valid sort type.(asc,desc,default)",

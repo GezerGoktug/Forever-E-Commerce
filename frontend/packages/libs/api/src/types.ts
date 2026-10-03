@@ -20,9 +20,10 @@ type Error = {
 export type IError = AxiosError<{ error: Error }>;
 
 export interface IPaginationResult<T, OtherDataType> {
+    totalItems: number;
     totalPage: number;
     pageSize: number;
-    current: number;
+    page: number;
     hasNext: boolean;
     hasPrev: boolean;
     content: T[];

@@ -9,11 +9,12 @@ export const pageableToResponse = <T, OtherDataType>(
   otherData?: OtherDataType
 ) => {
   return {
+    totalItems,
     totalPage: Math.ceil(totalItems / pageSize),
     pageSize: data.length,
-    current: page + 1,
+    page: page + 1,
     hasNext: !(page + 1 >= Math.ceil(totalItems / pageSize)),
-    hasPrev: page !== 0,
+    hasPrev: page > 0,
     content: data,
     otherData: {
       ...otherData,
@@ -43,11 +44,18 @@ interface IPaginationRequest {
   sortField: string | null;
 }
 
-export const PaginationRequest = (
+interface IPaginationRequestInput {
   req: Request,
-  defaultPageSize: number = 15
-): IPaginationRequest => {
-  const validated = paginationRequestSchema.parse({
+  defaultPageSize?: number,
+  maxPageSize?: number
+}
+
+export const PaginationRequest = ({
+  req,
+  defaultPageSize = 15,
+  maxPageSize = 45
+}: IPaginationRequestInput): IPaginationRequest => {
+  const validated = paginationRequestSchema(maxPageSize).parse({
     page: Number(req.query[defaultPaginationFieldNames.pageNumber]) || 0,
     pageSize:
       Number(req.query[defaultPaginationFieldNames.pageSize]) ||

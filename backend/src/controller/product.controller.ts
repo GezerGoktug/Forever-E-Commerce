@@ -222,7 +222,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 };
 
 export const getProductsForAdmin = async (req: Request, res: Response) => {
-  const pageRequest = PaginationRequest(req, 15);
+  const pageRequest = PaginationRequest({ req, defaultPageSize: 15, maxPageSize: 45 });
 
   const limit = pageRequest.pageSize;
   const skip = pageRequest.pageNumber * limit;
@@ -243,12 +243,8 @@ export const getProductsForAdmin = async (req: Request, res: Response) => {
   );
 };
 
-export const getProductsByQueries = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const pageRequest = PaginationRequest(req, 15);
+export const getProductsByQueries = async (req: Request, res: Response) => {
+  const pageRequest = PaginationRequest({ req, defaultPageSize: 15, maxPageSize: 45 });
 
   const { categories, subCategory, searchQuery, minPrice } = filterQuery(
     req,
@@ -605,7 +601,7 @@ export const getFavouriteProducts = async (req: ExtendedRequest, res: Response) 
 
   const currentUser = req?.user as JwtPayload;
 
-  const paginationRequest = PaginationRequest(req, 10);
+  const paginationRequest = PaginationRequest({ req, defaultPageSize: 10, maxPageSize: 30 });
 
   const { sortField, sortType, pageNumber, pageSize } = paginationRequest;
 
