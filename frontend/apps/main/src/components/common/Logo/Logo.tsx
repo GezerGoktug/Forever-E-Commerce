@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useThemeStore } from "@forever/theme-kit";
+import { useTheme } from "@forever/theme-kit";
 import styles from "./Logo.module.scss";
 
 interface LogoProps {
@@ -13,7 +13,7 @@ const LOGO_SOURCES = {
 }
 
 const Logo = ({ className, isAdminLogo = false }: LogoProps) => {
-  const { theme } = useThemeStore();
+  const { theme } = useTheme();
 
   return (
     <div className={clsx(styles.logo, className)}>

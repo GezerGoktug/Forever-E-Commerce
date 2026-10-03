@@ -3,16 +3,15 @@ import { getLocalStorage, setLocalStorage } from "@forever/storage-kit";
 
 export type ThemeType = "light" | "dark";
 
-type Store = {
+type ThemeContextType = {
     theme: ThemeType;
     setTheme: (theme: ThemeType) => void;
 };
-const systemTheme: ThemeType = window.matchMedia("(prefers-color-scheme:dark)")
-    .matches
-    ? "dark"
-    : "light";
 
-const getInitialTheme = () => getLocalStorage<ThemeType>("theme", systemTheme || "light");
+const getSystemTheme = (): ThemeType =>
+    window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light";
+
+const getInitialTheme = () => getLocalStorage<ThemeType>("theme", getSystemTheme());
 
 const applyThemeToDOM = (theme: ThemeType) => {
     const body = document.getElementsByTagName("body");
@@ -21,17 +20,18 @@ const applyThemeToDOM = (theme: ThemeType) => {
     else body[0].classList.remove("dark");
 };
 
-const initialState: Store = {
-    theme: getInitialTheme(),
-    setTheme: () => { }
-}
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-const ThemeContext = createContext<Store>(initialState);
-
-const useThemeStore = () => useContext(ThemeContext);
+const useTheme = () => {
+    const context = useContext(ThemeContext);
+    if (!context) {
+        throw new Error("useTheme must be used within a ThemeProvider.");
+    }
+    return context;
+};
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
-    const [theme, setTheme] = useState<ThemeType>(initialState.theme);
+    const [theme, setTheme] = useState<ThemeType>(getInitialTheme);
 
     const changeTheme = (theme: ThemeType) => setTheme(theme);
 
@@ -42,4 +42,4 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
     return <ThemeContext.Provider value={{ theme, setTheme: changeTheme }}>{children}</ThemeContext.Provider>
 }
 
-export { ThemeProvider, ThemeContext, useThemeStore };
+export { ThemeProvider, useTheme };

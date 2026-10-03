@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import styles from './NavMenuDrawer.module.scss'
-import { useThemeStore } from '@forever/theme-kit'
+import { useTheme } from '@forever/theme-kit'
 import { FaMoon } from 'react-icons/fa6'
 import { IoSunny } from 'react-icons/io5'
 import { MdArrowBackIos } from 'react-icons/md'
@@ -30,7 +30,7 @@ const NavMenuDrawer = ({
 }: {
   onClose: () => void
 }) => {
-  const { theme, setTheme } = useThemeStore();
+  const { theme, setTheme } = useTheme();
 
   return (
     <>

@@ -9,12 +9,12 @@ import toast from "react-hot-toast";
 import { removeLocalStorage } from "@forever/storage-kit";
 import { clearUser } from "@/store/auth/actions";
 import NavMenuDrawer from "./NavMenuDrawer/NavMenuDrawer";
-import { useThemeStore } from "@forever/theme-kit";
+import { useTheme } from "@forever/theme-kit";
 import { IoSunny } from "react-icons/io5";
 
 const Topbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { setTheme, theme } = useThemeStore()
+  const { setTheme, theme } = useTheme()
   const navigate = useNavigate();
 
   const { mutate, isPending } = useLogoutMutation({

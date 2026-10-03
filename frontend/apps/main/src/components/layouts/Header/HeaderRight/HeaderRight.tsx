@@ -8,14 +8,14 @@ import { useState } from "react";
 import { useTotalCartQuantities } from "@/store/cart/hooks";
 import { useIsAccess } from "@/store/auth/hooks";
 import { useGetFavProductsCountQuery } from "@/services/hooks/queries/product.query";
-import { useThemeStore } from "@forever/theme-kit"
+import { useTheme } from "@forever/theme-kit"
 import { Badge, Drawer, Tooltip } from "@forever/ui-kit";
 import NavMenuDrawer from "./NavMenuDrawer/NavMenuDrawer";
 
 const HeaderRight = () => {
   const isAccess = useIsAccess();
   const totalQuantity = useTotalCartQuantities();
-  const { theme, setTheme } = useThemeStore();
+  const { theme, setTheme } = useTheme();
 
   const [isOpen, setIsOpen] = useState(false);
 

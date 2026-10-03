@@ -5,7 +5,7 @@ import { AiOutlineProduct } from 'react-icons/ai';
 import { IoIosList, IoIosStats } from 'react-icons/io';
 import { IoAddCircleOutline, IoSunny } from 'react-icons/io5';
 import { NavLink } from 'react-router-dom';
-import { useThemeStore } from '@forever/theme-kit';
+import { useTheme } from '@forever/theme-kit';
 import { FaMoon } from 'react-icons/fa6';
 
 const NAV_MENU_LINKS = [
@@ -32,7 +32,7 @@ const NAV_MENU_LINKS = [
 ];
 
 const NavMenuDrawer = () => {
-    const { theme, setTheme } = useThemeStore()
+    const { theme, setTheme } = useTheme()
 
     return (
         <div className={styles.nav_menu} >

@@ -1,5 +1,5 @@
 import { Chart } from "react-google-charts";
-import { useThemeStore } from "@forever/theme-kit";
+import { useTheme } from "@forever/theme-kit";
 import ChartCard from "../ChartCard/ChartCard";
 import type { GeographicDistribution } from "@/types/admin.type";
 
@@ -24,7 +24,7 @@ interface GeoDistributionChartProps {
 }
 
 const GeoDistributionChart = ({ title, data }: GeoDistributionChartProps) => {
-  const { theme } = useThemeStore();
+  const { theme } = useTheme();
 
   const geoDistributionRows = (data ?? []).map(
     ({ _id, totalIncome, orderCount }) => [_id, totalIncome, orderCount]
