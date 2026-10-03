@@ -111,7 +111,7 @@ const useClickOutside = (
 }
 
 
-const useEffectIgnoreFirst = (effect: () => void, dependencyList: DependencyList, unmount: () => void = () => { }) => {
+const useEffectIgnoreFirst = (effect: () => void, dependencyList: DependencyList, cleanup: () => void = () => { }) => {
     const firstRenderRef = useRef(false);
 
     useEffect(() => {
@@ -119,7 +119,7 @@ const useEffectIgnoreFirst = (effect: () => void, dependencyList: DependencyList
             effect();
         }
         firstRenderRef.current = true
-        return () => unmount();
+        return () => cleanup();
     }, [...dependencyList, firstRenderRef])
 }
 
