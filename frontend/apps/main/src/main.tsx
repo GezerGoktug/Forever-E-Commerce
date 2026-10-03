@@ -9,11 +9,10 @@ import { ThemeProvider } from "@forever/theme-kit";
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider>
     <BrowserRouter>
-      <ScrollTop>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
-      </ScrollTop>
+      <ScrollTop />
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
   </QueryClientProvider>
 );
