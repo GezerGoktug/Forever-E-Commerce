@@ -1,0 +1,19 @@
+{
+    "name": "@forever/pagination-kit",
+    "version": "1.0.0",
+    "main": "./index.ts",
+    "module": "index.ts",
+    "types": "index.ts",
+    "exports": {
+        ".": {
+            "import": "./index.ts",
+            "types": "./index.ts"
+        }
+    },
+    "peerDependencies": {
+        "react": "18.3.1"
+    },
+    "devDependencies": {
+        "@types/react": "18.3.12"
+    }
+}

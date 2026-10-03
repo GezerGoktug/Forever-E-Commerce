@@ -26,6 +26,9 @@
       "@forever/hook-kit": ["packages/libs/hook-kit/src/index.ts"],
       "@forever/hook-kit/*": ["packages/libs/hook-kit/src/*"],
 
+      "@forever/pagination-kit": ["packages/libs/pagination-kit/src/index.ts"],
+      "@forever/pagination-kit/*": ["packages/libs/pagination-kit/src/*"],
+
       "@forever/query-kit": ["packages/libs/query-kit/src/index.ts"],
       "@forever/query-kit/*": ["packages/libs/query-kit/src/*"],
 
