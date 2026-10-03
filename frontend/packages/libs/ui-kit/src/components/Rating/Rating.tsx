@@ -16,6 +16,7 @@ interface RatingProps {
     rateAction: (rate: number) => void;
     clearRating?: boolean;
     defaultRating?: number;
+    starCount?: number;
     className?: string;
 }
 
@@ -23,19 +24,20 @@ const Rating: FC<RatingProps> = ({
     rateAction,
     clearRating,
     defaultRating = 0,
+    starCount = 5,
     className
 }) => {
     const [rating, setRating] = useState<number[]>(
-        createRatingArray(defaultRating)
+        createRatingArray(defaultRating, starCount)
     );
     const [hoverRating, setHoverRating] = useState<number[]>(
-        createRatingArray(defaultRating)
+        createRatingArray(defaultRating, starCount)
     );
 
     useEffect(() => {
         if (clearRating) {
-            setRating([0, 0, 0, 0, 0]);
-            setHoverRating([0, 0, 0, 0, 0]);
+            setRating(createRatingArray(0, starCount));
+            setHoverRating(createRatingArray(0, starCount));
         }
     }, [clearRating]);
 
@@ -55,7 +57,7 @@ const Rating: FC<RatingProps> = ({
     };
     const handleStar = (index: number) => {
         if (findIndex(rating) === index) {
-            setRating([0, 0, 0, 0, 0]);
+            setRating(createRatingArray(0, starCount));
             return;
         }
         setRating(

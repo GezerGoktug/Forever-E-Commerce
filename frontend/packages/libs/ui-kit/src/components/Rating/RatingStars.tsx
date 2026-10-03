@@ -6,6 +6,7 @@ import { createRatingArray } from "./utils";
 
 interface RatingStarsProps {
     rating: number;
+    starCount?: number;
     size?: number;
     className?: string;
     ratingItemClassName?: string;
@@ -13,13 +14,14 @@ interface RatingStarsProps {
 
 const RatingStars: FC<RatingStarsProps> = ({
     rating,
+    starCount = 5,
     size = 18,
     className,
     ratingItemClassName
 }) => {
     return (
         <div className={clsx(styles.rating_stars, className)}>
-            {createRatingArray(rating).map((rate, i) => (
+            {createRatingArray(rating, starCount).map((rate, i) => (
                 <IoIosStar
                     key={"rating_star_" + i}
                     size={size}
