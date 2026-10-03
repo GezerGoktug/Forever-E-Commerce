@@ -1,6 +1,7 @@
 import api from "@/utils/api";
 import type { IDefaultResponse, IResponse } from "@forever/api";
-import type { CreateOrderVariables, CreateOrderWithStripeResponse, Order } from "@/types/order.type";
+import type { Order } from "@/types/order.type";
+import type { CreateOrderVariables, CreateOrderWithStripeResponse } from "@/services/types/order.type";
 
 const getMyOrders = (): Promise<IResponse<Order[]>> => api.get("/order/my-order");
 

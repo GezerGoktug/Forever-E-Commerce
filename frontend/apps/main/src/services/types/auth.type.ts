@@ -1,5 +1,4 @@
-import type { ExtendedUser } from "./user.type";
-
+import type { ExtendedUser } from "@/types/user.type";
 
 export interface LoginVariables {
     email: string;

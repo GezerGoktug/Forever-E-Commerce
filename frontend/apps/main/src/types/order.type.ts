@@ -1,7 +1,6 @@
 import type { CartProduct } from "./product.type";
 import type { BasicUser } from "./user.type";
 
-
 export interface DeliveryInfo {
   firstName: string,
   lastName: string,
@@ -14,21 +13,6 @@ export interface DeliveryInfo {
   phoneNumber: string,
   paymentMethod: "CASH_ON_DELIVERY" | "STRIPE",
 }
-export interface CreateOrderVariables {
-  products: CartProduct[];
-  cargoFee: number;
-  delivery_info: DeliveryInfo
-}
-
-export interface ConfirmOrderVariables {
-  orderId: string
-  isPayment: boolean,
-  sessionId: string
-}
-export interface CreateOrderWithStripeResponse {
-  sessionId: string
-}
-
 
 export interface Order {
   locationInfo: {

@@ -1,4 +1,5 @@
-﻿import type { AskQuestionToAiAgentVariables, AgentMessage } from "@/types/ai.type";
+﻿import type { AgentMessage } from "@/types/ai.type";
+import type { AskQuestionToAiAgentVariables } from "@/services/types/ai.type";
 import type { IResponse } from "@forever/api";
 import api from "@/utils/api";
 

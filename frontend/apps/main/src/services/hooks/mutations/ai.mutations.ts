@@ -1,6 +1,6 @@
 ﻿import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import type { IError, IResponse } from "@forever/api";
-import type { AskQuestionToAiAgentVariables } from "@/types/ai.type";
+import type { AskQuestionToAiAgentVariables } from "@/services/types/ai.type";
 import AiService from "@/services/actions/ai.service";
 
 const useAskQuestionToAiAgentWithStreamMutation = (mutationDetails?: UseMutationOptions<ReadableStream, IError, AskQuestionToAiAgentVariables>) =>

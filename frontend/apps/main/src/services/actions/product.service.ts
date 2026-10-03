@@ -1,6 +1,7 @@
 import api from "@/utils/api";
 import type { IDefaultResponse, IResponse, IPaginationResult } from "@forever/api";
-import type { CreateCommentVariables, FavProductCountResponse, IsProductInFavResponse, ProductDetail, Product } from "@/types/product.type";
+import type { ProductDetail, Product } from "@/types/product.type";
+import type { CreateCommentVariables, FavProductCountResponse, IsProductInFavResponse } from "@/services/types/product.type";
 
 const getProductDetail = (id: string): Promise<IResponse<Omit<ProductDetail, "isFav">>> => api.get(`/product/${id}`);
 

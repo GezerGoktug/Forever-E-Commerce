@@ -1,6 +1,6 @@
 import { useMutation, type UseMutationOptions, useQueryClient } from "@tanstack/react-query";
 import type { IError, IResponse, IDefaultResponse } from "@forever/api";
-import type { ConfirmOrderVariables, CreateOrderVariables } from "@/types/order.type";
+import type { ConfirmOrderVariables, CreateOrderVariables } from "@/services/types/order.type";
 import OrderService from "@/services/actions/order.service";
 import { loadStripe } from "@stripe/stripe-js";
 

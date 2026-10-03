@@ -33,8 +33,3 @@ export type ExtendedProduct = Product & {
   isBestseller: boolean;
   comments: Omit<Review, "user">[];
 }
-
-export interface UpdateProductVariables {
-  id: string,
-  updatedProduct: FormData
-}

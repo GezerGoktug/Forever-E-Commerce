@@ -1,7 +1,7 @@
 import { useMutation, type UseMutationOptions, useQueryClient } from "@tanstack/react-query";
 import type { IError, IResponse, IDefaultResponse } from "@forever/api";
 import ProductService from "@/services/actions/product.service";
-import type { DeleteCommentVariables, HandleFavouriteVariables, CreateCommentVariables, UpdateCommentVariables } from "@/types/product.type";
+import type { DeleteCommentVariables, HandleFavouriteVariables, CreateCommentVariables, UpdateCommentVariables } from "@/services/types/product.type";
 
 
 const useHandleFavouriteMutation = (

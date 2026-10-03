@@ -1,5 +1,5 @@
 import api from "@/utils/api";
-import type { AuthResponse, GoogleOauthVariables, LoginVariables, RegisterVariables } from "@/types/auth.type";
+import type { AuthResponse, GoogleOauthVariables, LoginVariables, RegisterVariables } from "@/services/types/auth.type";
 import type { IDefaultResponse, IResponse } from "@forever/api";
 
 const logout = (): Promise<IResponse<IDefaultResponse>> => api.get("/auth/logout");

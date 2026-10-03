@@ -1,7 +1,8 @@
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import ProductService from "@/services/actions/product.service";
 import { buildQuery } from "@forever/query-kit";
-import type { FavProductCountResponse, IsProductInFavResponse, ProductDetail, ProductSearchQuery, Product, SortType } from "@/types/product.type";
+import type { ProductDetail, ProductSearchQuery, Product, SortType } from "@/types/product.type";
+import type { FavProductCountResponse, IsProductInFavResponse } from "@/services/types/product.type";
 import type { IResponse, IError, IPaginationResult } from "@forever/api"
 
 const DEFAULT_PRODUCTS_PAGE_SIZE = 15;
