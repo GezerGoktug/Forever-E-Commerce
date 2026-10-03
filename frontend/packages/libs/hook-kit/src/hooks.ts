@@ -153,7 +153,7 @@ const useMediaQuery = ({
         handleResizeScreen();
         window.addEventListener("resize", handleResizeScreen);
         return () => {
-            document.removeEventListener("resize", handleResizeScreen);
+            window.removeEventListener("resize", handleResizeScreen);
         }
     }, [])
     return isCorrectScreenSize;
