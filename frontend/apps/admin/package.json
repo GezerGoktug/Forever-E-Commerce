@@ -16,6 +16,7 @@
     "@forever/common-utils": "workspace:*",
     "@forever/ui-kit": "workspace:*",
     "@forever/speech": "workspace:*",
+    "@forever/pagination-kit": "workspace:*",
     "@forever/query-kit": "workspace:*",
     "@forever/theme-kit": "workspace:*",
     "@forever/storage-kit": "workspace:*",

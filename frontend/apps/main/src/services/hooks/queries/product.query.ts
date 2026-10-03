@@ -4,27 +4,30 @@ import { buildQuery } from "@forever/query-kit";
 import type { FavProductCountResponse, IsProductInFavResponse, ProductDetail, ProductSearchQuery, Product, SortType } from "@/types/product.type";
 import type { IResponse, IError, IPaginationResult } from "@forever/api"
 
+const DEFAULT_PRODUCTS_PAGE_SIZE = 15;
+const DEFAULT_FAV_PRODUCTS_PAGE_SIZE = 10;
+
 type SortParams = {
-  type: "default" | "asc" | "desc";
-  field: "price" | null;
+    type: "default" | "asc" | "desc";
+    field: "price" | null;
 };
 
 const generateSortingType = (sort: SortType): SortParams => {
-  switch (sort) {
-    case "HIGH_TO_LOW":
-      return { type: "desc", field: "price" };
-    case "LOW_TO_HIGH":
-      return { type: "asc", field: "price" };
-    case "DEFAULT":
-      return { type: "default", field: null };
-  }
+    switch (sort) {
+        case "HIGH_TO_LOW":
+            return { type: "desc", field: "price" };
+        case "LOW_TO_HIGH":
+            return { type: "asc", field: "price" };
+        case "DEFAULT":
+            return { type: "default", field: null };
+    }
 };
 
 const useGetProductsQuery = (
     searchQueries: ProductSearchQuery,
     queryOptions?: Omit<UseQueryOptions<IResponse<IPaginationResult<Omit<Product, "isFav">, { maxPrice: number }>>, IError>, "queryKey">
 ) => {
-    const { searchQuery, sorting, subCategories, categories, page, minPrice } = searchQueries;
+    const { searchQuery, sorting, subCategories, categories, page, minPrice, pageSize } = searchQueries;
     const sortProps = generateSortingType(sorting);
 
     return useQuery<IResponse<IPaginationResult<Omit<Product, "isFav">, { maxPrice: number }>>, IError>({
@@ -35,6 +38,7 @@ const useGetProductsQuery = (
             subCategories,
             categories,
             page,
+            pageSize,
             minPrice,
         ],
         queryFn: () => ProductService.getProducts(
@@ -45,7 +49,7 @@ const useGetProductsQuery = (
                 ...(sortProps.field && { sortField: sortProps.field }),
                 sortType: sortProps.type,
                 page,
-                pageSize: 15,
+                pageSize: pageSize || DEFAULT_PRODUCTS_PAGE_SIZE,
                 minPrice,
             })
         ),
@@ -57,13 +61,14 @@ const useGetFavProductsQuery = (
     searchQueries: Omit<ProductSearchQuery, "minPrice">,
     queryOptions?: Omit<UseQueryOptions<IResponse<IPaginationResult<Omit<Product, "isFav">, object>>, IError>, "queryKey">
 ) => {
-    const { categories, page, searchQuery, sorting, subCategories } = searchQueries;
+    const { categories, page, searchQuery, sorting, subCategories, pageSize } = searchQueries;
     const sortProps = generateSortingType(sorting);
     return useQuery<IResponse<IPaginationResult<Omit<Product, "isFav">, object>>, IError>({
         queryKey: [
             "favProducts",
             searchQuery,
             page,
+            pageSize,
             categories,
             sorting,
             subCategories
@@ -76,7 +81,7 @@ const useGetFavProductsQuery = (
                 ...(sortProps.field && { sortField: sortProps.field }),
                 sortType: sortProps.type,
                 page,
-                pageSize: 10
+                pageSize: pageSize || DEFAULT_FAV_PRODUCTS_PAGE_SIZE
             })
         ),
         ...queryOptions

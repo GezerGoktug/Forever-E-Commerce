@@ -52,9 +52,10 @@ export type ProductSearchQuery = {
   categories: CategoriesType[];
   subCategories: SubCategoriesType[];
   page: number;
+  pageSize:number;
   minPrice: number;
   searchQuery: string;
-  sorting: SortType
+  sorting: SortType;
 }
 
 export type ProductDetail = ProductDetailContent & {

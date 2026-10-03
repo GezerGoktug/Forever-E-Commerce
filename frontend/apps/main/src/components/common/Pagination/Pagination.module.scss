@@ -2,7 +2,6 @@
 @use "@forever/sass-utils/variables" as v;
 
 .pagination_wrapper {
-  margin-top: 50px;
   @include u.flex-center;
   .pagination {
     @include u.row-center;
@@ -22,6 +21,7 @@
       width: 40px;
       height: 40px;
       border: 1.5px solid v.$text-color;
+      background: transparent;
       position: relative;
       transition: all 0.2s linear;
       .pagination_arrow_icon {

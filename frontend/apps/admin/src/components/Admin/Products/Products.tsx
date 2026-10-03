@@ -2,11 +2,8 @@ import styles from "./Products.module.scss";
 import { FaPencil, FaTrash } from "react-icons/fa6";
 import clsx from "clsx";
 import { useState } from "react";
-import {
-  IoIosArrowDropleftCircle,
-  IoIosArrowDroprightCircle,
-} from "react-icons/io";
 import { Modal } from "@forever/ui-kit";
+import Pagination from "@/components/common/Pagination/Pagination";
 import DeleteProductModal from "./DeleteProductModal/DeleteProductModal";
 import EditProductModal from "./EditProductModal/EditProductModal";
 import { type ExtendedProduct } from "@/types/product.type";
@@ -32,6 +29,8 @@ export type ProductToEdit = Pick<
 >;
 export type ProductToDelete = Pick<ExtendedProduct, "_id">;
 
+const ADMIN_PRODUCTS_PAGE_SIZE = 15;
+
 const Products = () => {
   const isAdmin = useIsAdmin();
 
@@ -40,15 +39,11 @@ const Products = () => {
     ProductToEdit | ProductToDelete
   > | null>(null);
 
-  const { data } = useGetProductsForAdminQuery({ page }, {
+  const { data } = useGetProductsForAdminQuery({ page, pageSize: ADMIN_PRODUCTS_PAGE_SIZE }, {
     enabled: isAdmin
   });
 
   const closeModal = () => setModal(null);
-
-  const goToPrevPage = () => setPage(data?.data.hasPrev ? page - 1 : page);
-
-  const goToNextPage = () => setPage(data?.data.hasNext ? page + 1 : page);
 
   return (
     <div>
@@ -130,25 +125,13 @@ const Products = () => {
           ))}
         </tbody>
       </table>
-      <div className={styles.pagination}>
-        <div
-          onClick={goToPrevPage}
-          className={clsx(styles.pagination_item, {
-            [styles.disabled]: !data?.data.hasPrev,
-          })}
-        >
-          <IoIosArrowDropleftCircle fill="white" size={25} />
-        </div>
-        <div className={styles.pagination_item}>{page + 1}</div>
-        <div
-          onClick={goToNextPage}
-          className={clsx(styles.pagination_item, {
-            [styles.disabled]: !data?.data.hasNext,
-          })}
-        >
-          <IoIosArrowDroprightCircle fill="white" size={25} />
-        </div>
-      </div>
+      <Pagination
+        page={page}
+        onPageChange={setPage}
+        pageSize={ADMIN_PRODUCTS_PAGE_SIZE}
+        totalPage={data?.data.totalPage ?? 0}
+        totalItems={data?.data.totalItems ?? 0}
+      />
     </div>
   );
 };

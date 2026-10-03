@@ -44,6 +44,9 @@ importers:
       '@forever/hook-kit':
         specifier: workspace:*
         version: link:../../packages/libs/hook-kit
+      '@forever/pagination-kit':
+        specifier: workspace:*
+        version: link:../../packages/libs/pagination-kit
       '@forever/query-kit':
         specifier: workspace:*
         version: link:../../packages/libs/query-kit
@@ -186,6 +189,9 @@ importers:
       '@forever/hook-kit':
         specifier: workspace:*
         version: link:../../packages/libs/hook-kit
+      '@forever/pagination-kit':
+        specifier: workspace:*
+        version: link:../../packages/libs/pagination-kit
       '@forever/query-kit':
         specifier: workspace:*
         version: link:../../packages/libs/query-kit

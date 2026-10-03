@@ -1,7 +1,7 @@
 import type { ProductSearchQuery, SortType } from "@/types/product.type";
 import styles from "./Products.module.scss";
 import { useEffect } from "react";
-import { setMaxPrice, setPagination } from "@/store/product/actions";
+import { setMaxPrice } from "@/store/product/actions";
 import ProductCard from "@/components/common/ProductCard/ProductCard";
 import ProductCardSkeleton from "@/components/common/ProductCard/ProductCardSkeleton";
 import { useQueryParams } from "@forever/query-kit";
@@ -12,9 +12,13 @@ import { DataStateHandler } from "@forever/common-utils";
 import { FaCircleXmark } from "react-icons/fa6";
 import { useGetProductsQuery, useIsProductsInFavQuery } from "@/services/hooks/queries/product.query";
 import { Button } from "@forever/ui-kit";
+import Pagination from "@/components/common/Pagination/Pagination";
+import ScrollTopByPageChange from "@/components/common/ScrollTopByPageChange/ScrollTopByPageChange";
+
+const PRODUCT_PAGINATION_PAGE_SIZE = 15;
 
 const Products = () => {
-  const { queryState, clearQuery, querySetters: { setSorting } } = useQueryParams<Pick<ProductSearchQuery, 'page' | 'categories' | 'minPrice' | 'searchQuery' | 'subCategories' | 'sorting'>>({
+  const { queryState, clearQuery, querySetters: { setSorting, setPage } } = useQueryParams<Pick<ProductSearchQuery, 'page' | 'categories' | 'minPrice' | 'searchQuery' | 'subCategories' | 'sorting'>>({
     page: 0,
     categories: [],
     subCategories: [],
@@ -33,7 +37,8 @@ const Products = () => {
     subCategories,
     categories,
     minPrice,
-    searchQuery
+    searchQuery,
+    pageSize: PRODUCT_PAGINATION_PAGE_SIZE
   })
 
   const productIds = data?.data.content.map((product) => product._id) ?? [];
@@ -48,11 +53,6 @@ const Products = () => {
 
   useEffect(() => {
     if (data?.data?.otherData) {
-      setPagination({
-        pageCount: data?.data.totalPage,
-        hasNext: data.data.hasNext,
-        hasPrev: data.data.hasPrev,
-      });
       setMaxPrice(data.data.otherData?.maxPrice);
     }
   }, [data]);
@@ -61,6 +61,7 @@ const Products = () => {
 
   return (
     <div className={styles.product_wrapper}>
+      <ScrollTopByPageChange />
       <div className={styles.product_header}>
         <h5>
           ALL <span>COLLECTIONS</span>
@@ -136,6 +137,16 @@ const Products = () => {
             ))
           }
         </DataStateHandler>
+      </div>
+      <div className={styles.product_pagination}>
+        <Pagination
+          page={page}
+          onPageChange={setPage}
+          pageSize={PRODUCT_PAGINATION_PAGE_SIZE}
+          totalPage={data?.data.totalPage ?? 0}
+          totalItems={data?.data.totalItems ?? 0}
+          title="Showing products"
+        />
       </div>
     </div>
   );

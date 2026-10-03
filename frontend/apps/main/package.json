@@ -14,6 +14,7 @@
     "@forever/common-utils": "workspace:*",
     "@forever/google-oauth-kit": "workspace:*",
     "@forever/hook-kit": "workspace:*",
+    "@forever/pagination-kit": "workspace:*",
     "@forever/query-kit": "workspace:*",
     "@forever/sass-utils": "workspace:*",
     "@forever/speech": "workspace:*",

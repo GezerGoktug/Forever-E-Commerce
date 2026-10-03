@@ -1,7 +1,6 @@
 import Filter from "@/components/Collections/Filter/Filter";
 import Products from "@/components/Collections/Products/Products";
 import styles from "./Collections.module.scss";
-import Pagination from "@/components/Collections/Pagination/Pagination";
 import { Helmet } from "react-helmet";
 
 const Collections = () => {
@@ -18,7 +17,6 @@ const Collections = () => {
         <Filter />
         <div>
           <Products />
-          <Pagination />
         </div>
       </div>
     </>

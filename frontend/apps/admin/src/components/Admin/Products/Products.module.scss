@@ -63,27 +63,3 @@
     }
   }
 }
-
-.pagination {
-  margin: 30px auto;
-  @include u.flex-center;
-  gap: 10px;
-  .pagination_item {
-    @include u.flex-center;
-    color: v.$primary-color;
-    background-color: v.$text-color;
-    border-radius: 3px;
-    width: 40px;
-    height: 40px;
-    &:not(:nth-child(2)) {
-      cursor: pointer;
-      svg {
-        fill: v.$primary-color;
-      }
-    }
-    &.disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-  }
-}
