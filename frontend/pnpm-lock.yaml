@@ -368,9 +368,6 @@ importers:
       '@forever/query-kit':
         specifier: workspace:*
         version: link:../query-kit
-      '@forever/sass-utils':
-        specifier: workspace:*
-        version: link:../sass-utils
       '@forever/storage-kit':
         specifier: workspace:*
         version: link:../storage-kit
@@ -380,9 +377,6 @@ importers:
       react-dom:
         specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
-      react-icons:
-        specifier: 5.4.0
-        version: 5.4.0(react@18.3.1)
     devDependencies:
       '@types/react':
         specifier: 18.3.12

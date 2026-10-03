@@ -12,12 +12,10 @@
     },
     "peerDependencies": {
         "react": "18.3.1",
-        "react-dom": "18.3.1",
-        "react-icons": "5.4.0"
+        "react-dom": "18.3.1"
     },
     "dependencies": {
         "@forever/query-kit": "workspace:*",
-        "@forever/sass-utils": "workspace:*",
         "@forever/storage-kit": "workspace:*"
     },
     "devDependencies": {
