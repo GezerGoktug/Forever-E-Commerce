@@ -1,4 +1,4 @@
-import { createContext, type ReactNode, useEffect, useState } from "react";
+import { createContext, type ReactNode, useContext, useEffect, useState } from "react";
 import { getLocalStorage, setLocalStorage } from "@forever/storage-kit";
 
 export type ThemeType = "light" | "dark";
@@ -21,10 +21,14 @@ const applyThemeToDOM = (theme: ThemeType) => {
     else body[0].classList.remove("dark");
 };
 
-const initialState: Store = { theme: getInitialTheme(), 
-    setTheme: () => { } }
+const initialState: Store = {
+    theme: getInitialTheme(),
+    setTheme: () => { }
+}
 
 const ThemeContext = createContext<Store>(initialState);
+
+const useThemeStore = () => useContext(ThemeContext);
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const [theme, setTheme] = useState<ThemeType>(initialState.theme);
@@ -38,5 +42,4 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
     return <ThemeContext.Provider value={{ theme, setTheme: changeTheme }}>{children}</ThemeContext.Provider>
 }
 
-
-export { ThemeProvider, ThemeContext };
+export { ThemeProvider, ThemeContext, useThemeStore };
