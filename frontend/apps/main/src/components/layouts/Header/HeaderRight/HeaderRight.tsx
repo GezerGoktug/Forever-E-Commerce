@@ -12,7 +12,6 @@ import { useThemeStore } from "@forever/theme-kit"
 import { Badge, Drawer, Tooltip } from "@forever/ui-kit";
 import NavMenuDrawer from "./NavMenuDrawer/NavMenuDrawer";
 
-
 const HeaderRight = () => {
   const isAccess = useIsAccess();
   const totalQuantity = useTotalCartQuantities();
@@ -24,16 +23,25 @@ const HeaderRight = () => {
     enabled: isAccess,
   });
 
-  const links = [
+  const NAV_MENU_LINKS = [
     {
       render: (
         <Tooltip message="Change Theme" >
           {
-            theme === "dark" ? <FaMoon className={styles.theme_icon} size={25} onClick={() => setTheme("light")} /> : <IoSunny className={styles.theme_icon} size={25} onClick={() => setTheme("dark")} />
+            theme === "dark" ?
+              <FaMoon
+                className={styles.theme_icon}
+                size={25}
+                onClick={() => setTheme("light")}
+              /> :
+              <IoSunny
+                className={styles.theme_icon}
+                size={25}
+                onClick={() => setTheme("dark")}
+              />
           }
         </Tooltip>
-      ),
-      isCustomItem: true
+      )
     },
     {
       icon: RiUser3Line,
@@ -44,16 +52,30 @@ const HeaderRight = () => {
       icon: RiHeartLine,
       href: "/favourite",
       message: "Favourite",
-      badgeData: data?.data.count || 0,
-      isCountBadge: true,
-      isFavBadge: true,
+      badge: (
+        <Badge
+          className={styles.header_right_link_badge}
+          size="xs"
+          loading={isLoading}
+          variant="danger"
+        >
+          {data?.data.count ?? 0}
+        </Badge>
+      )
     },
     {
       icon: HiOutlineShoppingBag,
       href: "/cart",
-      isCountBadge: true,
-      badgeData: totalQuantity,
       message: "Cart",
+      badge: (
+        <Badge
+          className={styles.header_right_link_badge}
+          size="xs"
+          variant="primary"
+        >
+          {totalQuantity}
+        </Badge>
+      )
     },
     {
       icon: FaBars,
@@ -66,45 +88,32 @@ const HeaderRight = () => {
   const toggleNavMenuDrawer = () => setIsOpen(!isOpen);
 
   return (
-    <nav>
+    <div>
       <Drawer align="right" isDisableCloseBtn={true} className={styles.nav_menu_drawer} open={isOpen} onClose={closeNavMenuDrawer}>
         <NavMenuDrawer onClose={closeNavMenuDrawer} />
       </Drawer>
-      <ul className={styles.header_right_links}>
-        {links.map(({ icon: Icon, href, isCountBadge, menuIcon, badgeData, isFavBadge, message, isCustomItem, render }, i) => (
-          <li key={"header_links_" + i}>
-            {menuIcon ? (
-              <>
-                <Icon
+      <nav>
+        <ul className={styles.header_right_links}>
+          {NAV_MENU_LINKS.map(({ render, menuIcon, icon: Icon, message, href, badge }, i) => (
+            <li key={"header_links_" + i}>
+              {render ?? (menuIcon
+                ? <Icon
                   onClick={toggleNavMenuDrawer}
                   className={styles.toggle_menu_icon}
                   size={25}
                 />
-              </>
-            ) :
-              isCustomItem ? render : (
-                href && (
-                  <Tooltip message={message}>
-                    <Link to={{ pathname: href }}>
-                      <Icon size={25} />
-                      {isCountBadge && (
-                        <Badge
-                          className={styles.header_right_link_badge}
-                          size="xs"
-                          loading={isFavBadge ? isLoading : false}
-                          variant={isFavBadge ? "danger" : "primary"}
-                        >
-                          {badgeData}
-                        </Badge>
-                      )}
-                    </Link>
-                  </Tooltip>
-                )
+                : <Tooltip message={message ?? ""}>
+                  <Link to={{ pathname: href }}>
+                    <Icon size={25} />
+                    {badge}
+                  </Link>
+                </Tooltip>
               )}
-          </li>
-        ))}
-      </ul>
-    </nav>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
   );
 };
 

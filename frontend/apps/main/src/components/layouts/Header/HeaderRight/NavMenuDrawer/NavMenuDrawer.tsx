@@ -6,30 +6,32 @@ import { IoSunny } from 'react-icons/io5'
 import { MdArrowBackIos } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 
+const NAV_MENU_LINKS = [
+  {
+    label: "Home",
+    href: "/",
+  },
+  {
+    label: "Collection",
+    href: "/collection",
+  },
+  {
+    label: "About",
+    href: "/about",
+  },
+  {
+    label: "Contact",
+    href: "/contact",
+  },
+];
+
 const NavMenuDrawer = ({
   onClose
 }: {
   onClose: () => void
 }) => {
   const { theme, setTheme } = useThemeStore();
-  const links = [
-    {
-      label: "Home",
-      href: "/",
-    },
-    {
-      label: "Collection",
-      href: "/collection",
-    },
-    {
-      label: "About",
-      href: "/about",
-    },
-    {
-      label: "Contact",
-      href: "/contact",
-    },
-  ];
+
   return (
     <>
       <div className={styles.nav_menu_top}>
@@ -54,7 +56,7 @@ const NavMenuDrawer = ({
       </div>
       <nav>
         <ul>
-          {links.map((link, i) => (
+          {NAV_MENU_LINKS.map((link, i) => (
             <li key={"aside_link_" + i}>
               <NavLink
                 onClick={onClose}

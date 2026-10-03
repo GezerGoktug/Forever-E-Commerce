@@ -5,37 +5,37 @@ import clsx from "clsx";
 import { IoIosList, IoIosStats } from "react-icons/io";
 import { AiOutlineProduct } from "react-icons/ai";
 
-const Sidebar = () => {
-  const links = [
-    {
-      icon: IoIosStats,
-      href: "/admin/stats",
-      label: "Stats",
-    },
-    {
-      icon: AiOutlineProduct,
-      href: "/admin/products",
-      label: "Products",
-    },
-    {
-      icon: IoAddCircleOutline,
-      href: "/admin/add-product",
-      label: "Add Product",
-    },
-    {
-      icon: IoIosList,
-      href: "/admin/orders",
-      label: "Orders",
-    },
-  ];
+const NAV_MENU_LINKS = [
+  {
+    icon: IoIosStats,
+    href: "/admin/stats",
+    label: "Stats",
+  },
+  {
+    icon: AiOutlineProduct,
+    href: "/admin/products",
+    label: "Products",
+  },
+  {
+    icon: IoAddCircleOutline,
+    href: "/admin/add-product",
+    label: "Add Product",
+  },
+  {
+    icon: IoIosList,
+    href: "/admin/orders",
+    label: "Orders",
+  },
+];
 
+const Sidebar = () => {
   return (
     <div
       className={clsx(styles.sidebar)}
     >
       <nav>
         <ul>
-          {links.map(({ icon: Icon, href, label }) => (
+          {NAV_MENU_LINKS.map(({ icon: Icon, href, label }) => (
             <li key={href}>
               <NavLink
                 className={({ isActive }) =>
