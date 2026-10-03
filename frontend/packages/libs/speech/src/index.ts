@@ -66,6 +66,7 @@ const useSpeechRecognition = (initialVal?: string) => {
         recognitionRef.current = recognition;
 
         return () => {
+            recognition.abort();
             setSpeechData(null)
         }
 
