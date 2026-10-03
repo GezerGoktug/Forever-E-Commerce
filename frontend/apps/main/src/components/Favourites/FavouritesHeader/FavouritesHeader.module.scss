@@ -2,7 +2,7 @@
 @use "@forever/sass-utils/mixins" as m;
 @use "@forever/sass-utils/variables" as v;
 
-.top_section {
+.favourites_header {
     @include u.flex-between;
     margin-bottom: 30px;
     margin-top: 50px;

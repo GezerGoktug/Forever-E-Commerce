@@ -7,18 +7,18 @@ import { useIsAccess } from "./store/auth/hooks";
 import { lazy, Suspense } from "react";
 import { Loading } from "@forever/ui-kit";
 
-const Home = lazy(() => import("./pages/Home"));
+const Home = lazy(() => import("./pages/Home/Home"));
 const NotFoundPage = lazy(() => import("./pages/NotFound/NotFound"));
-const About = lazy(() => import("./pages/About"));
-const Contact = lazy(() => import("./pages/Contact"));
+const About = lazy(() => import("./pages/About/About"));
+const Contact = lazy(() => import("./pages/Contact/Contact"));
 const Cart = lazy(() => import("./pages/Cart/Cart"));
-const Auth = lazy(() => import("./pages/Auth"));
+const Auth = lazy(() => import("./pages/Auth/Auth"));
 const Collections = lazy(() => import("./pages/Collections/Collections"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail/ProductDetail"));
-const PlaceOrder = lazy(() => import("./pages/PlaceOrder"));
-const Profile = lazy(() => import("./pages/Profile"));
+const PlaceOrder = lazy(() => import("./pages/PlaceOrder/PlaceOrder"));
+const Profile = lazy(() => import("./pages/Profile/Profile"));
 const PaymentResult = lazy(() => import("./pages/PaymentResult/PaymentResult"));
-const Favourites = lazy(() => import("./pages/Favourites"));
+const Favourites = lazy(() => import("./pages/Favourites/Favourites"));
 
 
 const PrivateRoute = () => {

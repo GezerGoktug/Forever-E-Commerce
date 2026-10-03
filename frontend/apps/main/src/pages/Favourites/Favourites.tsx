@@ -1,8 +1,7 @@
 import { Helmet } from 'react-helmet'
-import TopSection from '@/components/Favourites/TopSection/TopSection'
+import FavouritesHeader from '@/components/Favourites/FavouritesHeader/FavouritesHeader'
 import Filter from '@/components/Favourites/Filter/Filter'
 import Products from '@/components/Favourites/Products/Products'
-import Pagination from '@/components/Favourites/Pagination/Pagination'
 
 const Favourites = () => {
     return (
@@ -14,10 +13,9 @@ const Favourites = () => {
                     content="Learn more about Forever, your go-to fashion destination. We offer stylish and affordable clothing for men and women."
                 />
             </Helmet>
-            <TopSection/>
+            <FavouritesHeader/>
             <Filter/>
             <Products/>
-            <Pagination/>
         </div>
     )
 }

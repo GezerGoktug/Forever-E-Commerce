@@ -1,9 +1,9 @@
 import { useQueryParams } from '@forever/query-kit';
 import type { ProductSearchQuery, SortType } from '@/types/product.type';
-import styles from './TopSection.module.scss';
+import styles from './FavouritesHeader.module.scss';
 import { motion } from 'framer-motion'
 
-const TopSection = () => {
+const FavouritesHeader = () => {
     const {
         queryState: { sorting },
         querySetters: { setSorting }
@@ -13,7 +13,7 @@ const TopSection = () => {
 
 
     return (
-        <div className={styles.top_section}>
+        <div className={styles.favourites_header}>
             <motion.h5
                 initial={{ x: 250, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -35,4 +35,4 @@ const TopSection = () => {
     )
 }
 
-export default TopSection
+export default FavouritesHeader
