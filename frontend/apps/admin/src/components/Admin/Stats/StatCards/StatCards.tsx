@@ -9,6 +9,8 @@ import CountUp from "react-countup";
 import millify from "millify";
 import styles from "./StatCards.module.scss";
 import type { StatKey } from "@/types/admin.type";
+import { useGetAdminStatisticsQuery } from "@/services/hooks/queries/admin.query";
+import { useIsAdmin } from "@/store/auth/hooks";
 
 export interface StatCard {
   icon: IconType;
@@ -66,11 +68,16 @@ export const STAT_CARDS: StatCard[] = [
   },
 ];
 
-interface StatCardsProps {
-  cards: StatCard[];
-}
+const StatCards = () => {
+  const isAdmin = useIsAdmin();
 
-const StatCards = ({ cards }: StatCardsProps) => {
+  const { data } = useGetAdminStatisticsQuery({ enabled: isAdmin });
+
+  const cards = STAT_CARDS.map((card) => ({
+    ...card,
+    dt: data?.data.stats_card.find((stat) => stat.key === card.key)?.dt || null,
+  }));
+
   return (
     <div className={styles.stat_cards}>
       {cards.map(({ icon: Icon, ...card }, i) => (

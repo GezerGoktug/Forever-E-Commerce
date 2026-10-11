@@ -1,0 +1,13 @@
+@use "@forever/sass-utils/mixins" as m;
+
+.admin_stats_charts {
+  margin: 100px 0;
+  .admin_stats_chart_group {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 50px;
+    @include m.responsive(md) {
+      flex-direction: column;
+    }
+  }
+}

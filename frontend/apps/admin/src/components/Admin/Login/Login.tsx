@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styles from './AdminLogin.module.scss'
+import styles from './Login.module.scss'
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useLoginMutation } from '@/services/hooks/mutations/auth.mutations';
 import toast from 'react-hot-toast';
@@ -17,7 +17,7 @@ interface LoginFormValues {
     password: string;
 }
 
-const AdminLogin = () => {
+const Login = () => {
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
@@ -98,4 +98,4 @@ const AdminLogin = () => {
     )
 }
 
-export default AdminLogin
+export default Login

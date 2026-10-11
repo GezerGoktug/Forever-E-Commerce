@@ -9,7 +9,7 @@ import AdminProducts from "./pages/Admin/Products/AdminProducts";
 import AdminOrders from "./pages/Admin/Orders/AdminOrders";
 import ErrorBoundary from "./ErrorBoundary";
 import AuthGuard from "./guards/AuthGuard";
-import AdminLogin from "./components/Admin/AdminLogin/AdminLogin";
+import AdminLogin from "./pages/Admin/Login/AdminLogin";
 
 const AdminPrivateRoute = () => {
   const isAdmin = useIsAdmin();

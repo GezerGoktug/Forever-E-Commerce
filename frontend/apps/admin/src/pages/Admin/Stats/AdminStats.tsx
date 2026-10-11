@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet";
-import Stats from "@/components/Admin/Stats/Stats";
+import StatCards from "@/components/Admin/Stats/StatCards/StatCards";
+import StatCharts from "@/components/Admin/Stats/StatCharts/StatCharts";
 
 const AdminStats = () => {
   return (
@@ -7,7 +8,8 @@ const AdminStats = () => {
       <Helmet>
         <title>Stats - Admin Forever</title>
       </Helmet>
-      <Stats />
+      <StatCards />
+      <StatCharts />
     </>
   );
 };
