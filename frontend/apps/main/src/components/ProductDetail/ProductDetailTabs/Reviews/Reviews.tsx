@@ -9,8 +9,8 @@ import { lazy, Suspense, useState } from "react";
 import { useAccount } from "@/store/auth/hooks";
 import { Dropdown, RatingStars } from "@forever/ui-kit";
 
-const EditReviewModal = lazy(() => import("@/components/ProductDetail/Reviews/EditReviewModal/EditReviewModal"));
-const DeleteReviewModal = lazy(() => import("@/components/ProductDetail/Reviews/DeleteReviewModal/DeleteReviewModal"));
+const EditReviewModal = lazy(() => import("./EditReviewModal/EditReviewModal"));
+const DeleteReviewModal = lazy(() => import("./DeleteReviewModal/DeleteReviewModal"));
 
 interface ModalState<T> {
   modal_type: "DELETE" | "EDIT";

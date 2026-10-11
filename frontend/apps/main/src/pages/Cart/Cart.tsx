@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet";
 import CartProducts from "@/components/Cart/CartProducts/CartProducts";
-import Cash from "@/components/Cart/Cash/Cash";
-import styles from "./Cart.module.scss";
+import CartSummary from "@/components/Cart/CartSummary/CartSummary";
 
 const Cart = () => {
   return (
@@ -14,9 +13,7 @@ const Cart = () => {
         />
       </Helmet>
       <CartProducts />
-      <div className={styles.cash}>
-        <Cash />
-      </div>
+      <CartSummary />
     </div>
   );
 };

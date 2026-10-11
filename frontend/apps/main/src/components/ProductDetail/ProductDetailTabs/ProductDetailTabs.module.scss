@@ -1,0 +1,43 @@
+@use "@forever/sass-utils/utils-mixins" as u;
+@use "@forever/sass-utils/mixins" as m;
+
+.product_detail_bottom {
+  margin-top: 15%;
+  @include m.responsive(sm) {
+    margin-top: 0;
+  }
+  .product_detail_tab {
+    @include u.row-center;
+    font-size: 14px;
+    div {
+      padding: 12px 24px;
+      cursor: pointer;
+      border: 1px solid rgb(213, 213, 213);
+      &.active {
+        font-weight: 700;
+      }
+      @include m.responsive(xs) {
+        padding: 12px;
+      }
+    }
+  }
+  .product_detail_tab_content {
+    border: 1px solid rgb(213, 213, 213);
+    padding: 24px;
+    @include m.responsive(sm) {
+      padding: 24px 12px;
+    }
+  }
+}
+
+.product_detail_skeleton_tabs {
+  margin-top: 200px;
+  @include u.skeleton_animate(200px, 50px);
+  @include m.responsive(sm) {
+    margin-top: 0;
+  }
+}
+.product_detail_skeleton_tab_contents {
+  margin-top: 2px;
+  @include u.skeleton_animate(100%, 250px);
+}

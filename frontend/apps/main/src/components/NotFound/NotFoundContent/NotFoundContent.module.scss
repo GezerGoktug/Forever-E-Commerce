@@ -1,6 +1,6 @@
 @use "@forever/sass-utils/utils-mixins" as u;
 
-.error{
+.not_found{
     padding: 50px 0;
     text-align: center;
     @include u.col-center;

@@ -1,0 +1,17 @@
+@use "@forever/sass-utils/utils-mixins" as u;
+
+.product_not_found_wrapper {
+  @include u.flex-center;
+  margin: 150px 0;
+  .product_not_found {
+    @include u.col-center;
+    text-align: center;
+    gap: 10px;
+    .product_not_found_title {
+      font-size: 50px;
+    }
+    .product_not_found_content {
+      font-size: 18px;
+    }
+  }
+}
