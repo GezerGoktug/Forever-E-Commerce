@@ -22,7 +22,7 @@ const isPatternCompatibility = (url: string = "") => {
         const { hostname: mainHostName } = new URL(process.env.CLIENT_URL || "");
 
         if (urlHostName.endsWith(`--${mainHostName}`)) {
-            const branchPart = urlHostName.split('--')[0]; 
+            const branchPart = urlHostName.split('--')[0];
 
             return conventionalCommitsName.some(prefix => branchPart.startsWith(`${prefix}-`));
         }
@@ -33,7 +33,7 @@ const isPatternCompatibility = (url: string = "") => {
 }
 
 const corsConfig: CorsOptions = {
-    origin: (origin, callback) => {        
+    origin: (origin, callback) => {
         const isMainClientUrl = origin === process.env.CLIENT_URL
         const isMainServerUrl = origin === process.env.SERVER_URL
 
@@ -44,7 +44,7 @@ const corsConfig: CorsOptions = {
             callback(new Error("CORS Policy: This origin is not allowed."))
         }
     },
-    methods: ["GET,POST,PUT,DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }
 
